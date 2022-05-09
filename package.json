@@ -1,0 +1,14 @@
+{
+  "name": "utasuki",
+  "version": "1.0.0",
+  "description": "Favorit låtar genom tiderna",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arvid Rimmerfors",
+  "license": "ISC",
+  "dependencies": {
+    "jsdom": "^19.0.0"
+  }
+}
