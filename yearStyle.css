@@ -1,5 +1,13 @@
-.songContainer {
-    margin: 0 20% 40px 20%;
+#songItems { /*ありがとう、マーティンさん*/
+    margin: 0 auto;
+    width: 100%;
+}
+
+.songContainer { /*ありがとう、マーティンさん*/
+    margin: 0 auto;
+    margin-bottom: 40px;
+    width: 80%;
+    max-width: 900px; 
 }
 
 fieldset {
@@ -13,7 +21,8 @@ fieldset {
 legend {
     font-size: 24pt; /*ありがとう、マーティンさん*/
     padding: 0 10px 0 10px;
-    text-align: center;
+    /* text-align: center; */ /*Not supported by firefox*/
+    margin: 0 auto;
 }
 
 
@@ -28,7 +37,6 @@ legend {
 
 .song {
     display: flex;
-    flex-direction: row;
     margin: 5px 20px 20px 20px; /*ありがとう、マーティンさん*/
 }
 

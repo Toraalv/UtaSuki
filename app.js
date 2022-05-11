@@ -1,9 +1,10 @@
-//"use strict"
+"use strict"
 
 const http = require("http");
 const fs = require("fs");
 const jsdom = require("jsdom");
 const path = require("path");
+const functions = require("./functions.js");
 var songs = require("./Songs.json");
 
 
@@ -70,76 +71,68 @@ http.createServer(function(req, res)
                     let titleh1 = doc.createElement("h1");
                     let songItemsDiv = doc.querySelector("#songItems");
 
-                    function yearPages(year)
+                    titleh1.append(doc.createTextNode(year));
+                    title.replaceWith(titleh1);
+
+                    //eval("var songs" + year + "= " + "new Array" + ";"); You absolute buffoon
+                    let songJSON = new Array();
+
+                    for (let i = 0; i < songs.length; i++)
+                        if (songs[i].date.substring(0, 4) == year)
+                            songJSON.push(songs[i]);
+
+                    songItemsDiv = doc.querySelector("#songItems");
+
+                    for (let i = 0; i < songJSON.length; i++)
                     {
-                        titleh1.append(doc.createTextNode(year));
-                        title.replaceWith(titleh1);
+                        //fieldset class="songContainer"
+                        let fieldset = doc.createElement("fieldset");
+                        fieldset.className = "songContainer";
+                        //legend YYYY-MM
+                        let legend = doc.createElement("legend");
+                        legend.append(doc.createTextNode(functions.monthToString(songJSON[i].date.substring(5, 7))));
+                        fieldset.append(legend);
 
-                        eval("var songs" + year + "= " + "new Array" + ";");
-
-
-                        for (let i = 0; i < songs.length; i++)
-                            if (songs[i].date.substring(0, 4) == year)
-                                eval("songs" + year).push(songs[i]);
-
-                        songItemsDiv = doc.querySelector("#songItems");
-
-                        for (let i = 0; i < eval("songs" + year).length; i++)
+                        for (let j = 0; j < songJSON[i].songList.length; j++)
                         {
-                            //div class="songContainer"
-                            let songContainer = doc.createElement("div");
-                            songContainer.className = "songContainer";
+                            //div class="song"
+                            let songDiv = doc.createElement("div");
+                            songDiv.className = "song";
 
-                            //fieldset
-                            let fieldset = doc.createElement("fieldset");
-                            //legend YYYY-MM
-                            let legend = doc.createElement("legend");
-                            legend.append(doc.createTextNode(eval("songs" + year)[i].date.substring(5, 7)))
-                            fieldset.append(legend);
+                            //img src=songJSON[i].image
+                            let img = doc.createElement("img");
+                            if (songJSON[i].songList[j].image == "" && j % 2 == 0)
+                                img.setAttribute("src", "images/lowres_suisei.png");
+                            else if (songJSON[i].songList[j].image == "" && !(j % 2 == 0))
+                                img.setAttribute("src", "images/server-icon.png");
+                            else
+                                img.setAttribute("src", songJSON[i].songList[j].image);
+                            
+                            //div class="songInfo"
+                            let songInfo = doc.createElement("div");
+                            songInfo.className = "songInfo";
+                            //h1 song name
+                            let songName = doc.createElement("h1");
+                            songName.append(doc.createTextNode(songJSON[i].songList[j].song));
+                            //h3 artist
+                            let artist = doc.createElement("h3")
+                            artist.append(doc.createTextNode(songJSON[i].songList[j].artist));
 
-                            for (let j = 0; j < eval("songs" + year)[i].songList.length; j++)
-                            {
-                                //div class="song"
-                                let songDiv = doc.createElement("div");
-                                songDiv.className = "song";
+                            //Add everything
+                            songInfo.append(songName);
+                            songInfo.append(artist);
 
-                                //img src=eval("songs" + year)[i].image
-                                let img = doc.createElement("img");
-                                if (eval("songs" + year)[i].songList[j].image == "" && j % 2 == 0)
-                                    img.setAttribute("src", "images/lowres_suisei.png");
-                                else if (eval("songs" + year)[i].songList[j].image == "" && !(j % 2 == 0))
-                                    img.setAttribute("src", "images/server-icon.png");
-                                else
-                                    img.setAttribute("src", eval("songs" + year)[i].songList[j].image);
-                                
-                                //div class="songInfo"
-                                let songInfo = doc.createElement("div");
-                                songInfo.className = "songInfo";
-                                //h1 song name
-                                let songName = doc.createElement("h1");
-                                songName.append(doc.createTextNode(eval("songs" + year)[i].songList[j].song));
-                                //h3 artist
-                                let artist = doc.createElement("h3")
-                                artist.append(doc.createTextNode(eval("songs" + year)[i].songList[j].artist));
+                            songDiv.append(img);
+                            songDiv.append(songInfo);
 
-                                //Add everything
-                                songInfo.append(songName);
-                                songInfo.append(artist);
-
-                                songDiv.append(img);
-                                songDiv.append(songInfo);
-
-                                fieldset.append(songDiv);
-                            }
-                            songContainer.append(fieldset);
-
-                            songItemsDiv.append(songContainer);
+                            fieldset.append(songDiv);
                         }
 
-                        res.write(serverDOM.serialize());
-                        res.end();
+                        songItemsDiv.append(fieldset);
                     }
-                    yearPages(year);
+
+                    res.write(serverDOM.serialize());
+                    res.end();
                     break;
                 default:
                     let content = fs.readFileSync(filePath);
