@@ -1,2 +1,0 @@
-# UtaSuki
-Favorite songs
