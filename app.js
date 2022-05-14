@@ -22,6 +22,13 @@ http.createServer(function(req, res)
         filePath = "base_year.html";
     }
 
+    let songs2 = songs;
+
+    fs.writeFile('Songs2.json', JSON.stringify(songs2, null, 4), (error) =>
+    {
+        if (error) throw error;
+    });
+
     fs.readFile(filePath, function(err, data)
     {
         if (err)
@@ -74,12 +81,12 @@ http.createServer(function(req, res)
                     titleh1.append(doc.createTextNode(year));
                     title.replaceWith(titleh1);
 
-                    //eval("var songs" + year + "= " + "new Array" + ";"); You absolute buffoon
+                    //eval("var songs2" + year + "= " + "new Array" + ";"); You absolute buffoon
                     let songJSON = new Array();
 
-                    for (let i = 0; i < songs.length; i++)
-                        if (songs[i].date.substring(0, 4) == year)
-                            songJSON.push(songs[i]);
+                    for (let i = 0; i < songs2.length; i++)
+                        if (songs2[i].date.substring(0, 4) == year)
+                            songJSON.push(songs2[i]);
 
                     songItemsDiv = doc.querySelector("#songItems");
 
