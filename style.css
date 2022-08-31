@@ -44,12 +44,12 @@ ul {
     list-style-type: none;
 }
 
-#superMegaUltraImportantSpace {
+#peko {
     opacity: 0;
     height: 63px;
     width: 63px;
 }
-#superMegaUltraImportantSpace:hover {
+#peko:hover {
     opacity: 1;
 }
 

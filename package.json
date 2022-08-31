@@ -9,6 +9,8 @@
   "author": "Arvid Rimmerfors",
   "license": "ISC",
   "dependencies": {
-    "jsdom": "^19.0.0"
+    "jquery": "^3.6.0",
+    "jsdom": "^19.0.0",
+    "nodemon": "^2.0.19"
   }
 }
