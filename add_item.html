@@ -4,35 +4,39 @@
         <!--Måste vara med på alla sidor-->
         <meta charset="UTF-8">
         <title>UtaSuki</title>
-        <link rel="icon" type="image/x-icon" href="images/Uta_logo.png">
+        <link rel="icon" type="image/x-icon" href="static/images/Uta_logo.png">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="static/stylesheets/style.css">
 
         <!--Men inte detta-->
-        <link rel="stylesheet" href="addStyle.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="static/stylesheets/addStyle.css">
     </head>
     <body>
         <!--Måste vara med på alla sidor-->
         <header>
-            <a href="/"><img src="images/Uta_logo.png" alt="Start page"></a>
+            <a href="/"><img src="static/images/Uta_logo.png" alt="Start page"></a>
             <h1>Add song</h1>
-            <a href="add_item"><img id="peko" src="images/ogey_KYM_Flipped.webp" alt="Usada Pekora ogey rrat"></a>
+            <a href="add_item"><img id="peko" src="static/images/ogey_KYM_Flipped.webp" alt="Usada Pekora ogey rrat"></a>
         </header>
         <main>
-            <fieldset class="songContainer">
-                <div class="song">
-                    <img src="images/lowres_suisei.png">
-                    <div class="songInfo">
-                        <label for="song_name">Song name:</label>
-                        <input type="text" name="song_name">
-                        <label for="artist_name">Artist name:</label>
-                        <input type="text" name="artist_name">
+            <fieldset id="fieldsetContainer">
+                <form id="songForm" method="post">
+                    <div class="flex-row">
+                        <div>
+                            <label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="filetoupload" accept="image/*" id="imageSelect"></label>
+                        </div>
+                        <div id="songFormInfo">
+                            <label for="song_name">Song name:</label>
+                            <input type="text" id="song_name">
+                            <label for="artist_name">Artist name:</label>
+                            <input type="text" id="artist_name">
+                        </div>
                     </div>
-                </div>
+                    <h5 id="addBtn">Add</h5>
+                </form>
             </fieldset>
         </main>
     </body>

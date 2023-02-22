@@ -1,0 +1,641 @@
+[
+    {
+        "date": "2020-02",
+        "tracks": [
+            {
+                "artist": "Kinokoteikoku",
+                "album": "ロンググッドバイ",
+                "trackname": "パラノイドパレード",
+                "image": "https://i.scdn.co/image/ab67616d00001e02c7943b4643b2f499383f3ca4"
+            }
+        ]
+    },
+    {
+        "date": "2020-03",
+        "tracks": [
+            {
+                "artist": "Mili",
+                "album": "Birthday Kid",
+                "trackname": "Birthday Kid",
+                "image": "https://i.scdn.co/image/ab67616d00001e02295e8758a78af2c882d19d12"
+            },
+            {
+                "artist": "Shinsei Kamattechan",
+                "album": "児童カルテ",
+                "trackname": "るるちゃんの自殺配信",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d14938188f84670b61137dbd"
+            }
+        ]
+    },
+    {
+        "date": "2020-04",
+        "tracks": [
+            {
+                "artist": "IA",
+                "album": "Ia/04 - Star-",
+                "trackname": "Conqueror",
+                "image": "https://i.scdn.co/image/ab67616d00001e023f481303fb2e44e6698f5e15"
+            }
+        ]
+    },
+    {
+        "date": "2020-05",
+        "tracks": [
+            {
+                "artist": "IA",
+                "album": "Higher",
+                "trackname": "Higher",
+                "image": "https://i.scdn.co/image/ab67616d00001e022303c8f9217158426961a904"
+            }
+        ]
+    },
+    {
+        "date": "2020-06",
+        "tracks": [
+            {
+                "artist": "Geoxor",
+                "album": "Stardust",
+                "trackname": "Euphoria",
+                "image": "https://i.scdn.co/image/ab67616d00001e02a3f177e2596ad4c719543d83"
+            }
+        ]
+    },
+    {
+        "date": "2020-07",
+        "tracks": [
+            {
+                "artist": "ALEX, TOKYO ROSE, Rachel Mcalpine, THE AKUMA",
+                "album": "AKUMA",
+                "trackname": "AKUMA",
+                "image": "https://i.scdn.co/image/ab67616d00001e029db23262359f6744c28e9615"
+            }
+        ]
+    },
+    {
+        "date": "2020-08",
+        "tracks": [
+            {
+                "artist": "Miss Li",
+                "album": "Komplicerat",
+                "trackname": "Komplicerat",
+                "image": "https://i.scdn.co/image/ab67616d00001e028dd230666d9936a2f0dacc8c"
+            }
+        ]
+    },
+    {
+        "date": "2020-09",
+        "tracks": [
+            {
+                "artist": "Ted Gärdestad",
+                "album": "Undringar",
+                "trackname": "I dröm och fantasi",
+                "image": "https://i.scdn.co/image/ab67616d00001e026cb77aa3a5ff8114f478413a"
+            }
+        ]
+    },
+    {
+        "date": "2020-10",
+        "tracks": [
+            {
+                "artist": "Veronica Maggio",
+                "album": "Och vinnaren är...",
+                "trackname": "17 år",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b8f600439b138e7fdceb5c93"
+            },
+            {
+                "artist": "Judas Priest",
+                "album": "Turbo 30",
+                "trackname": "Turbo Lover",
+                "image": "https://i.scdn.co/image/ab67616d00001e02f58b75e452195e7b01435d58"
+            }
+        ]
+    },
+    {
+        "date": "2020-11",
+        "tracks": [
+            {
+                "artist": "Iron Maiden",
+                "album": "Somewhere in Time",
+                "trackname": "Wasted Years",
+                "image": "https://i.scdn.co/image/ab67616d00001e0269059f3685b992f9ce22cd4c"
+            }
+        ]
+    },
+    {
+        "date": "2020-12",
+        "tracks": [
+            {
+                "artist": "黒崎真音",
+                "album": "Butterfly Effect",
+                "trackname": "Magic∞world",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b3108affe214732f68f74ab5"
+            }
+        ]
+    },
+    {
+        "date": "2021-01",
+        "tracks": [
+            {
+                "artist": "Ozzy Osbourne",
+                "album": "No More Tears",
+                "trackname": "Hellraiser",
+                "image": "https://i.scdn.co/image/ab67616d00001e02c2b61984b54ad58c8d6fdd19"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Master of Reality",
+                "trackname": "Sweet Leaf",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b7ec2b4b9c76b3b737990a42"
+            },
+            {
+                "artist": "AC/DC",
+                "album": "For Those About to Rock",
+                "trackname": "For Those About to Rock (We Salute You)",
+                "image": "https://i.scdn.co/image/ab67616d00001e020d025344564dfda2e57f9ffd"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Paranoid",
+                "trackname": "War Pigs",
+                "image": "https://i.scdn.co/image/ab67616d00001e029683e5d7361bb80bfb00f46d"
+            },
+            {
+                "artist": "AC/DC",
+                "album": "Dirty Deeds Done Dirt Cheap",
+                "trackname": "Dirty Deeds Done Dirt Cheap",
+                "image": "https://i.scdn.co/image/ab67616d00001e0268b03027356fb05501948f62"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Sabbath Bloody Sabbath",
+                "trackname": "Sabbath Bloody Sabbath",
+                "image": "https://i.scdn.co/image/ab67616d00001e02876dd2bbe17e15208b25779b"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Paranoid",
+                "trackname": "Electric Funeral",
+                "image": "https://i.scdn.co/image/ab67616d00001e029683e5d7361bb80bfb00f46d"
+            }
+        ]
+    },
+    {
+        "date": "2021-02",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Vol. 4",
+                "trackname": "Snowblind",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d198e0a1a43c010afb480b3b"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Sabotage",
+                "trackname": "The Writ",
+                "image": "https://i.scdn.co/image/ab67616d00001e023c5d0c9655047523aeb56af9"
+            }
+        ]
+    },
+    {
+        "date": "2021-03",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Sabotage",
+                "trackname": "Megalomania",
+                "image": "https://i.scdn.co/image/ab67616d00001e023c5d0c9655047523aeb56af9"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Sabotage",
+                "trackname": "Symptom of the Universe",
+                "image": "https://i.scdn.co/image/ab67616d00001e023c5d0c9655047523aeb56af9"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Sabotage",
+                "trackname": "The Writ",
+                "image": "https://i.scdn.co/image/ab67616d00001e023c5d0c9655047523aeb56af9"
+            }
+        ]
+    },
+    {
+        "date": "2021-04",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Paranoid",
+                "trackname": "Paranoid",
+                "image": "https://i.scdn.co/image/ab67616d00001e029683e5d7361bb80bfb00f46d"
+            }
+        ]
+    },
+    {
+        "date": "2021-05",
+        "tracks": [
+            {
+                "artist": "Heart",
+                "album": "Little Queen",
+                "trackname": "Barracuda",
+                "image": "https://i.scdn.co/image/ab67616d00001e029cef5b2e4c9104c678973f44"
+            },
+            {
+                "artist": "Rainbow",
+                "album": "Long Live Rock N Roll",
+                "trackname": "Kill The King",
+                "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.discogs.com%2FfDrPGiHXbYSYVnL_FsqwhiMPSZQ%3D%2Ffit-in%2F600x592%2Ffilters%3Astrip_icc()%3Aformat(jpeg)%3Amode_rgb()%3Aquality(90)%2Fdiscogs-images%2FR-6231576-1559229881-9538.jpeg.jpg&f=1&nofb=1"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Sabbath Bloody Sabbath",
+                "trackname": "Killing Yourself to Live",
+                "image": "https://i.scdn.co/image/ab67616d00001e02876dd2bbe17e15208b25779b"
+            }
+        ]
+    },
+    {
+        "date": "2021-06",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Born Again",
+                "trackname": "The Dark",
+                "image": "https://i.scdn.co/image/ab67616d00001e020fe35db76bfc2408fd754967"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Born Again",
+                "trackname": "Zero the Hero",
+                "image": "https://i.scdn.co/image/ab67616d00001e020fe35db76bfc2408fd754967"
+            }
+        ]
+    },
+    {
+        "date": "2021-07",
+        "tracks": [
+            {
+                "artist": "Kaguya Luna",
+                "album": "×××",
+                "trackname": "輝夜月の終末世界",
+                "image": "https://i.scdn.co/image/ab67616d00001e02f81f37610f4d239a53ef2da1"
+            },
+            {
+                "artist": "Kaguya Luna",
+                "album": "×××",
+                "trackname": "Beyond the Moon",
+                "image": "https://i.scdn.co/image/ab67616d00001e02f81f37610f4d239a53ef2da1"
+            },
+            {
+                "artist": "Kaguya Luna",
+                "album": "×××",
+                "trackname": "Dirty Party",
+                "image": "https://i.scdn.co/image/ab67616d00001e02f81f37610f4d239a53ef2da1"
+            },
+            {
+                "artist": "Kaguya Luna",
+                "album": "×××",
+                "trackname": "New Era",
+                "image": "https://i.scdn.co/image/ab67616d00001e02f81f37610f4d239a53ef2da1"
+            },
+            {
+                "artist": "宝鐘マリン",
+                "album": "Cover",
+                "trackname": "Bloody Stream",
+                "image": "static/images/Bloody_Stream_Houshou_Marine.webp"
+            },
+            {
+                "artist": "Mori Calliope",
+                "album": "Your Mori.",
+                "trackname": "Red",
+                "image": "https://i.scdn.co/image/ab67616d00001e02bfa10b02c2e327512715b08b"
+            }
+        ]
+    },
+    {
+        "date": "2021-08",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Master of Reality",
+                "trackname": "Lord of this World",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b7ec2b4b9c76b3b737990a42"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Master of Reality",
+                "trackname": "Into the Void",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b7ec2b4b9c76b3b737990a42"
+            },
+            {
+                "artist": "Dio",
+                "album": "The Last In Line",
+                "trackname": "Egypt (The Chains Are On)",
+                "image": "https://i.scdn.co/image/ab67616d00001e02c9740136e149c79b639eb038"
+            }
+        ]
+    },
+    {
+        "date": "2021-09",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Born Again",
+                "trackname": "Zero the Hero",
+                "image": "https://i.scdn.co/image/ab67616d00001e020fe35db76bfc2408fd754967"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Born Again",
+                "trackname": "Disturbing the Priest",
+                "image": "https://i.scdn.co/image/ab67616d00001e020fe35db76bfc2408fd754967"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Born Again",
+                "trackname": "Hot Line",
+                "image": "https://i.scdn.co/image/ab67616d00001e020fe35db76bfc2408fd754967"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Never Say Die!",
+                "trackname": "Johnny Blade",
+                "image": "https://i.scdn.co/image/ab67616d00001e02ea8661cecf053379ff97bc85"
+            },
+            {
+                "artist": "Deep Purple",
+                "album": "Deep Purple in Rock",
+                "trackname": "Child in Time",
+                "image": "https://i.scdn.co/image/ab67616d00001e02914d1e0ea2784475c457b7dc"
+            }
+        ]
+    },
+    {
+        "date": "2021-10",
+        "tracks": [
+            {
+                "artist": "Fejd",
+                "album": "Storm",
+                "trackname": "Svanesång",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d60f339eff021dd46d0a48c5"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Storm",
+                "trackname": "Äril",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d60f339eff021dd46d0a48c5"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Eifur",
+                "trackname": "Farsot",
+                "image": "https://i.scdn.co/image/ab67616d00001e023c7e7f9fd242bee4dbb4a363"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Eifur",
+                "trackname": "Yggdrasil",
+                "image": "https://i.scdn.co/image/ab67616d00001e023c7e7f9fd242bee4dbb4a363"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Mob Rules",
+                "trackname": "E5150",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b309292845a47f6f30405016"
+            }
+        ]
+    },
+    {
+        "date": "2021-11",
+        "tracks": [
+            {
+                "artist": "Mötley Crüe",
+                "album": "Too Fast For Love",
+                "trackname": "Live Wire",
+                "image": "https://i.scdn.co/image/ab67616d00001e0297fc7d5d1cfb6ecc9e117e29"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Trolldom",
+                "trackname": "Glöd",
+                "image": "https://i.scdn.co/image/ab67616d00001e02930664dd7fdb19baf77a3783"
+            }
+        ]
+    },
+    {
+        "date": "2021-12",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Dehumanizer",
+                "trackname": "Computer God",
+                "image": "https://i.scdn.co/image/ab67616d00001e02a5c61a3cb3dbceb94e3036a6"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Storm",
+                "trackname": "Skuld",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d60f339eff021dd46d0a48c5"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Nagelfar",
+                "trackname": "Ulvsgäld",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d4601ced23ef4ed4bde76b9a"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Nagelfar",
+                "trackname": "Nagelfar",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d4601ced23ef4ed4bde76b9a"
+            },
+            {
+                "artist": "Ozzy Osbourne",
+                "album": "Diary Of A Madman",
+                "trackname": "Over the Mountain",
+                "image": "https://i.scdn.co/image/ab67616d00001e02cb21faf4229aff3992ed479f"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "MAD TIME LOVE",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            }
+        ]
+    },
+    {
+        "date": "2022-01",
+        "tracks": [
+            {
+                "artist": "Black Sabbath",
+                "album": "Seventh Star",
+                "trackname": "Seventh Star",
+                "image": "https://i.scdn.co/image/ab67616d00001e02c0394c267b16f52c8f884a90"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Storm",
+                "trackname": "Vid Jore Å",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d60f339eff021dd46d0a48c5"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Storm",
+                "trackname": "Storm",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d60f339eff021dd46d0a48c5"
+            },
+            {
+                "artist": "Fejd",
+                "album": "Eld",
+                "trackname": "Eld",
+                "image": "https://i.scdn.co/image/ab67616d00001e023158ffedfe61408e0ab5b0dc"
+            },
+            {
+                "artist": "常闇トワ",
+                "album": "Scream",
+                "trackname": "FACT",
+                "image": "https://i.scdn.co/image/ab67616d00001e0207749f7eb712d18581f1cdae"
+            },
+            {
+                "artist": "Black Sabbath",
+                "album": "Vol. 4",
+                "trackname": "Cornucopia",
+                "image": "https://i.scdn.co/image/ab67616d00001e02d198e0a1a43c010afb480b3b"
+            }
+        ]
+    },
+    {
+        "date": "2022-02",
+        "tracks": [
+            {
+                "artist": "Iron Maiden",
+                "album": "Iron Maiden",
+                "trackname": "Phantom of the Opera",
+                "image": "https://i.scdn.co/image/ab67616d00001e026ac3ed972e1c181cd2ee8d55"
+            },
+            {
+                "artist": "Iron Maiden",
+                "album": "Iron Maiden",
+                "trackname": "Strange World",
+                "image": "https://i.scdn.co/image/ab67616d00001e026ac3ed972e1c181cd2ee8d55"
+            },
+            {
+                "artist": "BAND-MAID",
+                "album": "New Beginning",
+                "trackname": "Thrill",
+                "image": "https://i.scdn.co/image/ab67616d00001e02c9d078b963bf1205f26eb90b"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "乱数調整ゾンビ",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "インキャ In Da House",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "優勝",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "バーチャルお空の日は落ちて",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Candlemass",
+                "album": "Epicus Doomicus Metallicus",
+                "trackname": "Black Stone Wielder",
+                "image": "https://i.scdn.co/image/ab67616d00001e0216fc29f6941572c718c58c5d"
+            }
+        ]
+    },
+    {
+        "date": "2022-03",
+        "tracks": [
+            {
+                "artist": "Ozzy Osbourne",
+                "album": "Bark at the Moon",
+                "trackname": "You're No Different",
+                "image": "https://i.scdn.co/image/ab67616d00001e02813b607b3b7e094c306af4fd"
+            },
+            {
+                "artist": "Metallica",
+                "album": "Master Of Puppets",
+                "trackname": "The thing That Should Not Be",
+                "image": "https://i.scdn.co/image/ab67616d00001e02668e3aca3167e6e569a9aa20"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "乱数調整ゾンビ",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "優勝",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Pinky Pop Hepburn",
+                "album": "P-POP",
+                "trackname": "バーチャルお空の日は落ちて",
+                "image": "https://i.scdn.co/image/ab67616d00001e0217af0df39dd775103149fbd8"
+            },
+            {
+                "artist": "Pink Floyd",
+                "album": "The Final Cut",
+                "trackname": "Not Now John",
+                "image": "https://i.scdn.co/image/ab67616d00001e02595784db483907aa32b6bfe3"
+            },
+            {
+                "artist": "Aerosmith",
+                "album": "Aerosmith",
+                "trackname": "Dream On",
+                "image": "https://i.scdn.co/image/ab67616d00001e02b11078ee23dcd99e085ac33e"
+            }
+        ]
+    },
+    {
+        "date": "2022-04",
+        "tracks": [
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "TEMPLATE/Wicked feat. Mori Calliope",
+                "trackname": "TEMPLATE",
+                "image": "https://i.scdn.co/image/ab67616d00001e023ec18cbf0bc4fa2aacc4a144"
+            },
+            {
+                "artist": "Hoshimachi Suisei, Mori Calliope",
+                "album": "TEMPLATE/Wicked feat. Mori Calliope",
+                "trackname": "Wicked feat. Mori Calliope",
+                "image": "https://i.scdn.co/image/ab67616d00001e023ec18cbf0bc4fa2aacc4a144"
+            },
+            {
+                "artist": "紫咲シオン",
+                "album": "メイジ・オブ・ヴァイオレット",
+                "trackname": "メイジ・オブ・ヴァイオレット",
+                "image": "https://i.scdn.co/image/ab67616d00001e02f10cfc9f317447dfb535cad8"
+            },
+            {
+                "artist": "Scorpions",
+                "album": "Blackout",
+                "trackname": "China White",
+                "image": "https://i.scdn.co/image/ab67616d00001e02fcb46839cfb5aa9c92c7bc0f"
+            },
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "Cover",
+                "trackname": "Kakusei",
+                "image": "static/images/Kakusei_Hoshimachi_Suisei.webp"
+            }
+        ]
+    }
+]

@@ -1,0 +1,73 @@
+a {
+    text-decoration: none;
+    color: #FFFFFFDE;
+}
+
+html{
+    background-color: #121212;
+    color: #FFFFFFDE;
+}
+
+body {
+    margin: 0;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    background-color: #1f1f1f;
+    padding: 0;
+    margin: 0 0 10px 0;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 10px 0 #000000;
+}
+
+header>a>img {
+    height: 63px;
+    width: auto;
+    display: block;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main { /*ありがとう、マーティンさん*/
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+ul {
+    list-style-type: none;
+}
+
+#peko {
+    opacity: 0;
+    height: 63px;
+    width: 63px;
+}
+#peko:hover {
+    opacity: 1;
+}
+
+.yearContainer {
+    border: 2px #000000 solid;
+    margin: 20px 0 20px 0;
+    width: 80%; /*ありがとう、マーティンさん*/
+    max-width: 900px; /*ありがとう、マーティンさん*/
+    text-align: center;
+    /*Man kan inte ha gradient och transition samtidigt*/
+    background: linear-gradient(180deg, #1e1e1e, #151515); /*ありがとう、マーティンさん*/
+    transition: background 1.1s ease-in; /*ありがとう、マーティンさん*/
+}
+
+.yearContainer:hover {
+    background: linear-gradient(180deg, #202020, #181818); /*ありがとう、マーティンさん*/
+}
+
+.yearContainer h1 {
+    text-align: center;
+}

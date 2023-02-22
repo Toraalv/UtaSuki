@@ -1,197 +1,106 @@
-"use strict"
-
-const http = require("http");
+const express = require("express");
+const app = express();
+const port = 1771;
+const path = require("path");
 const fs = require("fs");
 const jsdom = require("jsdom");
-const path = require("path");
-const functions = require("./functions.js");
-var songJSON = require("./Songs.json");
+var trackJSON = require("./public/json/Tracks.json");
+
+const indexHTML = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf8");
+const baseYearHTML = fs.readFileSync(path.resolve(__dirname, "base_year.html"), "utf8");
+const appHelper = require("./public/javascripts/app_helper.js");
+
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 
-http.createServer(function(req, res)
+app.get("/", (req, res) =>
 {
-    let filePath = (req.url === "/") ? "index.html" : req.url.substring(1); // if(thing) ? true-stuff : false-stuff;
-    let extName = path.extname(filePath);
-    if (extName == "")
-        filePath += ".html";
+    let indexDOM =  new jsdom.JSDOM(indexHTML);
+    const $ = require("jquery")(indexDOM.window);
 
-    let reqYear = null;
-    if (filePath.substring(0, 5) == "year=")
+    let listYears = new Array();
+    let dup = 0;
+    for (let i = 0; i < trackJSON.length; i++)
     {
-        reqYear = filePath.substring(5, 9);
-        filePath = "base_year.html";
+        if (listYears[i - 1 - dup] == trackJSON[i].date.substring(0, 4))
+        {
+            dup++;
+            continue;
+        }
+        listYears.push(trackJSON[i].date.substring(0, 4));
+    }
+    
+    for (let i = 0; i < listYears.length; i++)
+    {
+        $("main").append(`<a href='year=${listYears[i]}' class='yearContainer'><h1>${listYears[i]}</h1></a>`);
     }
 
-    let iotest = songJSON;
+    res.send(indexDOM.serialize());
+});
 
-    // iotest.push //Test push
-    // (
-    //     {
-    //         "date": "YYYY-MM",
-    //         "songList": [
-    //             {
-    //                 "artist": "ARTISTTEST",
-    //                 "album": "ALBUMTEST",
-    //                 "song": "SONGTEST",
-    //                 "image": ""
-    //             }
-    //         ]
-    //     }
-    // );
+app.get("/add_item", (req, res) =>
+{
+   res.sendFile(__dirname + "/add_item.html"); 
+});
 
-    // fs.writeFile('IO-TEST.json', JSON.stringify(iotest, null, 4), (error) =>
-    // {
-    //     console.log("IO-TEST.json updated!");
-    //     if (error) throw error;
-    // });
+app.get("/year=*", (req, res) =>
+{
+    let baseYearDOM = new jsdom.JSDOM(baseYearHTML);
+    const $ = require("jquery")(baseYearDOM.window);
 
-    fs.readFile(filePath, function(err, data)
+    let reqYear = req.params["0"];
+
+    // Fixa title
+    $("#title").text(reqYear);
+
+    let trackList = new Array();
+    // Hämtar alla månader utifrån reqYear
+    for (let i = 0; i < trackJSON.length; i++)
+        if (trackJSON[i].date.substring(0, 4) == reqYear)
+            trackList.push(trackJSON[i]);
+    
+    for (let i = 0; i < trackList.length; i++)
     {
-        if (err)
+        let fieldset = $("<fieldset>").addClass("trackContainer");
+        let legend = $("<legend>").text(`${appHelper.monthToString(trackList[i].date.substring(5, 7))}`);
+        $(fieldset).html(legend);
+
+        for (let j = 0; j < trackList[i].tracks.length; j++)
         {
-            res.writeHead(404, { "Content-Type" : "text/html" });
-            res.end();
-        } else
-        {
-            let contentType = "text/html";
-            switch (extName)
-            {
-                case ".css":
-                    contentType = "text/css";
-                    break;
-                case ".js":
-                    contentType = "text/javascript";
-                    break;
-                case ".png":
-                    contentType = "image/png";
-                    break;
-                case ".jpg":
-                    contentType = "image/jpg";
-                    break;
-                case ".gif":
-                    contentType = "image/gif";
-                    break;
-                case ".svg":
-                    contentType = "image/svg+xml";
-                    break;
-                case ".json":
-                    contentType = "application/json";
-                    break;
-            }
-            res.writeHead(200, { "Content-Type" : contentType });
+            let trackDiv = $("<div>").addClass("track");
+            
+            // Lägger in bilden, om den inte finns så läggs varannan Suisei och Pekora
+            let trackImg = $("<img>");
+            if (trackList[i].tracks[j].image == "" && j % 2 == 0)
+                $(trackImg).attr("src", "static/images/lowres_suisei.png");
+            else if (trackList[i].tracks[j].image == "" && !(j % 2 == 0))
+                $(trackImg).attr("src", "static/images/server-icon.png");
+            else
+                $(trackImg).attr("src", trackList[i].tracks[j].image);
 
-            let serverDOM = new jsdom.JSDOM(data);
-            let doc = serverDOM.window.document;
+            let trackInfo = $("<div>").addClass("trackInfo");
+            let trackName = $("<h1>").text(trackList[i].tracks[j].trackname);
+            let artistName = $("<h3>").text(trackList[i].tracks[j].artist);
 
-            switch(filePath)
-            {
-                case "index.html":
-                    let listYears = new Array();
-                    let dup = 0;
-                    for (let i = 0; i < iotest.length; i++)
-                    {
-                        if (listYears[i - 1 - dup] == iotest[i].date.substring(0, 4))
-                        {
-                            dup++;
-                            continue;
-                        }
-                        listYears.push(iotest[i].date.substring(0, 4));
-                    }
+            $(trackInfo).append(trackName);
+            $(trackInfo).append(artistName);
 
-                    //Adding year links to index
-                    let main = doc.querySelector("main");
-                    for (let i = 0; i < listYears.length; i++)
-                    {
-                        //a
-                        let yearLink = doc.createElement("a");
-                        yearLink.href = "year=" + listYears[i];
-                        yearLink.className = "yearContainer";
+            $(trackDiv).append(trackImg);
+            $(trackDiv).append(trackInfo);
 
-                        //h1
-                        let yearLinkTitle = doc.createElement("h1");
-                        yearLinkTitle.append(doc.createTextNode(listYears[i]));
-                        yearLink.append(yearLinkTitle);
-
-                        main.append(yearLink);
-                    }
-
-                    res.write(serverDOM.serialize());
-                    res.end();
-                    break;
-                case "base_year.html":
-                    let title = doc.querySelector("#title");
-                    let titleh1 = doc.createElement("h1");
-                    let songItemsDiv = doc.querySelector("#songItems");
-
-                    titleh1.append(doc.createTextNode(reqYear));
-                    title.replaceWith(titleh1);
-
-                    //eval("var songs2" + reqYear + "= " + "new Array" + ";"); You absolute buffoon
-                    let songsYear = new Array();
-
-                    for (let i = 0; i < iotest.length; i++)
-                        if (iotest[i].date.substring(0, 4) == reqYear)
-                            songsYear.push(iotest[i]);
-
-                    songItemsDiv = doc.querySelector("#songItems");
-
-                    for (let i = 0; i < songsYear.length; i++)
-                    {
-                        //fieldset class="songContainer"
-                        let fieldset = doc.createElement("fieldset");
-                        fieldset.className = "songContainer";
-                        //legend YYYY-MM
-                        let legend = doc.createElement("legend");
-                        legend.append(doc.createTextNode(functions.monthToString(songsYear[i].date.substring(5, 7))));
-                        fieldset.append(legend);
-
-                        for (let j = 0; j < songsYear[i].songList.length; j++)
-                        {
-                            //div class="song"
-                            let songDiv = doc.createElement("div");
-                            songDiv.className = "song";
-
-                            //img src=songsYear[i].image
-                            let img = doc.createElement("img");
-                            if (songsYear[i].songList[j].image == "" && j % 2 == 0)
-                                img.setAttribute("src", "images/lowres_suisei.png");
-                            else if (songsYear[i].songList[j].image == "" && !(j % 2 == 0))
-                                img.setAttribute("src", "images/server-icon.png");
-                            else
-                                img.setAttribute("src", songsYear[i].songList[j].image);
-                            
-                            //div class="songInfo"
-                            let songInfo = doc.createElement("div");
-                            songInfo.className = "songInfo";
-                            //h1 song name
-                            let songName = doc.createElement("h1");
-                            songName.append(doc.createTextNode(songsYear[i].songList[j].song));
-                            //h3 artist
-                            let artist = doc.createElement("h3")
-                            artist.append(doc.createTextNode(songsYear[i].songList[j].artist));
-
-                            //Add everything
-                            songInfo.append(songName);
-                            songInfo.append(artist);
-
-                            songDiv.append(img);
-                            songDiv.append(songInfo);
-
-                            fieldset.append(songDiv);
-                        }
-
-                        songItemsDiv.append(fieldset);
-                    }
-
-                    res.write(serverDOM.serialize());
-                    res.end();
-                    break;
-                default:
-                    let content = fs.readFileSync(filePath);
-                    res.write(content);
-                    res.end();
-                    break;
-            }
+            $(fieldset).append(trackDiv);
         }
-    });
-}).listen(1770);
+
+        $("#trackItemList").append(fieldset);
+    }
+
+    res.send(baseYearDOM.serialize());
+});
+
+app.all("*", (req, res) => { // for everything else
+    res.send("<h1><b>404 not found</h1>");
+});
+
+app.listen(port, () => {
+    console.log("Running on port " + port);
+});

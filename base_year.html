@@ -4,33 +4,32 @@
         <!--Måste vara med på alla sidor-->
         <meta charset="UTF-8">
         <title>UtaSuki</title>
-        <link rel="icon" type="image/x-icon" href="images/Uta_logo.png">
+        <link rel="icon" type="image/x-icon" href="static/images/Uta_logo.png">
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="static/stylesheets/style.css">
 
         <!--Men inte detta-->
-        <link rel="stylesheet" href="yearStyle.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="static/stylesheets/yearStyle.css">
     </head>
     <body>
         <header>
              <!--Måste vara med på alla sidor-->
-            <a href="/"><img src="images/Uta_logo.png" alt="Start page"></a>
+            <a href="/"><img src="static/images/Uta_logo.png" alt="Start page"></a>
             <h1 id="title">YYYY</h1>
-            <a href="add_item"><img id="peko" src="images/ogey_KYM_Flipped.webp" alt="Usada Pekora ogey rrat"></a>
+            <a href="add_item"><img id="peko" src="static/images/ogey_KYM_Flipped.webp" alt="Usada Pekora ogey rrat"></a>
         </header>
         <main>
-            <div id="songItems">
+            <div id="trackItemList">
                  <!--EXEMPEL...-->
-                <!-- <fieldset class="songContainer">
+                <!-- <fieldset class="trackContainer">
                     <legend>YYYY-MM</legend>
-                    <div class="song">
+                    <div class="track">
                         <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flite-images-i.scdn.co%2Fimage%2Fab67616d00001e02c7943b4643b2f499383f3ca4&f=1&nofb=1">
-                        <div class="songInfo">
-                            <h1>Song name</h1>
+                        <div class="trackInfo">
+                            <h1>Track name</h1>
                             <h3>Artist</h3>
                             <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/61e3DNqX7Xyl6g9o8LZI22?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                         </div>
@@ -39,6 +38,6 @@
                 <!--...till hit-->
             </div>
         </main>
-        <script src="clientJS.js"></script>
+        <!-- <script src="clientJS.js"></script> -->
     </body>
 </html>
