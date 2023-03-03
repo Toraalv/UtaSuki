@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 1771;
+const port = 3000;
 const path = require("path");
 const fs = require("fs");
 const jsdom = require("jsdom");
@@ -63,7 +63,7 @@ app.get("/year=*", (req, res) =>
     {
         let fieldset = $("<fieldset>").addClass("trackContainer");
         let legend = $("<legend>").text(`${appHelper.monthToString(trackList[i].date.substring(5, 7))}`);
-        $(fieldset).html(legend);
+        fieldset.html(legend);////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         for (let j = 0; j < trackList[i].tracks.length; j++)
         {
