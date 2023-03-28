@@ -637,5 +637,403 @@
                 "image": "static/images/Kakusei_Hoshimachi_Suisei.webp"
             }
         ]
+    },
+    {
+        "date": "2022-05",
+        "tracks": [
+            {
+                "artist": "DECO*27, marina",
+                "album": "Aimai Elegy",
+                "trackname": "Aimai Elegy",
+                "image": "static/images/aimai elegy.jpg"
+            },
+            {
+                "artist": "AZKi",
+                "album": "inochi",
+                "trackname": "inochi",
+                "image": "static/images/inochi.jpg"
+            },
+            {
+                "artist": "Astrophysics, Hatsune Miku",
+                "album": "Vocaloid cover",
+                "trackname": "Miku's Little Dark Age",
+                "image": "static/images/miku's little dark age.jpg"
+            },
+            {
+                "artist": "DEMONDICE",
+                "album": "Kakigori Galaxy Astronaut",
+                "trackname": "Hazy Skyscraper",
+                "image": "static/images/kakigori galaxy astronaut.jpg"
+            },
+            {
+                "artist": "Imperiet",
+                "album": "Blå Himlen Blues",
+                "trackname": "CC Cowboys",
+                "image": "static/images/blå himlen blues.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-06",
+        "tracks": [
+            {
+                "artist": "Ebba Grön",
+                "album": "Kärlek och uppror",
+                "trackname": "800°",
+                "image": "static/images/Kärlek och uppror.jpg"
+            },
+            {
+                "artist": "Ayano Kaneko",
+                "album": "わたしたちへ",
+                "trackname": "わたしたちへ",
+                "image": "static/images/わたしたちへ.jpg"
+            },
+            {
+                "artist": "Tokino Sora",
+                "album": "Re:Play",
+                "trackname": "Fansa",
+                "image": "static/images/re;play.jpg"
+            },
+            {
+                "artist": "Tokino Sora",
+                "album": "Re:Play",
+                "trackname": "Akai Sweet Pea",
+                "image": "static/images/re;play.jpg"
+            },
+            {
+                "artist": "Tokino Sora",
+                "album": "Re:Play",
+                "trackname": "Kono Sekai de",
+                "image": "static/images/re;play.jpg"
+            },
+            {
+                "artist": "Tokino Sora",
+                "album": "Re:Play",
+                "trackname": "Taiyokei Disco",
+                "image": "static/images/re;play.jpg"
+            },
+            {
+                "artist": "Tokoyami Towa",
+                "album": "Scream",
+                "trackname": "ミッドナイト・ランナウェイ",
+                "image": "static/images/scream.jpg"
+            },
+            {
+                "artist": "Minato Aqua, Oozora Subaru, Momosuzu Nene, NEGI☆U",
+                "album": "PANIGHT",
+                "trackname": "PANIGHT",
+                "image": "static/images/panight.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-07",
+        "tracks": [
+            {
+                "artist": "Ayano Kaneko",
+                "album": "燦々",
+                "trackname": "光の方へ",
+                "image": "static/images/燦々.jpg"
+            },
+            {
+                "artist": "Ayano Kaneko",
+                "album": "祝祭",
+                "trackname": "祝日",
+                "image": "static/images/祝祭.jpg"
+            },
+            {
+                "artist": "Midnight Grand Orchestra",
+                "album": "Overture",
+                "trackname": "Highway",
+                "image": "static/images/overture.jpg"
+            },
+            {
+                "artist": "AZKi",
+                "album": "Intersection",
+                "trackname": "Intersection",
+                "image": "static/images/intersection.jpg"
+            },
+            {
+                "artist": "Eli Sougetsu",
+                "album": "Aoi Chou",
+                "trackname": "Aoi Chou",
+                "image": "static/images/aoi chou.jpg"
+            },
+            {
+                "artist": "DEMONDICE",
+                "album": "Alkatraz",
+                "trackname": "You're an Ace, Kid",
+                "image": "static/images/alkatraz.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-08",
+        "tracks": [
+            {
+                "artist": "Houshou Marine",
+                "album": "I'm Your Treasure Box *あなたは マリンせんちょうを たからばこからみつけた",
+                "trackname": "I'm Your Treasure Box *あなたは マリンせんちょうを たからばこからみつけた",
+                "image": "static/images/i'm your treasure box あなたは マリンせんちょうを たからばこからみつけた.jpg"
+            },
+            {
+                "artist": "Midnight Grand Orchestra",
+                "album": "Overture",
+                "trackname": "Never Ending Midnights",
+                "image": "static/images/overture.jpg"
+            },
+            {
+                "artist": "Midnight Grand Orchestra",
+                "album": "Overture",
+                "trackname": "Rat A Tat",
+                "image": "static/images/overture.jpg"
+            },
+            {
+                "artist": "Midnight Grand Orchestra",
+                "album": "Overture",
+                "trackname": "流星群",
+                "image": "static/images/overture.jpg"
+            },
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "Cover",
+                "trackname": "僕は初音ミクとキスをした",
+                "image": "static/images/僕は初音ミクとキスをした.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-09",
+        "tracks": [
+            {
+                "artist": "Nekomata Okayu",
+                "album": "ぽいずにゃ〜しんどろーむ",
+                "trackname": "あっかんべ",
+                "image": "static/images/ぽいずにゃ〜しんどろーむ.jpg"
+            },
+            {
+                "artist": "Midnight Grand Orchestra",
+                "album": "Moonligtspeed",
+                "trackname": "Moonlightspeed",
+                "image": "static/images/moonlightspeed.jpg"
+            },
+            {
+                "artist": "Accept",
+                "album": "Balls To The Wall",
+                "trackname": "Balls to the Wall",
+                "image": "static/images/balls to the wall.jpg"
+            },
+            {
+                "artist": "Ken Ashcorp",
+                "album": "Pipkin Pippa You Absolutely Need to Take Your Medications Right Now Otherwise the Voices Will Never Stop I'm Pleading with You",
+                "trackname": "Pipkin Pippa You Absolutely Need to Take Your Medications Right Now Otherwise the Voices Will Never Stop I'm Pleading with You",
+                "image": "static/images/pipkin pippa you absolutely need to take your medications right now otherwise the voices will never stop i'm pleading with you.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-10",
+        "tracks": [
+            {
+                "artist": "Himemori Luna",
+                "album": "ぐるぐる@まわれ@まわルーナ",
+                "trackname": "ぐるぐる@まわれ@まわルーナ",
+                "image": "static/images/ぐるぐる@まわれ@まわルーナ.jpg"
+            },
+            {
+                "artist": "藤川千愛",
+                "album": "ライカ",
+                "trackname": "ゴミの日",
+                "image": "static/images/ライカ.jpg"
+            },
+            {
+                "artist": "Hakobune, Karen",
+                "album": "kimama (Mixtape2018)",
+                "trackname": "VERITAS",
+                "image": "static/images/kimama (Mixtape2018).jpg"
+            },
+            {
+                "artist": "David Bowie",
+                "album": "David Bowie (aka Space Oddity)",
+                "trackname": "Space Oddity",
+                "image": "static/images/david bowie (aka space oddity).jpg"
+            },
+            {
+                "artist": "The Doors",
+                "album": "The Doors",
+                "trackname": "The Crystal Ship",
+                "image": "static/images/the doors.jpg"
+            },
+            {
+                "artist": "Supertramp",
+                "album": "Breakfast In America",
+                "trackname": "Breakfast In America",
+                "image": "static/images/Breakfast In America.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-11",
+        "tracks": [
+            {
+                "artist": "Kessoku Band",
+                "album": "結束バンド",
+                "trackname": "ギターと孤独と蒼い惑星",
+                "image": "static/images/結束バンド.jpg"
+            },
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "灼熱にて純情(wii-wii-woo)",
+                "trackname": "灼熱にて純情(wii-wii-woo)",
+                "image": "static/images/灼熱にて純情(wii-wii-woo).jpg"
+            },
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "放送室",
+                "trackname": "放送室",
+                "image": "static/images/放送室.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "We're only in it for the drugs",
+                "trackname": "We're only in it for the drugs",
+                "image": "static/images/We're only in it for the drugs.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Kärlek och uppror",
+                "trackname": "Alla visa män",
+                "image": "static/images/Kärlek och uppror.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "We're only in it for the drugs",
+                "trackname": "Beväpna er",
+                "image": "static/images/We're only in it for the drugs.jpg"
+            },
+            {
+                "artist": "Mech",
+                "album": "Bluffmania",
+                "trackname": "Piłem Z Diabłem Bruderschaft",
+                "image": "static/images/Bluffmania.jpg"
+            },
+            {
+                "artist": "Frank Zappa",
+                "album": "Joe's, Garage Acts I, II & III",
+                "trackname": "Why Does It Hurt When I Pee",
+                "image": "static/images/Joe's, Garage Acts I, II & III.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2022-12",
+        "tracks": [
+            {
+                "artist": "Imperiet",
+                "album": "Blå Himlen Blues",
+                "trackname": "Århundradets brott",
+                "image": "static/images/blå himlen blues.jpg"
+            },
+            {
+                "artist": "Imperiet",
+                "album": "Blå Himlen Blues",
+                "trackname": "Surabaya-Johnny",
+                "image": "static/images/blå himlen blues.jpg"
+            },
+            {
+                "artist": "Nekomata Okayu",
+                "album": "ぽいずにゃ〜しんどろーむ",
+                "trackname": "Grrr Grrr Tummy",
+                "image": "static/images/ぽいずにゃ〜しんどろーむ.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-01",
+        "tracks": [
+            {
+                "artist": "Riddarna",
+                "album": "Under jorden",
+                "trackname": "Simma hem",
+                "image": "static/images/Under jorden.jpg"
+            },
+            {
+                "artist": "Nationalteatern",
+                "album": "Barn av vår tid",
+                "trackname": "Kolla kolla",
+                "image": "static/images/Barn av vår tid.jpg"
+            },
+            {
+                "artist": "Nationalteatern",
+                "album": "Rövarkungens ö",
+                "trackname": "Sent en lördag kväll",
+                "image": "static/images/Rövarkungens ö.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Kärlek och uppror",
+                "trackname": "Stockholms pärlor",
+                "image": "static/images/Kärlek och uppror.jpg"
+            },
+            {
+                "artist": "Amane Kanata",
+                "album": "Cover",
+                "trackname": "unravel",
+                "image": "static/images/unravel.webp"
+            },
+            {
+                "artist": "DEMONDICE",
+                "album": "Alkatraz",
+                "trackname": "Sick Outta Fashion",
+                "image": "static/images/alkatraz.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-02",
+        "tracks": [
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "先駆者",
+                "trackname": "先駆者",
+                "image": "static/images/先駆者.jpg"
+            },
+            {
+                "artist": "Maretu",
+                "album": "SIU",
+                "trackname": "SIU",
+                "image": "static/images/SIU.jpg"
+            },
+            {
+                "artist": "Imperiet",
+                "album": "Synd",
+                "trackname": "Tennsoldat och eldvakt",
+                "image": "static/images/Synd.jpg"
+            },
+            {
+                "artist": "Mötley Crüe",
+                "album": "Shout At The Devil",
+                "trackname": "Bastard",
+                "image": "static/images/Shout At The Devil.jpg"
+            },
+            {
+                "artist": "Heaven & Hell",
+                "album": "The Devil You Know",
+                "trackname": "Bible Black",
+                "image": "static/images/The Devil You Know.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "We're only in it for the drugs",
+                "trackname": "Schweden Schweden",
+                "image": "static/images/We're only in it for the drugs.jpg"
+            },
+            {
+                "artist": "Sir Chloe",
+                "album": "Mercy",
+                "trackname": "Mercy",
+                "image": "static/images/Mercy.jpg"
+            }
+        ]
     }
 ]
