@@ -1,5 +1,3 @@
+![UtaSuki](public/images/Uta_logo.png) 
 # 歌好き (UtaSuki)
-
-# ogey
-![ogey](https://cdn.discordapp.com/attachments/951245109289181216/1071505357412769894/ogey_KYM_Stretched.png)
-# rrrat
+Currently, this is only a simple list of my favourite songs per month since february 2020. I have a hard time thinking that there would be a market for a site like this, where you can add your favourite songs per month, since sites like ask.fm already exists, but I made this because I thought it was neat. 
