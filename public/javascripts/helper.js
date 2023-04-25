@@ -2,7 +2,7 @@
 
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-function monthToString(monthNbr)
+export function monthToString(monthNbr)
 {
 	for (let i = 0; i < months.length; i++)
 	{
@@ -12,5 +12,3 @@ function monthToString(monthNbr)
 		}
 	}
 }
-
-module.exports = { monthToString };

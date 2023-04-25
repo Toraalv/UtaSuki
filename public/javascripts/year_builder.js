@@ -1,5 +1,7 @@
 "use strict";
 
+import { monthToString } from "./helper.js";
+
 $(async function() {
 	let reqYear = window.location.pathname.split("year=")[1];
 
@@ -51,20 +53,5 @@ function buildPage(tracklist, reqYear) {
 		}
 
 		$("#trackItemList").append(fieldset);
-	}
-}
-
-
-// Borde ligga i en annan fil men jag är lat och det är sent
-let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-function monthToString(monthNbr)
-{
-	for (let i = 0; i < months.length; i++)
-	{
-		if (parseInt(monthNbr) == i + 1)
-		{
-			return months[i];
-		}
 	}
 }
