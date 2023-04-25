@@ -5,19 +5,20 @@ const path = require("path");
 const fs = require("fs");
 
 app.use("/static", express.static(path.join(__dirname, "public")));
+app.use("/UtaSuki/static", express.static(path.join(__dirname, "public")));
 
 
-app.get("/", (req, res) =>
+app.get("/UtaSuki/", (req, res) =>
 {
 	res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/add_item", (req, res) =>
+app.get("/UtaSuki/add_item", (req, res) =>
 {
    res.sendFile(__dirname + "/add_item.html"); 
 });
 
-app.get("/year=*", (req, res) => {
+app.get("/UtaSuki/year=*", (req, res) => {
 	res.sendFile(__dirname + "/base_year.html");
 });
 
