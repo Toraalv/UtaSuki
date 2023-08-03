@@ -18,6 +18,6 @@ $(async function() {
 	
 	for (let i = 0; i < listYears.length; i++)
 	{
-		$("main").append(`<a href='/UtaSuki/year=${listYears[i]}' class='yearContainer'><h1>${listYears[i]}</h1></a>`);
+		$("main").append(`<a href='/year=${listYears[i]}' class='yearContainer'><h1>${listYears[i]}</h1></a>`);
 	}
 });

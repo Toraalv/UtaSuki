@@ -40,6 +40,19 @@ main { /*ありがとう、マーティンさん*/
     flex-direction: column;
 }
 
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* text-align: center; */
+
+}
+
+footer>p {
+    margin: 4px
+}
+
 ul {
     list-style-type: none;
 }
