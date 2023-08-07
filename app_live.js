@@ -5,9 +5,11 @@ const path = require("path");
 const fs = require("fs");
 const https = require("https");
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/toralv.dev/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/toralv.dev/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/toralv.dev/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/chain.pem', 'utf8');
+
+
 
 const credentials = {
 	key: privateKey,
