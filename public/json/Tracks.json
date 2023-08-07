@@ -298,7 +298,7 @@
                 "image": "https://i.scdn.co/image/ab67616d00001e02f81f37610f4d239a53ef2da1"
             },
             {
-                "artist": "宝鐘マリン",
+                "artist": "Houshou Marine",
                 "album": "Cover",
                 "trackname": "Bloody Stream",
                 "image": "static/images/Bloody_Stream_Houshou_Marine.webp"
@@ -490,7 +490,7 @@
                 "image": "https://i.scdn.co/image/ab67616d00001e023158ffedfe61408e0ab5b0dc"
             },
             {
-                "artist": "常闇トワ",
+                "artist": "Tokoyami Towa",
                 "album": "Scream",
                 "trackname": "FACT",
                 "image": "https://i.scdn.co/image/ab67616d00001e0207749f7eb712d18581f1cdae"
@@ -1033,6 +1033,283 @@
                 "album": "Mercy",
                 "trackname": "Mercy",
                 "image": "static/images/Mercy.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-03",
+        "tracks": [
+            {
+                "artist": "Veronica Maggio",
+                "album": "Och vinnaren är...",
+                "trackname": "Måndagsbarn",
+                "image": "static/images/Och vinnaren är....jpg"
+            },
+            {
+                "artist": "Kent",
+                "album": "Vapen & ammunition",
+                "trackname": "Pärlor",
+                "image": "static/images/Vapen & ammunition.jpg"
+            },
+            {
+                "artist": "Kent",
+                "album": "Vapen & ammunition",
+                "trackname": "Dom andra",
+                "image": "static/images/Vapen & ammunition.jpg"
+            },
+            {
+                "artist": "Kent",
+                "album": "Hagnesta Hill",
+                "trackname": "Kungen är död",
+                "image": "static/images/Hagnesta Hill.jpg"
+            },
+            {
+                "artist": "Kent",
+                "album": "Hagnesta Hill",
+                "trackname": "400 slag",
+                "image": "static/images/Du & jag döden.jpg"
+            },
+            {
+                "artist": "KSMB",
+                "album": "Rika barn leka bäst",
+                "trackname": "Polsk zchlager",
+                "image": "static/images/Rika barn leka bäst.jpg"
+            },
+            {
+                "artist": "Docent Död",
+                "album": "Docent Död",
+                "trackname": "Solglasögon",
+                "image": "static/images/Docent Död.jpg"
+            },
+            {
+                "artist": "Eldkvarn",
+                "album": "Pojkar, pojkar, pojkar",
+                "trackname": "Pojkar pojkar pojkar",
+                "image": "static/images/Pojkar, pojkar, pojkar.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Live",
+                "trackname": "Ung & kåt - Live",
+                "image": "static/images/Live.jpg"
+            },
+            {
+                "artist": "Nirvana",
+                "album": "Nevermind",
+                "trackname": "Something In The Way",
+                "image": "static/images/Nevermind.jpg"
+            },
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "Specter",
+                "trackname": "Newton",
+                "image": "static/images/Specter.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-04",
+        "tracks": [
+            {
+                "artist": "Mötley Crüe",
+                "album": "Shout At The Devil",
+                "trackname": "Knock 'Em Dead, Kid",
+                "image": "static/images/Shout At The Devil.jpg"
+            },
+            {
+                "artist": "Motörhead",
+                "album": "Overkill",
+                "trackname": "Damage Case",
+                "image": "static/images/Overkill.jpg"
+            },
+            {
+                "artist": "Pink Floyd",
+                "album": "Obscured By Clouds",
+                "trackname": "Obscured By Clouds",
+                "image": "static/images/Obscured By Clouds.jpg"
+            },
+            {
+                "artist": "Pink Floyd",
+                "album": "Obscured By Clouds",
+                "trackname": "Childhood's End",
+                "image": "static/images/Obscured By Clouds.jpg"
+            },
+            {
+                "artist": "Nirvana",
+                "album": "Nevermind",
+                "trackname": "Rape Me",
+                "image": "static/images/Nevermind.jpg"
+            },
+            {
+                "artist": "DEMONDICE",
+                "album": "The Red, White and Black",
+                "trackname": "Demondice Wa...",
+                "image": "static/images/Demondice Wa....jpg"
+            },
+            {
+                "artist": "KSMB",
+                "album": "Rika barn leka bäst",
+                "trackname": "Sex noll två",
+                "image": "static/images/Rika barn leka bäst.jpg"
+            },
+            {
+                "artist": "Nanawoakari",
+                "album": "フライングベスト～知らないの？巷で噂のダメ天使～",
+                "trackname": "ひとりごと",
+                "image": "static/images/フライングベスト～知らないの？巷で噂のダメ天使～.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-05",
+        "tracks": [
+            {
+                "artist": "x0o0x_",
+                "album": "<<<<<<",
+                "trackname": "<<<<<<",
+                "image": "static/images/mindreän_mindreän_mindreän_mindreän_mindreän_mindreän.jpg"
+            },
+            {
+                "artist": "Kinokoteikoku",
+                "album": "猫とアレルギー",
+                "trackname": "YOUTHFUL ANGER",
+                "image": "static/images/猫とアレルギー.jpg"
+            },
+            {
+                "artist": "Kinokoteikoku",
+                "album": "猫とアレルギー",
+                "trackname": "スカルプチャー",
+                "image": "static/images/猫とアレルギー.jpg"
+            },
+            {
+                "artist": "浅い健一",
+                "album": "Caramel Guerilla",
+                "trackname": "MOTOR CITY",
+                "image": "static/images/Caramel Guerilla.jpg"
+            },
+            {
+                "artist": "Nakuri Aitsuki, Sennzai",
+                "album": "soleil de minuit",
+                "trackname": "kairikou",
+                "image": "static/images/soleil de minuit.jpg"
+            },
+            {
+                "artist": "Mili",
+                "album": "",
+                "trackname": "Gunners in the Rain",
+                "image": "static/images/Gunners in the Rain.jpg"
+            },
+            {
+                "artist": "Sir Chloe",
+                "album": "I Am The Dog",
+                "trackname": "Hooves",
+                "image": "static/images/I Am The Dog.jpg"
+            },
+            {
+                "artist": "Sir Chloe",
+                "album": "I Am The Dog",
+                "trackname": "Know Better",
+                "image": "static/images/I Am The Dog.jpg"
+            },
+            {
+                "artist": "Franz Ferdinand",
+                "album": "Franz Ferdinand",
+                "trackname": "Take Me Out",
+                "image": "static/images/Franz Ferdinand.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-06",
+        "tracks": [
+            {
+                "artist": "ずっと真夜中でいいのに, Mori Calliope",
+                "album": "綺羅キラー",
+                "trackname": "綺羅キラー",
+                "image": "static/images/綺羅キラー.jpg"
+            },
+            {
+                "artist": "ReoNa",
+                "album": "シャル・ウィ・ダンス？",
+                "trackname": "シャル・ウィ・ダンス？",
+                "image": "static/images/シャル・ウィ・ダンス？.jpg"
+            },
+            {
+                "artist": "IA, 9mm Parabellum Bullet",
+                "album": "Ia×Super Gt Circuit Beats - Super Gt 20th Anniversary-",
+                "trackname": "Setsuna Drive",
+                "image": "static/images/Ia×Super Gt Circuit Beats - Super Gt 20th Anniversary-.jpg"
+            },
+            {
+                "artist": "ルシュカ",
+                "album": "Neko & Luschka",
+                "trackname": "アイドライズ",
+                "image": "static/images/Neko & Luschka.jpg"
+            },
+            {
+                "artist": "Eddie Meduza",
+                "album": "Hjärndelirium 2000",
+                "trackname": "Jobba jobba jobba",
+                "image": "static/images/Hjärndelirium 2000.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Kärlek och uppror",
+                "trackname": "Hat & blod",
+                "image": "static/images/Kärlek och uppror.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Ebba Grön",
+                "trackname": "Stopp!",
+                "image": "static/images/Ebba Grön.jpg"
+            }
+        ]
+    },
+    {
+        "date": "2023-07",
+        "tracks": [
+            {
+                "artist": "Ebba Grön",
+                "album": "Ebba Grön 1978 - 1982",
+                "trackname": "Profit",
+                "image": "static/images/Ebba Grön 1978 - 1982.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Ebba Grön 1978 - 1982",
+                "trackname": "Mona Tumbas Slim Club",
+                "image": "static/images/Ebba Grön 1978 - 1982.jpg"
+            },
+            {
+                "artist": "Ebba Grön",
+                "album": "Ebba Grön 1978 - 1982",
+                "trackname": "Scheisse",
+                "image": "static/images/Ebba Grön 1978 - 1982.jpg"
+            },
+            {
+                "artist": "Hoshimachi Suisei",
+                "album": "Cover",
+                "trackname": "シニカルナイトプラン",
+                "image": "static/images/Shining Memory.jpg"
+            },
+            {
+                "artist": "Kinokoteikoku",
+                "album": "猫とアレルギー",
+                "trackname": "35°C",
+                "image": "static/images/猫とアレルギー.jpg"
+            },
+            {
+                "artist": "x0o0x_",
+                "album": "......",
+                "trackname": "......",
+                "image": "static/images/punkt_punkt_punkt_punkt_punkt_punkt.jpg"
+            },
+            {
+                "artist": "Elita",
+                "album": "Sour Switchblade",
+                "trackname": "Sour Switchblade",
+                "image": "static/images/Sour Switchblade.jpg"
             }
         ]
     }
