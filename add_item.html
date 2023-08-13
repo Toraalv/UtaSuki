@@ -13,31 +13,86 @@
 
 		<!--Men inte detta-->
 		<link rel="stylesheet" href="static/stylesheets/addStyle.css">
+		<script src="static/javascripts/jquery-3.6.3.min.js"></script>
 	</head>
 	<body>
 		<!--Måste vara med på alla sidor-->
 		<header>
 			<a href="/"><img src="static/images/Uta_logo.png" alt="Start page"></a>
-			<h1>Add song</h1>
+			<h1>Add track</h1>
 			<a href="/add_item"><img id="peko" src="static/images/ogey_KYM_Flipped.webp" alt="Usada Pekora ogey rrat"></a>
 		</header>
 		<main>
 			<fieldset id="fieldsetContainer">
-				<form id="songForm" method="post">
+				<form id="trackForm" method="post" enctype="multipart/form-data" action="/add_item">
 					<div class="flex-row">
-						<div>
-							<label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="filetoupload" accept="image/*" id="imageSelect"></label>
-						</div>
-						<div id="songFormInfo">
-							<label for="song_name">Song name:</label>
-							<input type="text" id="song_name">
-							<label for="artist_name">Artist name:</label>
-							<input type="text" id="artist_name">
-						</div>
+						<label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="file" accept="image/*" id="imageSelect" required></label>
+						<table cellpadding="5" cellspacing="0" id="trackFormInfo">
+							<tbody>
+								<tr>
+									<td>Date</td>
+									<td>
+										Year:    
+										<select id="track_year" required="suck a duck">
+											<option value="2023">2023</option>
+											<option value="2022">2022</option>
+											<option value="2021">2021</option>
+											<option value="2020">2020</option>
+										</select>
+										Month: 
+										<select id="track_month" required="suck a duck">
+											<option value="1">January</option>
+											<option value="2">February</option>
+											<option value="3">March</option>
+											<option value="4">April</option>
+											<option value="5">May</option>
+											<option value="6">June</option>
+											<option value="7">July</option>
+											<option value="8">August</option>
+											<option value="9">September</option>
+											<option value="10">October</option>
+											<option value="11">November</option>
+											<option value="12">December</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td>Track name:</td>
+									<td>
+										<input type="text" id="track_name" required>
+									</td>
+								</tr>
+								<tr>
+									<td>Artist name:</td>
+									<td>
+										<input type="text" id="artist_name" required>
+									</td>
+								</tr>
+								<tr>
+									<td>Album name:</td>
+									<td>
+										<input type="text" id="album_name" required>
+									</td>
+								</tr>
+								<tr>
+									<td>Description:</td>
+									<td>
+										<textarea id="description" rows="3"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>Description:</td>
+									<td>
+										<textarea id="description" rows="3"></textarea>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<h5 id="addBtn">Add</h5>
+					<input type="submit" value="Add" id="addBtn">
 				</form>
 			</fieldset>
 		</main>
+		<script src="static/javascripts/additem.js"></script>
 	</body>
 </html>
