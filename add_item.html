@@ -26,30 +26,35 @@
 			<fieldset id="fieldsetContainer">
 				<form id="trackForm" method="post" enctype="multipart/form-data" action="/add_item">
 					<div class="flex-row">
-						<label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="file" accept="image/*" id="imageSelect" required></label>
+						<label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="file" accept="image/*" id="imageSelect"></label>
 						<table cellpadding="5" cellspacing="0" id="trackFormInfo">
 							<tbody>
 								<tr>
 									<td>Date</td>
 									<td>
-										Year:    
-										<select id="track_year" required="suck a duck">
+										Year: 
+										<select id="select_year" name="selected_year" required>
+											<option value="2025">2025</option>
+											<option value="2024">2024</option>
 											<option value="2023">2023</option>
 											<option value="2022">2022</option>
 											<option value="2021">2021</option>
 											<option value="2020">2020</option>
+											<option value="2019">2019</option>
+											<option value="2018">2018</option>
+											<option value="2017">2017</option>
 										</select>
 										Month: 
-										<select id="track_month" required="suck a duck">
-											<option value="1">January</option>
-											<option value="2">February</option>
-											<option value="3">March</option>
-											<option value="4">April</option>
-											<option value="5">May</option>
-											<option value="6">June</option>
-											<option value="7">July</option>
-											<option value="8">August</option>
-											<option value="9">September</option>
+										<select id="select_month" name="selected_month" required>
+											<option value="01">January</option>
+											<option value="02">February</option>
+											<option value="03">March</option>
+											<option value="04">April</option>
+											<option value="05">May</option>
+											<option value="06">June</option>
+											<option value="07">July</option>
+											<option value="08">August</option>
+											<option value="09">September</option>
 											<option value="10">October</option>
 											<option value="11">November</option>
 											<option value="12">December</option>
@@ -59,31 +64,25 @@
 								<tr>
 									<td>Track name:</td>
 									<td>
-										<input type="text" id="track_name" required>
+										<input type="text" name="track_name" autocomplete="on" required>
 									</td>
 								</tr>
 								<tr>
 									<td>Artist name:</td>
 									<td>
-										<input type="text" id="artist_name" required>
+										<input type="text" name="artist_name" autocomplete="on" required>
 									</td>
 								</tr>
 								<tr>
 									<td>Album name:</td>
 									<td>
-										<input type="text" id="album_name" required>
+										<input type="text" name="album_name" autocomplete="on" required>
 									</td>
 								</tr>
 								<tr>
 									<td>Description:</td>
 									<td>
-										<textarea id="description" rows="3"></textarea>
-									</td>
-								</tr>
-								<tr>
-									<td>Description:</td>
-									<td>
-										<textarea id="description" rows="3"></textarea>
+										<textarea name="description" rows="3" autocomplete="on"></textarea>
 									</td>
 								</tr>
 							</tbody>
