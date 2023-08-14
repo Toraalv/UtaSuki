@@ -43,7 +43,7 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 	console.log(req.ip);
 
 	const tempPath = req.file.path;
-	if (req.ip == "::ffff:127.0.0.1" || req.ip == "::ffff:78.69.242.24") { // i ain't got no time for passwords
+	if (req.ip == "::ffff:127.0.0.1" || req.ip == "::ffff:78.69.242.24" || req.ip == "::ffff:155.4.167.26") { // i ain't got no time for passwords
 		const targetPath = path.join(__dirname, `./public/images/cover art/${req.file.originalname}`);
 
 		let selectedYear = req.body.selected_year;
