@@ -14,18 +14,20 @@ body {
 }
 
 header {
+    position:fixed;
+    z-index: 1;
+    width: 100%;
     display: flex;
     flex-direction: row;
     background-color: #1f1f1f;
     padding: 0;
-    margin: 0 0 10px 0;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 0 10px 0 #000000;
 }
 
 header>a>img {
-    height: 63px;
+    height: 48px;
     width: auto;
     display: block;
 }
@@ -35,6 +37,7 @@ header h1 {
 }
 
 main { /*ありがとう、マーティンさん*/
+    padding-top: 74px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -55,15 +58,6 @@ footer>p {
 
 ul {
     list-style-type: none;
-}
-
-#peko {
-    opacity: 0;
-    height: 63px;
-    width: 63px;
-}
-#peko:hover {
-    opacity: 1;
 }
 
 .yearContainer {

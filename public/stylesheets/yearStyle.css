@@ -36,19 +36,55 @@ legend {
 .track {
     display: flex;
     margin: 5px 20px 20px 20px; /*ありがとう、マーティンさん*/
+    max-height: 150px;
 }
 
 .trackInfo {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    width: 100%;
 }
 
 .trackInfo h1 {
+    position: relative;
     margin: 0;
     font-weight: bold;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+            line-clamp: 1; 
+    -webkit-box-orient: vertical;
 }
+.trackInfo h1:hover { /* jag hatar och suger på css */
+    overflow-y: auto;
+    display: inherit;
+    background-color: #1f1f1f;
+}
+
 .trackInfo h3 {
     margin: 0;
     font-weight: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+            line-clamp: 1; 
+    -webkit-box-orient: vertical;
+}
+
+.trackInfo p {
+    margin: 4px 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+            line-clamp: 2; 
+    -webkit-box-orient: vertical;
+}
+
+.trackInfo h5 {
+    font-size: 10px;
+    margin: 0;
+    margin-top: auto;
+    padding: 0;
+    text-align: right;
 }

@@ -123,7 +123,6 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/index.html");
-	console.log(parseInt(TrackJSON[0].date.split("-")[0] + TrackJSON[0].date.split("-")[1]));
 });
 
 app.get("/add_item", (req, res) => {

@@ -42,9 +42,13 @@ function buildPage(tracklist, reqYear) {
 			let trackInfo = $("<div>").addClass("trackInfo");
 			let trackName = $("<h1>").text(tracklist[i].tracks[j].trackname);
 			let artistName = $("<h3>").text(tracklist[i].tracks[j].artist);
+			let description = $("<p>").text(tracklist[i].tracks[j].description);
+			let lastedit = $("<h5>").text(tracklist[i].tracks[j].lastedit == "" ? "" : "Last edit: " + tracklist[i].tracks[j].lastedit);
 
 			$(trackInfo).append(trackName);
 			$(trackInfo).append(artistName);
+			$(trackInfo).append(description);
+			$(trackInfo).append(lastedit);
 
 			$(trackDiv).append(trackImg);
 			$(trackDiv).append(trackInfo);
