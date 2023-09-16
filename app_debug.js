@@ -29,7 +29,7 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 	console.log(req.ip);
 
 	const tempPath = req.file.path;
-	if (req.ip == "::ffff:127.0.0.1" || req.ip == "::ffff:78.69.242.24" || req.ip == "::ffff:155.4.167.26") { // i ain't got no time for passwords
+	if (req.ip == "::ffff:127.0.0.1" || req.ip == "::ffff:81.235.151.26 " || req.ip == "::ffff:155.4.167.26") { // i ain't got no time for passwords
 		const targetPath = path.join(__dirname, `./public/images/cover art/${req.file.originalname}`);
 
 		let selectedYear = req.body.selected_year;
@@ -39,10 +39,11 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 		let artistName = req.body.artist_name;
 		let albumName = req.body.album_name;
 		let description = req.body.description;
+		let lastedit = "";
 		
 
 		imageExt = path.extname(req.file.originalname).toLowerCase();
-		if (imageExt == ".png" || imageExt == ".jpg") {
+		if (imageExt == ".png" || imageExt == ".jpg" || imageExt == ".jpeg") {
 			// adding form info into json
 			oldestDate = parseInt(TrackJSON[0].date.split("-")[0] + TrackJSON[0].date.split("-")[1]);
 			newestDate = parseInt(TrackJSON[TrackJSON.length - 1].date.split("-")[0] + TrackJSON[TrackJSON.length - 1].date.split("-")[1]);
@@ -58,7 +59,8 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 								album: albumName,
 								trackname: trackName,
 								image: `static/images/cover art/${albumName}${imageExt}`,
-								description: description
+								description: description,
+								lastedit: lastedit
 							}
 						]
 					}
@@ -73,7 +75,8 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 								album: albumName,
 								trackname: trackName,
 								image: `static/images/cover art/${albumName}${imageExt}`,
-								description: description
+								description: description,
+								lastedit: lastedit
 							}
 						]						
 					}
@@ -88,7 +91,8 @@ app.post("/add_item", upload.single("file"), (req, res) => {
 								album: albumName,
 								trackname: trackName,
 								image: `static/images/cover art/${albumName}${imageExt}`,
-								description: description
+								description: description,
+								lastedit: lastedit
 							}
 						);
 					}
