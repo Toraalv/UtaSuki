@@ -9,6 +9,9 @@ const indexHTML = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf8")
 const baseYearHTML = fs.readFileSync(path.resolve(__dirname, "base_year.html"), "utf8");
 const helper = require("./public/javascript/helper.js");
 
+// only used for jsonToSQL
+// var TrackJSON = require("./public/Tracks.json");
+
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
 	socketPath: "/run/mysqld/mysqld.sock", // すげぇ、効率的だわ
@@ -26,7 +29,7 @@ app.get("/", async (req, res) => {
     let indexDOM =  new jsdom.JSDOM(indexHTML);
     const $ = require("jquery")(indexDOM.window);
 
-	let tracks = await dbSelect(`SELECT *  
+	let tracks = await dbQuery(`SELECT *  
 								FROM tracks
 								JOIN user_tracks ON tracks.id = user_tracks.track_id
 								WHERE user_tracks.uid = 1
@@ -59,17 +62,16 @@ app.get("/year=*", async (req, res) =>
 
     let reqYear = req.params["0"];
 
-    // Fixa title
     $("#title").text(reqYear);
 
-	let tracks = await dbSelect(`SELECT *  
+	let tracks = await dbQuery(`SELECT *  
 								FROM tracks
 								JOIN user_tracks ON tracks.id = user_tracks.track_id
 								WHERE user_tracks.uid = 1
 								ORDER BY user_tracks.date`);
 
 	let yearTracks = new Array();
-    // Hämtar alla månader utifrån reqYear
+    // gets all tracks specified by reqYear
     for (let i = 0; i < tracks.length; i++)
         if (tracks[i].date.getFullYear() == reqYear)
             yearTracks.push(tracks[i]);
@@ -90,7 +92,6 @@ app.get("/year=*", async (req, res) =>
 
 		let trackDiv = $("<div>").addClass("track");
 			
-		// Lägger in bilden, om den inte finns så läggs varannan Suisei och Pekora
 		let trackImg = $("<img>");
 		if (yearTracks[i].image == "" && i % 2 == 0)
 			$(trackImg).attr("src", "static/images/lowres_suisei.png");
@@ -104,8 +105,8 @@ app.get("/year=*", async (req, res) =>
 		let artistName = $("<h3>").text(yearTracks[i].artist);
 		let description = $("<p>").text(yearTracks[i].description);
 		let lastedit = $("<h5>").text(yearTracks[i].last_edit == null ? "" : "Last edit: " +
-										yearTracks[i].last_edit.getFullYear() + "-" +
-										yearTracks[i].last_edit.getMonth() + "-" +
+										yearTracks[i].last_edit.getFullYear() + "-" + // yea we out here ternarin'
+										(yearTracks[i].last_edit.getMonth() + 1 < 10 ? "0" + (yearTracks[i].last_edit.getMonth() + 1) : (yearTracks[i].last_edit.getMonth() + 1)) + "-" +
 										(yearTracks[i].last_edit.getDate() < 10 ? "0" + yearTracks[i].last_edit.getDate() : yearTracks[i].last_edit.getDate()));
 
 		$(trackInfo).append(trackTitle);
@@ -117,10 +118,7 @@ app.get("/year=*", async (req, res) =>
 		$(trackDiv).append(trackInfo);
 
 		$(fieldset).append(trackDiv);
-		// a miracle that I can run this every iteration
-		// why? because even though the fieldset has been added already, new tracks will still be appended to
-		// the correct fieldset because I only renew the fieldset when a new month has been detected. 
-		// before I had an extra for-loop to fix this. cheers
+		// maybe an exaggeration
 		$("#trackItemList").append(fieldset);
 	}
 	
@@ -131,6 +129,10 @@ app.get("/add_track", (req, res) => {
 	res.sendFile(__dirname + "/add_track.html"); 
  });
 
+app.get("/jsonToSQL", (req, res) => {
+	// jsonToSQL();
+ });
+
 app.all("*", (req, res) => { // for everything else
 	res.send("<h1><b>404 not found</h1>");
 });
@@ -139,14 +141,40 @@ app.listen(port, () => {
 	console.log("Running on port " + port);
 });
 
-async function dbSelect(query) {
+async function dbQuery(query) {
 	return new Promise(function(resolve, reject){
 		try {
 			pool.getConnection().then(conn => {
 				conn.query(query).then(rows => resolve(rows)).catch(e => reject(e)).then(() => conn.close());
 			}).catch(e => reject(e));
 		} catch (e) {
-			console.log(e); // önskar jag visste vad fan jag håller på med
+			console.log(e); // wish I knew what I'm doing
 		}
 	});
+}
+
+async function jsonToSQL() {
+	let bruh = 0;
+	for (let i = 0; i < TrackJSON.length; i++) {
+		for (let j = 0; j < TrackJSON[i].tracks.length; j++) {
+			bruh++;
+		}
+	}
+	console.log(bruh);
+
+	for (let i = 0; i < TrackJSON.length; i++) {
+		let currentDate = TrackJSON[i].date + "-15"; // batshit crazy, if 00 then 2020-02-00 actually becomes 2020-01-31, goddamn
+		console.log(currentDate);
+		for (let j = 0; j < TrackJSON[i].tracks.length; j++) {
+			let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = "${TrackJSON[i].tracks[j].artist}" AND title = "${TrackJSON[i].tracks[j].trackname}"`)
+			if (trackExist.length == 0) {
+				let trackInsertRes = await dbQuery(`INSERT INTO tracks (artist, album, title, released, image) VALUES ("${TrackJSON[i].tracks[j].artist}", "${TrackJSON[i].tracks[j].album}", "${TrackJSON[i].tracks[j].trackname}", "0000-00-00", "${TrackJSON[i].tracks[j].image}")`);
+				let user_trackInsertRes = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date,${TrackJSON[i].tracks[j].lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackInsertRes.insertId.toString()}", "${currentDate}", ${TrackJSON[i].tracks[j].lastedit == "" ? "" : '"' + TrackJSON[i].tracks[j].lastedit + '", '} "${TrackJSON[i].tracks[j].description}")`);
+			} else {
+				console.log(trackExist[0].id);
+				let user_trackInsertRes = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date,${TrackJSON[i].tracks[j].lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackExist[0].id}", "${currentDate}", ${TrackJSON[i].tracks[j].lastedit == "" ? "" : '"' + TrackJSON[i].tracks[j].lastedit + '", '} "${TrackJSON[i].tracks[j].description}")`);
+			}
+		}
+		
+	}
 }
