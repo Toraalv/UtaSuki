@@ -1,9 +1,20 @@
 const express = require("express");
 const app = express();
-const port = 17720;
+const port = 443;
 const path = require("path");
 const fs = require("fs");
 const jsdom = require("jsdom");
+const https = require("https");
+
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/chain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 
 const indexHTML = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf8");
 const baseYearHTML = fs.readFileSync(path.resolve(__dirname, "base_year.html"), "utf8");
@@ -137,8 +148,14 @@ app.all("*", (req, res) => { // for everything else
 	res.send("<h1><b>404 not found</h1>");
 });
 
-app.listen(port, () => {
-	console.log("Running on port " + port);
+// app.listen(port, () => {
+// 	console.log("Running on port " + port);
+// });
+
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(port, () => {
+    console.log("Running on port " + port);
 });
 
 async function dbQuery(query) {
