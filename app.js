@@ -1,41 +1,109 @@
 const express = require("express");
 const app = express();
-const port = 443;
+const port = 17720;
 const path = require("path");
 const fs = require("fs");
 const jsdom = require("jsdom");
 const https = require("https");
 
+// certificate part
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem', 'utf8');
 const ca = fs.readFileSync('/etc/letsencrypt/live/utasuki.toralv.dev/chain.pem', 'utf8');
-
 const credentials = {
 	key: privateKey,
 	cert: certificate,
 	ca: ca
 };
+// ----------------
 
+// base pages
 const indexHTML = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf8");
 const baseYearHTML = fs.readFileSync(path.resolve(__dirname, "base_year.html"), "utf8");
+
 const helper = require("./public/javascript/helper.js");
+
+// add track bit
+const multer = require("multer");
+const { body, validationResult } = require("express-validator");
+
+const handleError = (err, res) => {
+	res
+		.status(500)
+		.contentType("text/plain")
+		.end("Something went wrong.");
+};
+
+const upload = multer({
+	dest: "./public/temp/"
+});
+// -------------
 
 // only used for jsonToSQL
 // var TrackJSON = require("./public/Tracks.json");
 
+// db connection
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
 	socketPath: "/run/mysqld/mysqld.sock", // すげぇ、効率的だわ
 	user: process.env.UTASUKI_DB_USER, 
 	password: process.env.UTASUKI_DB_PASS,
-	database: process.env.UTASUKI_DB_DATABASE,
+	database: port == 17720 ? "utasuki_testing" : process.env.UTASUKI_DB_DATABASE,
 	connectionLimit: 5
 });
 
+// express stuff
 app.use("/static", express.static(path.join(__dirname, "public")));
 app.use(express.json());       
 app.use(express.urlencoded({extended: true})); 
 
+// add track form
+app.post("/add_track", upload.single("file"), async (req, res) => {
+	console.log(req.ip);
+
+	const tempPath = req.file.path;
+	if (req.ip == "::ffff:85.226.30.212") { // this is shit
+		// hello???? sql injection department???
+		let selectedYear = req.body.selected_year;
+		let selectedMonth= req.body.selected_month;
+		let selectedDate = `${selectedYear}-${selectedMonth}-15`;
+		let title = req.body.title;
+		let artist = req.body.artist;
+		let album = req.body.album;
+		let description = req.body.description;
+		let lastedit = "";
+
+		let imageExt = path.extname(req.file.originalname).toLowerCase();
+		let newImgName = `${title}_${artist}_${album}${imageExt}`;
+		const targetPath = path.join(__dirname, `./public/images/album covers/${newImgName}`);
+
+		if (imageExt == ".png" || imageExt == ".jpg" || imageExt == ".jpeg") {
+			// find out if track already exists
+			let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = "${artist}" AND title = "${title}"`);
+			if (trackExist.length == 0) {
+				let trackInsertRes = await dbQuery(`INSERT INTO tracks (artist, album, title, released, image) VALUES ("${artist}", "${album}", "${title}", "0000-00-00", "static/images/album covers/${newImgName}")`);
+				let user_trackInsertRes = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date,${lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackInsertRes.insertId.toString()}", "${selectedDate}", ${lastedit == "" ? "" : '"' + lastedit + '", '} "${description}")`);
+				fs.rename(tempPath, targetPath, err => {
+					if (err) return handleError(err, res);
+					res.redirect(`/year=${selectedYear}`);
+				});
+			} else {
+				// find out if track already exists on the same date
+				let userTrackExist = await dbQuery(`SELECT 1 FROM user_tracks WHERE track_id = "${trackExist[0].id}" AND uid = "1" AND date = "${selectedDate}"`);
+				if (userTrackExist.length == 0)
+					dbQuery(`INSERT INTO user_tracks (uid, track_id, date,${lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackExist[0].id}", "${selectedDate}", ${lastedit == "" ? "" : '"' + lastedit + '", '} "${description}")`);
+				else {
+					res.redirect("/add_track");
+					console.log("that track already exists on the same date"); // todo: let the user know
+				}
+			}
+		} else res.redirect("/add_track");
+	} else res.sendFile(__dirname + "/public/images/Angy Wamy.png");
+
+	fs.unlink(tempPath, err => { if (err) return handleError(err, res); });
+});
+
+// main page
 app.get("/", async (req, res) => {
     let indexDOM =  new jsdom.JSDOM(indexHTML);
     const $ = require("jquery")(indexDOM.window);
@@ -62,10 +130,13 @@ app.get("/", async (req, res) => {
     {
         $("main").append(`<a href='/year=${listYears[i]}' class='yearContainer'><h1>${listYears[i]}</h1></a>`);
     }
+	if (port == 17720)
+		$("main").append(`<a href='/' class='yearContainer'><h1>utasuki dev mode</h1></a>`);
 
     res.send(indexDOM.serialize());
 });
 
+// pages for every year
 app.get("/year=*", async (req, res) =>
 {
     let baseYearDOM = new jsdom.JSDOM(baseYearHTML);
@@ -156,8 +227,10 @@ const httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(port, () => {
     console.log("Running on port " + port);
+
 });
 
+// send any query via this, feels illegal, idk
 async function dbQuery(query) {
 	return new Promise(function(resolve, reject){
 		try {
@@ -170,6 +243,16 @@ async function dbQuery(query) {
 	});
 }
 
+
+
+
+
+
+
+
+
+
+// leaving this as a memory
 async function jsonToSQL() {
 	let bruh = 0;
 	for (let i = 0; i < TrackJSON.length; i++) {

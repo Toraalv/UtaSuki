@@ -1,3 +1,4 @@
 .vs/
 node_modules/
-public/images/album covers
+public/images/album covers/
+public/temp/

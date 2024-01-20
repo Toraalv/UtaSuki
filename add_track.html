@@ -13,6 +13,7 @@
 
 		<!--Men inte detta-->
 		<link rel="stylesheet" href="static/stylesheets/addStyle.css">
+		<script src="static/javascript/jquery-3.6.3.min.js"></script>
 	</head>
 	<body>
 		<!--Måste vara med på alla sidor-->
@@ -25,7 +26,7 @@
 			<fieldset id="fieldsetContainer">
 				<form id="trackForm" method="post" enctype="multipart/form-data" action="/add_track">
 					<div class="flex-row">
-						<label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="file" accept="image/*" id="imageSelect"></label>
+						<label for="imageSelect"><img src="static/images/imageInput.webp" id="placeholderImg"><input type="file" name="file" accept="image/*" id="imageSelect" required></label> <!-- doesn't let the user know? -->
 						<table cellpadding="5" cellspacing="0" id="trackFormInfo">
 							<tbody>
 								<tr>
@@ -33,7 +34,6 @@
 									<td>
 										Year: 
 										<select id="select_year" name="selected_year" required>
-											<option value="2025">2025</option>
 											<option value="2024">2024</option>
 											<option value="2023">2023</option>
 											<option value="2022">2022</option>
@@ -61,21 +61,21 @@
 									</td>
 								</tr>
 								<tr>
-									<td>Track name:</td>
+									<td>Title:</td>
 									<td>
-										<input type="text" name="track_name" autocomplete="off" required>
+										<input type="text" name="title" autocomplete="off" required>
 									</td>
 								</tr>
 								<tr>
-									<td>Artist name:</td>
+									<td>Artist:</td>
 									<td>
-										<input type="text" name="artist_name" autocomplete="off" required>
+										<input type="text" name="artist" autocomplete="off" required>
 									</td>
 								</tr>
 								<tr>
-									<td>Album name:</td>
+									<td>Album:</td>
 									<td>
-										<input type="text" name="album_name" autocomplete="off" required>
+										<input type="text" name="album" autocomplete="off" required>
 									</td>
 								</tr>
 								<tr>
@@ -91,5 +91,6 @@
 				</form>
 			</fieldset>
 		</main>
+		<script src="static/javascript/addTrack.js"></script>
 	</body>
 </html>
