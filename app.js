@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 17720;
+const port = 443;
 const path = require("path");
 const fs = require("fs");
 const jsdom = require("jsdom");
@@ -18,8 +18,8 @@ const credentials = {
 // ----------------
 
 // base pages
-const indexHTML = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf8");
-const baseYearHTML = fs.readFileSync(path.resolve(__dirname, "base_year.html"), "utf8");
+const indexHTML = fs.readFileSync(path.resolve(__dirname, "public/html/index.html"), "utf8");
+const baseYearHTML = fs.readFileSync(path.resolve(__dirname, "public/html/base_year.html"), "utf8");
 
 const helper = require("./public/javascript/helper.js");
 
@@ -54,7 +54,7 @@ const pool = mariadb.createPool({
 
 // express stuff
 app.use("/static", express.static(path.join(__dirname, "public")));
-app.use(express.json());       
+app.use(express.json());
 app.use(express.urlencoded({extended: true})); 
 
 // add track form
@@ -82,7 +82,7 @@ app.post("/add_track", upload.single("file"), async (req, res) => {
 			let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = "${artist}" AND title = "${title}"`);
 			if (trackExist.length == 0) {
 				let trackInsertRes = await dbQuery(`INSERT INTO tracks (artist, album, title, released, image) VALUES ("${artist}", "${album}", "${title}", "0000-00-00", "static/images/album covers/${newImgName}")`);
-				let user_trackInsertRes = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date,${lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackInsertRes.insertId.toString()}", "${selectedDate}", ${lastedit == "" ? "" : '"' + lastedit + '", '} "${description}")`);
+				let user_trackInsertRes = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, ${lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackInsertRes.insertId.toString()}", "${selectedDate}", ${lastedit == "" ? "" : '"' + lastedit + '", '} "${description}")`);
 				fs.rename(tempPath, targetPath, err => {
 					if (err) return handleError(err, res);
 					res.redirect(`/year=${selectedYear}`);
@@ -91,16 +91,21 @@ app.post("/add_track", upload.single("file"), async (req, res) => {
 				// find out if track already exists on the same date
 				let userTrackExist = await dbQuery(`SELECT 1 FROM user_tracks WHERE track_id = "${trackExist[0].id}" AND uid = "1" AND date = "${selectedDate}"`);
 				if (userTrackExist.length == 0)
-					dbQuery(`INSERT INTO user_tracks (uid, track_id, date,${lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackExist[0].id}", "${selectedDate}", ${lastedit == "" ? "" : '"' + lastedit + '", '} "${description}")`);
+					dbQuery(`INSERT INTO user_tracks (uid, track_id, date, ${lastedit == "" ? "" : "last_edit,"} description) VALUES ("1", "${trackExist[0].id}", "${selectedDate}", ${lastedit == "" ? "" : '"' + lastedit + '", '} "${description}")`);
 				else {
+					fs.unlink(tempPath, err => { if (err) return handleError(err, res); });
 					res.redirect("/add_track");
 					console.log("that track already exists on the same date"); // todo: let the user know
 				}
 			}
-		} else res.redirect("/add_track");
-	} else res.sendFile(__dirname + "/public/images/Angy Wamy.png");
-
-	fs.unlink(tempPath, err => { if (err) return handleError(err, res); });
+		} else {
+			fs.unlink(tempPath, err => { if (err) return handleError(err, res); });
+			res.redirect("/add_track");
+		}
+	} else {
+		fs.unlink(tempPath, err => { if (err) return handleError(err, res); });
+		res.sendFile(__dirname + "/public/images/Angy Wamy.png");
+	}
 });
 
 // main page
@@ -180,7 +185,7 @@ app.get("/year=*", async (req, res) =>
 		else if (yearTracks[i].image == "" && !(i % 2 == 0))
 			$(trackImg).attr("src", "static/images/server-icon.png");
 		else
-			$(trackImg).attr("src", yearTracks[i].image);
+			$(trackImg).attr("src", `${yearTracks[i].image}`);
 
 		let trackInfo = $("<div>").addClass("trackInfo");
 		let trackTitle = $("<h1>").text(yearTracks[i].title);
@@ -208,7 +213,7 @@ app.get("/year=*", async (req, res) =>
 });
 
 app.get("/add_track", (req, res) => {
-	res.sendFile(__dirname + "/add_track.html"); 
+	res.sendFile(__dirname + "/public/html/add_track.html"); 
  });
 
 app.get("/jsonToSQL", (req, res) => {
@@ -216,6 +221,7 @@ app.get("/jsonToSQL", (req, res) => {
  });
 
 app.all("*", (req, res) => { // for everything else
+	console.log(req.url);
 	res.send("<h1><b>404 not found</h1>");
 });
 
