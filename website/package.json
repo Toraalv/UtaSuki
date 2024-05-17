@@ -1,9 +1,9 @@
 {
 	"name": "UtaSuki",
-	"version": "0.0.1",
+	"version": "0.0.2-alpha",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "vitest"
