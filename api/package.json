@@ -1,0 +1,17 @@
+{
+  "name": "utasuki-api",
+  "version": "0.0.1",
+  "description": "REST API for UtaSuki",
+  "main": "api.js",
+  "scripts": {
+    "dev": "APP_ENV=dev nodemon app.js",
+    "test:dev": "APP_ENV=dev npx jest",
+    "deploy:prod": "APP_ENV=prod node app.js"
+  },
+  "author": "Toralv",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mariadb": "^3.3.0"
+  }
+}
