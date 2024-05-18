@@ -1,12 +1,13 @@
 {
 	"name": "UtaSuki",
-	"version": "0.0.2-alpha",
+	"version": "0.0.3-alpha",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev --host",
+		"dev": "APP_ENV=dev vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
-		"test": "vitest"
+		"test": "vitest",
+		"deploy:prod": "vite build && vite preview"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

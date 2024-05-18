@@ -2,7 +2,9 @@
 	export let title = null;
 	export let title_alt = null;
 	export let style = null;
+	export let id = null;
 </script>
+
 
 <!-- såhär man vidarebefodrar style attribut? känns som jag tänker för mycket react -->
 <div class="sway_window" style="{style}">
@@ -10,7 +12,7 @@
 		<h5>{title}</h5>
 		<h5>{title_alt}</h5>
 	</div>
-	<div class="sway_window_content" id="grade_container">
+	<div class="sway_window_content" id="{id}">
 		<slot />
 	</div>
 </div>

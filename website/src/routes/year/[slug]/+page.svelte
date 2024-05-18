@@ -4,9 +4,14 @@
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import TrackContainer from "$lib/TrackContainer.svelte"
 	import MonthContainer from "$lib/MonthContainer.svelte"
+	import { afterUpdate } from "svelte";
+
+	afterUpdate(() => {
+		document.getElementById("sway_window_tracks").scrollTop = 0;
+	});
 </script>
 
-<SwayWindow title="tracks" title_alt="tracks for the year">
+<SwayWindow title="tracks" title_alt="tracks for the year" id="sway_window_tracks">
 	{#each $page.data.monthTracks as month, i}
 		{#if month.length}
 			<MonthContainer date={monthMap[i]}>

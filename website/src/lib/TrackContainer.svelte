@@ -6,11 +6,11 @@
 	export const released = "2020-05-13";
 	export let image = "/test_album.png";
 	export let description = "this is a description of the track that I've added to my list of favourite tracks for every month, very cool yes I know.";
-	export const lastEdit = ""
+	export const lastEdit = null;
 </script>
 
 <div class="track">
-	<img src="{image}" alt="förlåt">
+	<img src="{image}" alt="{album} cover">
 	<div class="trackInfo">
 		<h1>{title}</h1>
 		<h3>{artist}</h3>

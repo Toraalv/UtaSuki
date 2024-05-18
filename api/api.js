@@ -1,6 +1,5 @@
 "use strict"
 
-// paket, typ
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -12,7 +11,7 @@ const PORT = APP_ENV == "dev" ? 5900 : 8800; // ぱちぱち　ごく
 // db anslutning
 const mariadb = require("mariadb");
 const pool = mariadb.createPool({
-	socketPath: "/run/mysqld/mysqld.sock", // すげぇ、効率的だわ
+	socketPath: "/run/mysqld/mysqld.sock",
 	user: process.env.UTASUKI_DB_USER,
 	password: process.env.UTASUKI_DB_PASS,
 	database: process.env.UTASUKI_DB_DATABASE,
@@ -38,8 +37,8 @@ app.get("/years", async (req, res) => {
 		});
 		return;
 	}
-
-	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = "${username}"`); // osaniterad data
+	
+	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) { // strävan efter så korta if-satser som möjligt är konstant
 		res.status(404).json({
 			status: "NOT OK",
@@ -51,7 +50,7 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 
-	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE username = "${username}"`); // osaniterad data
+	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE username = ?`, [username]);
 
 	// om användaren inte har några låtar
 	if (data.length == 0) {
@@ -88,7 +87,7 @@ app.get("/tracks", async (req, res) => {
 		});
 		return;
 	}
-	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = "${username}"`); // osaniterad data
+	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) { // strävan efter så korta if-satser som möjligt är konstant
 		res.status(404).json({
 			status: "NOT OK",
@@ -100,7 +99,35 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 	
-	let data = await dbQuery(`SELECT date, artist, album, title, released, image, description, last_edit FROM user_tracks JOIN tracks ON tracks.id = track_id JOIN users ON users.uid = user_tracks.uid WHERE username = "${username}" AND date >= '${year}-01-01' AND date < '${parseInt(year) + 1}-01-01';`); // osaniterad data
+	let data = await dbQuery(`
+							SELECT
+								date,
+								artist,
+								album,
+								title,
+								released,
+								image,
+								description,
+								last_edit
+							FROM
+								user_tracks
+							JOIN
+								tracks
+							ON
+								tracks.id = track_id
+							JOIN
+								users
+							ON
+								users.uid = user_tracks.uid
+							WHERE username = ?
+								AND date >= ?
+									AND date < ?;`,
+		[
+			username,
+			`${year}-01-01`,
+			`${parseInt(year) + 1}-01-01`,
+		]);
+
 
 	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []]; // det här är ju typ ganska fult
 
@@ -116,7 +143,6 @@ app.get("/tracks", async (req, res) => {
 		});
 	}
 	// TODO, om inga låtar finns, skicka felmeddelande och visa det för användaren
-	console.log("pang pang");
 	res.status(200).json({
 		status: "OK",
 		version: VERSION,
@@ -127,11 +153,11 @@ app.get("/tracks", async (req, res) => {
 const httpServer = http.createServer(app);
 httpServer.listen(PORT, () => { console.log("Running on port " + PORT); });
 
-async function dbQuery(query) {
+async function dbQuery(query, params) {
 	return new Promise(function(resolve, reject) {
 		try {
 			pool.getConnection().then(conn => {
-				conn.query(query).then(rows => resolve(rows)).catch(e => reject(e)).then(() => conn.close());
+				conn.query(query, params).then(rows => resolve(rows)).catch(e => reject(e)).then(() => conn.close());
 			}).catch(e => reject(e));
 		} catch (e) { console.log(e); }
 	});
