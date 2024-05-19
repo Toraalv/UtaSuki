@@ -1,0 +1,11 @@
+{
+	"error": {
+		"connection_refused": "Connection to server was refused.",
+		"connection_timeout": "Request to server timed out.",
+		"endpoint_default": "Unexpected error from server.",
+		"user_not_exist": "Specified user does not exist."
+	},
+	"warning": {
+		"no_tracks_year": "User does not have any tracks for the specified year."
+	}
+}

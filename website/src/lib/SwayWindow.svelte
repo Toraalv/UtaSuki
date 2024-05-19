@@ -1,18 +1,18 @@
 <script>
 	export let title = null;
-	export let title_alt = null;
-	export let style = null;
+	export let altTitle = null;
+	export let mainStyle = null;
+	export let titleStyle = null;
+	export let contentStyle = null;
 	export let id = null;
 </script>
 
-
-<!-- såhär man vidarebefodrar style attribut? känns som jag tänker för mycket react -->
-<div class="sway_window" style="{style}">
-	<div class="sway_window_title">
+<div class="sway_window" style="{mainStyle}">
+	<div class="sway_window_title" style="{titleStyle}">
 		<h5>{title}</h5>
-		<h5>{title_alt}</h5>
+		<h5>{altTitle}</h5>
 	</div>
-	<div class="sway_window_content" id="{id}">
+	<div class="sway_window_content" id="{id}" style="{contentStyle}">
 		<slot />
 	</div>
 </div>

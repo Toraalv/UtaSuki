@@ -32,7 +32,8 @@ app.get("/years", async (req, res) => {
 			status: "NOT OK",
 			version: VERSION,
 			message: {
-				en: "User not specified."
+				severity: "error",
+				code: "error.user_not_specified"
 			}
 		});
 		return;
@@ -44,7 +45,8 @@ app.get("/years", async (req, res) => {
 			status: "NOT OK",
 			version: VERSION,
 			message: {
-				en: "User doesn't exist."
+				severity: "error",
+				code: "error.user_not_exist"
 			}
 		});
 		return;
@@ -82,7 +84,8 @@ app.get("/tracks", async (req, res) => {
 			status: "NOT OK",
 			version: VERSION,
 			message: {
-				en: "No tracks for specified year or user."
+				severity: "error",
+				code: "error.year_user_not_specified"
 			}
 		});
 		return;
@@ -93,7 +96,8 @@ app.get("/tracks", async (req, res) => {
 			status: "NOT OK",
 			version: VERSION,
 			message: {
-				en: "User doesn't exist."
+				severity: "error",
+				code: "error.user_not_exist"
 			}
 		});
 		return;
@@ -125,9 +129,20 @@ app.get("/tracks", async (req, res) => {
 		[
 			username,
 			`${year}-01-01`,
-			`${parseInt(year) + 1}-01-01`,
+			`${Number(year) + 1}-01-01`,
 		]);
 
+	if (data.length == 0) {
+		res.status(404).json({
+			status: "SEMI-OK",
+			version: VERSION,
+			message: {
+				severity: "warning",
+				code: "warning.no_tracks_year"
+			}
+		});
+		return;
+	}
 
 	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []]; // det här är ju typ ganska fult
 
@@ -142,7 +157,7 @@ app.get("/tracks", async (req, res) => {
 			last_edit: data[i].last_edit,
 		});
 	}
-	// TODO, om inga låtar finns, skicka felmeddelande och visa det för användaren
+
 	res.status(200).json({
 		status: "OK",
 		version: VERSION,
