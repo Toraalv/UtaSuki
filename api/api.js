@@ -2,11 +2,25 @@
 
 const express = require("express");
 const app = express();
+const path = require("path");
+const https = require("https");
 const http = require("http");
 // konstanter
 const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
 const PORT = APP_ENV == "dev" ? 5900 : 8800; // ぱちぱち　ごく
+const HTTPS_PORT = 8802;
+let privateKey, certificate, ca;
+if (APP_ENV != "dev") {
+	privateKey = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem", "utf8");
+	certificate = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem", "utf8");
+	ca = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/chain.pem", "utf8");
+}
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 
 // db anslutning
 const mariadb = require("mariadb");
@@ -20,6 +34,7 @@ const pool = mariadb.createPool({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
 
@@ -167,6 +182,9 @@ app.get("/tracks", async (req, res) => {
 
 const httpServer = http.createServer(app);
 httpServer.listen(PORT, () => { console.log("Running on port " + PORT); });
+
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(HTTPS_PORT, () => { console.log("Running on port " + HTTPS_PORT); });
 
 async function dbQuery(query, params) {
 	return new Promise(function(resolve, reject) {

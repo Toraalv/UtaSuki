@@ -1,6 +1,6 @@
 {
 	"error": {
-		"connection_refused": "Connection to server was refused.",
+		"connection_refused": "Connection to server could not be established.",
 		"connection_timeout": "Request to server timed out.",
 		"endpoint_default": "Unexpected error from server.",
 		"user_not_exist": "Specified user does not exist."

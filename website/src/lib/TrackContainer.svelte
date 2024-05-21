@@ -1,7 +1,7 @@
 <script>
 	// const är bara för att svelte inte ska klaga, använder inte de fälten precis just nu
 	export let artist = "artist of track";
-	export const album = "album of track";
+	export let album = "album of track";
 	export let title = "title of track";
 	export const released = "2020-05-13";
 	export let image = "/test_album.png";

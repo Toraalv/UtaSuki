@@ -4,9 +4,9 @@
   "description": "REST API for UtaSuki",
   "main": "api.js",
   "scripts": {
-    "dev": "APP_ENV=dev nodemon app.js",
+    "dev": "APP_ENV=dev nodemon api.js",
     "test:dev": "APP_ENV=dev npx jest",
-    "deploy:prod": "APP_ENV=prod node app.js"
+    "deploy:prod": "APP_ENV=prod node api.js"
   },
   "author": "Toralv",
   "license": "ISC",
