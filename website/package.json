@@ -1,6 +1,6 @@
 {
 	"name": "UtaSuki",
-	"version": "0.0.4-alpha",
+	"version": "0.0.5-alpha",
 	"private": true,
 	"scripts": {
 		"dev": "APP_ENV=dev vite dev --host",
