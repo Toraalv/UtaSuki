@@ -1,11 +1,14 @@
 {
 	"error": {
-		"connection_refused": "Connection to server could not be established.",
-		"connection_timeout": "Request to server timed out.",
-		"endpoint_default": "Unexpected error from server.",
-		"user_not_exist": "Specified user does not exist."
+		"connection_refused": "connection to server could not be established.",
+		"connection_timeout": "request to server timed out.",
+		"endpoint_default": "unexpected error from server.",
+		"user_not_exist": "specified user does not exist."
 	},
 	"warning": {
-		"no_tracks_year": "User does not have any tracks for the specified year."
+		"no_tracks_year": "user does not have any tracks for the specified year."
+	},
+	"info": {
+		"user_no_tracks": "user does not have any tracks."
 	}
 }

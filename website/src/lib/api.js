@@ -5,19 +5,28 @@ const PORT = dev ? 5900 : 8800;
 class UtaSuki_API {
 	constructor() {}
 
-	async fetchYears(fetch) {
+	async fetchUsers(fetch) {
 		try {
-			let res = await this.fetchData(fetch, "years", { username: "Toralv" });
-			return res.years;
+			let res = await this.fetchData(fetch, "users");
+			return res.data;
 		} catch (e) {
 			return { error: e };
 		}
 	}
 
-	async fetchTracks(fetch, year) {
+	async fetchYears(fetch, username) {
 		try {
-			let res = await this.fetchData(fetch, "tracks", { username: "Toralv", year: year });
-			return res.tracks;
+			let res = await this.fetchData(fetch, "years", { username: username });
+			return res.data;
+		} catch (e) {
+			return { error: e };
+		}
+	}
+
+	async fetchTracks(fetch, username, year) {
+		try {
+			let res = await this.fetchData(fetch, "tracks", { username: username, year: year });
+			return res.data;
 		} catch (e) {
 			return { error: e };
 		}

@@ -39,6 +39,25 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
 
+app.get("/users", async (req, res) => {
+	let users = await dbQuery(`SELECT username FROM users;`);
+
+	if (users.length == 0) {
+		res.status(200).json({
+			status: "SEMI-OK",
+			version: VERSION,
+			data: []
+		});
+		return;
+	}
+
+	res.status(200).json({
+		status: "OK",
+		version: VERSION,
+		data: users
+	});
+});
+
 app.get("/years", async (req, res) => {
 	let username = "";
 	try {
@@ -72,10 +91,13 @@ app.get("/years", async (req, res) => {
 
 	// om användaren inte har några låtar
 	if (data.length == 0) {
-		res.status(200).json({
+		res.status(404).json({
 			status: "SEMI-OK",
 			version: VERSION,
-			years: []
+			message: {
+				severity: "info",
+				code: "info.user_no_tracks"
+			}
 		});
 		return;
 	}
@@ -85,7 +107,7 @@ app.get("/years", async (req, res) => {
 	res.status(200).json({
 		status: "OK",
 		version: VERSION,
-		years: years
+		data: years
 	});
 });
 
@@ -126,7 +148,7 @@ app.get("/tracks", async (req, res) => {
 								album,
 								title,
 								released,
-								image,
+								tracks.image,
 								description,
 								last_edit
 							FROM
@@ -177,7 +199,7 @@ app.get("/tracks", async (req, res) => {
 	res.status(200).json({
 		status: "OK",
 		version: VERSION,
-		tracks: monthTracks
+		data: monthTracks
 	});
 });
 

@@ -9,12 +9,12 @@
 		<Alert severity="{$page.data.years.error.severity}" code="{$page.data.years.error.code}" />
 	{:else}
 		{#each $page.data.years as year}
-			<a href="/year/{year}">
-			{#if $page.params.slug == year} <!-- これめっちゃええやん -->
-				<h4 style="background-color: var(--accent); border-color: var(--accent)">{year}</h4>
-			{:else}
-				<h4>{year}</h4>
-			{/if}
+			<a href="/{$page.url.pathname.split("/")[1]}/{year}"> <!-- hantering av nästade slugs är (；￣Д￣) -->
+				{#if $page.params.slug == year} <!-- これめっちゃええやん -->
+					<h4 style="background-color: var(--accent); border-color: var(--accent)">{year}</h4>
+				{:else}
+					<h4>{year}</h4>
+				{/if}
 			</a>
 		{/each}
 	{/if}
