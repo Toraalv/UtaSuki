@@ -1,5 +1,6 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
+	import "$lib/i18n"; // nånting nånting i18n måste laddas in...? igen?
 	import { _ } from "svelte-i18n";
 	export let severity = null;
 	export let code = null;

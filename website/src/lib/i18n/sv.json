@@ -1,0 +1,14 @@
+{
+	"error": {
+		"connection_refused": "anslutning till servern kunde ej etableras",
+		"connection_timeout": "förfrågan till servern tog för lång tid",
+		"endpoint_default": "oförväntad fel från servern",
+		"user_not_exist": "vald användare existerar ej"
+	},
+	"warning": {
+		"no_tracks_year": "användare har inga låtar för valt år"
+	},
+	"info": {
+		"user_no_tracks": "användaren har inga låtar"
+	}
+}

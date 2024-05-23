@@ -51,7 +51,7 @@
 				line-clamp: 1; 
 		-webkit-box-orient: vertical;
 	}
-	.trackInfo h1:hover { /* jag hatar och suger på css */
+	.trackInfo h1:hover {
 		overflow-y: auto;
 		display: inherit;
 	}
