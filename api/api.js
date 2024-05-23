@@ -40,7 +40,7 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
 
 app.get("/users", async (req, res) => {
-	let users = await dbQuery(`SELECT username FROM users;`);
+	let users = await dbQuery(`SELECT username, created, image FROM users;`);
 
 	if (users.length == 0) {
 		res.status(200).json({

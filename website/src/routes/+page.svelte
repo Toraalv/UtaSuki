@@ -3,6 +3,8 @@
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Profile from "$lib/Profile.svelte";
 	import Alert from "$lib/Alert.svelte";
+
+	console.log($page.data.users);
 </script>
 
 <SwayWindow title="login" altTitle="login" mainStyle="max-width: 300px; min-width: 300px">
@@ -14,7 +16,7 @@
 	{:else}
 		{#each $page.data.users as user}
 			<a href="/{user.username}">
-				<Profile username="{user.username}" image="/test_profile.jpg"/>
+				<Profile username="{user.username}" image="{user.image}" created="{user.created}"/>
 			</a>
 		{/each}
 	{/if}

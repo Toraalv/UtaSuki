@@ -2,7 +2,7 @@
 	// const är bara för att svelte inte ska klaga, använder inte de fälten precis just nu
 	export let username = "artist of track";
 	export let image = "/test_profile.jpg";
-	export let bio = "this is some users bio, very cool";
+	//export let bio = "this is some users bio, very cool";
 	export let created = null;
 </script>
 
@@ -10,9 +10,9 @@
 	<img src="{image}" alt="profile picture">
 	<div class="profileInfo">
 		<h1>{username}</h1>
-		{#if bio}
+		<!-- {#if bio}
 			<p>{bio}</p>
-		{/if}
+		{/if} -->
 		{#if created}
 			<h5>member since: {created}</h5>
 		{/if}
