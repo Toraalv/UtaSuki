@@ -3,10 +3,8 @@
 	export let artist = "artist of track";
 	export let album = "album of track";
 	export let title = "title of track";
-	export const released = "2020-05-13";
 	export let image = "/test_album.png";
 	export let description = "this is a description of the track that I've added to my list of favourite tracks for every month, very cool yes I know.";
-	export const lastEdit = null;
 </script>
 
 <div class="track">
@@ -16,9 +14,6 @@
 		<h3>{artist}</h3>
 		{#if description}
 			<p>{description}</p>
-		{/if}
-		{#if lastEdit}
-			<h5>Last edit: {lastEdit}</h5>
 		{/if}
 	</div>
 </div>

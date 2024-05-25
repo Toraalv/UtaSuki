@@ -13,7 +13,5 @@ export async function load({ fetch, params, url }) {
 	let api = new UtaSuki_API();
 	let years = await api.fetchYears(fetch, url.pathname.split("/")[1]);
 
-	console.log(years);
-
 	return { years };
 }

@@ -2,16 +2,19 @@
 	import { page } from "$app/stores";
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import { _ } from "svelte-i18n";
 </script>
 
-<SwayWindow title="years" altTitle="recorded years" mainStyle="max-width: 300px; min-width: 300px">
+<SwayWindow title="{$_('general.years')}" altTitle="{$_('general.years')}" mainStyle="max-width: 300px; min-width: 300px">
 	{#if $page.data.years.error}
-		<Alert severity="{$page.data.years.error.severity}" code="{$page.data.years.error.code}" />
+		<Alert severity="{$page.data.years.error.severity}" code="{$_($page.data.years.error.code)}" />
 	{:else}
 		{#each $page.data.years as year}
 			<a href="/{$page.url.pathname.split("/")[1]}/{year}"> <!-- hantering av nästade slugs är (；￣Д￣) -->
 				{#if $page.params.slug == year} <!-- これめっちゃええやん -->
-					<h4 style="background-color: var(--accent); border-color: var(--accent)">{year}</h4>
+					<h4 style="background-color: var(--accent); border-color: var(--accent)">
+						{year}
+					</h4>
 				{:else}
 					<h4>{year}</h4>
 				{/if}

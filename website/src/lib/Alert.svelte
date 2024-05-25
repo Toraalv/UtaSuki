@@ -1,7 +1,5 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import "$lib/i18n"; // nånting nånting i18n måste laddas in...? igen?
-	import { _ } from "svelte-i18n";
 	export let severity = null;
 	export let code = null;
 </script>
@@ -12,5 +10,5 @@
 	mainStyle="border-color: var(--{severity}); margin: auto; margin-top: 1rem; max-width: 30rem;"
 	titleStyle="background-color: var(--{severity}); color: var(--text)"
 	contentStyle="text-align: center">
-	<p>{$_(code)}</p>
+	<p>{code}</p>
 </SwayWindow>

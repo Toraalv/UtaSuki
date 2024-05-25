@@ -40,7 +40,7 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
 
 app.get("/users", async (req, res) => {
-	let users = await dbQuery(`SELECT username, created, image FROM users;`);
+	let users = await dbQuery(`SELECT username, created, image FROM users WHERE public IS TRUE;`);
 
 	if (users.length == 0) {
 		res.status(200).json({
@@ -150,7 +150,8 @@ app.get("/tracks", async (req, res) => {
 								released,
 								tracks.image,
 								description,
-								last_edit
+								last_edit,
+								track_desc_public
 							FROM
 								user_tracks
 							JOIN
@@ -191,8 +192,8 @@ app.get("/tracks", async (req, res) => {
 			title: data[i].title,
 			released: data[i].released,
 			image: data[i].image,
-			description: data[i].description,
-			last_edit: data[i].last_edit,
+			description: data[i].track_desc_public && data[i].description,
+			last_edit: data[i].track_desc_public && data[i].last_edit,
 		});
 	}
 

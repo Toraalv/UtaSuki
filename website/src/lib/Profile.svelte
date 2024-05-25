@@ -1,28 +1,31 @@
 <script>
+	import { _ } from "svelte-i18n";
 	// const är bara för att svelte inte ska klaga, använder inte de fälten precis just nu
 	export let username = "artist of track";
 	export let image = "/test_profile.jpg";
 	//export let bio = "this is some users bio, very cool";
-	export let created = null;
+	export let created = new Date();
+
+	
+	let memberSince = `${created.getFullYear()}-${(created.getMonth() + 1) < 10 ? "0" + (created.getMonth() + 1) : (created.getMonth() + 1)}-${created.getDate() < 10 ? "0" + created.getDate() : (created.getDate())}`
 </script>
 
 <div class="profile">
-	<img src="{image}" alt="profile picture">
+	<img src="{image}" alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
 		<!-- {#if bio}
 			<p>{bio}</p>
 		{/if} -->
 		{#if created}
-			<h5>member since: {created}</h5>
+			<h5>{$_("general.member_since")}: {memberSince}</h5>
 		{/if}
 	</div>
 </div>
 
 <style>
-	p {
-		padding: 0;
-		margin: 0;
+	h5 {
+		color: var(--d_text);
 	}
 	img {
 		object-fit: cover;
@@ -39,6 +42,9 @@
 		border: 1px solid var(--unfocused_border);
 	}
 	.profileInfo {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 		/* font-family: "DejaVuSans"; */
 		margin: 10px;
 	}

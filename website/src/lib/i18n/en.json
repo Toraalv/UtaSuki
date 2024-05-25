@@ -1,4 +1,26 @@
 {
+	"months": {
+		"0": "january",
+		"1": "february",
+		"2": "march",
+		"3": "april",
+		"4": "may",
+		"5": "june",
+		"6": "july",
+		"7": "august",
+		"8": "september",
+		"9": "october",
+		"10": "november",
+		"11": "december"
+	},
+	"general": {
+		"member_since": "member since",
+		"login": "login",
+		"user_profiles": "user profiles",
+		"user_profiles_alt": "publicly visible user profiles on utasuki",
+		"years": "years",
+		"tracks": "tracks"
+	},
 	"error": {
 		"connection_refused": "connection to the server could not be established",
 		"connection_timeout": "request to the server timed out",
