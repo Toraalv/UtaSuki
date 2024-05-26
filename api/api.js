@@ -37,6 +37,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
+// formulär filhantering
+const multer = require("multer");
+const { body, validationResult } = require("express-validator");
+const handleError = (err, res) => {
+	res.status(500).json({
+		status: "NOT OK",
+		version: VERSION,
+		message: {
+			severity: "error",
+			code: "error.file_upload"
+		}
+	});
+};
+
+const upload = multer({
+	dest: "./.temp/"
+});
+
+
 app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
 
 app.get("/users", async (req, res) => {
@@ -63,7 +82,7 @@ app.get("/years", async (req, res) => {
 	try {
 		username = JSON.parse(req.query.data).username;
 	} catch (e) {
-		res.status(404).json({
+		res.status(400).json({
 			status: "NOT OK",
 			version: VERSION,
 			message: {
@@ -74,8 +93,9 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 	
+	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
 	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
-	if (!userExist.length) { // strävan efter så korta if-satser som möjligt är konstant
+	if (!userExist.length) {
 		res.status(404).json({
 			status: "NOT OK",
 			version: VERSION,
@@ -118,7 +138,7 @@ app.get("/tracks", async (req, res) => {
 		year = JSON.parse(req.query.data).year;
 		username = JSON.parse(req.query.data).username;
 	} catch (e) {
-		res.status(404).json({
+		res.status(400).json({
 			status: "NOT OK",
 			version: VERSION,
 			message: {
@@ -128,8 +148,10 @@ app.get("/tracks", async (req, res) => {
 		});
 		return;
 	}
+
+	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
 	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
-	if (!userExist.length) { // strävan efter så korta if-satser som möjligt är konstant
+	if (!userExist.length) {
 		res.status(404).json({
 			status: "NOT OK",
 			version: VERSION,
@@ -201,6 +223,103 @@ app.get("/tracks", async (req, res) => {
 		status: "OK",
 		version: VERSION,
 		data: monthTracks
+	});
+});
+
+app.post("/addTrack", upload.single("file"), async (req, res) => {
+	console.log(req.path);
+
+	let username = req.body.username;
+	let artist = req.body.artist;
+	let album = req.body.album;
+	let title = req.body.title;
+	let date = req.body.date;
+	let released = req.body.released;
+	let description = req.body.description;
+
+	// se till att alla fält är ifyllda
+	if ([username, artist, album, title, date, released, description].includes(undefined)) {
+		res.status(400).json({
+			status: "NOT OK",
+			version: VERSION,
+			message: {
+				severity: "error",
+				code: "error.addtrack_fields_not_specified"
+			}
+		});
+		return;
+	}
+	
+	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
+	let userExist = await dbQuery(`SELECT uid FROM users WHERE username = ?`, [username]);
+	if (!userExist.length) {
+		res.status(404).json({
+			status: "NOT OK",
+			version: VERSION,
+			message: {
+				severity: "error",
+				code: "error.user_not_exist"
+			}
+		});
+		return;
+	}
+
+	let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?`, [artist, album, title]);
+	
+	// om låt existerar, lägg bara till i user_tracks, annars skapas den och läggs till i tracks
+	if (trackExist.length) { // bör aldrig vara större än 1
+		try {
+			let userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackExist[0].id, date, description]);
+			console.log(userTrackInsert);
+		} catch (e) {
+			console.log(e.code);
+			res.status(404).json({
+				status: "NOT OK",
+				version: VERSION,
+				message: {
+					severity: "error",
+					code: "error.track_already_added"
+				}
+			});
+			return;
+		}
+	}
+	else {
+		try {
+			let trackInsert = await dbQuery(`
+				INSERT INTO tracks (
+					artist,
+					album,
+					title,
+					released,
+					image
+				)
+				VALUES (?, ?, ?, ?, ?)`,
+				[
+					artist,
+					album,
+					title,
+					released,
+					`https://utasuki.toralv.dev:8802/static/images/album_covers/${album}.FILFORMAT`
+				]
+			);
+			let userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
+		} catch (e) {
+			res.status(404).json({
+				status: "NOT OK",
+				version: VERSION,
+				message: {
+					severity: "error",
+					code: "error.undefined"
+				}
+			});
+			return;
+		}
+	}
+
+	res.status(200).json({
+		status: "OK",
+		version: VERSION
 	});
 });
 

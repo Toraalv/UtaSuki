@@ -19,13 +19,16 @@
 		"user_profiles": "user profiles",
 		"user_profiles_alt": "publicly visible user profiles on utasuki",
 		"years": "years",
-		"tracks": "tracks"
+		"tracks": "tracks",
+		"add_track": "add track",
+		"add": "add"
 	},
 	"error": {
 		"connection_refused": "connection to the server could not be established",
 		"connection_timeout": "request to the server timed out",
 		"endpoint_default": "unexpected error from server",
-		"user_not_exist": "specified user does not exist"
+		"user_not_exist": "specified user does not exist",
+		"addtrack_fields_not_specified": "the required fields for adding a track were not specified correctly"
 	},
 	"warning": {
 		"no_tracks_year": "user does not have any tracks for the specified year"

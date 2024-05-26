@@ -19,13 +19,16 @@
 		"user_profiles": "användarprofiler",
 		"user_profiles_alt": "publika användarprofiler på utasuki",
 		"years": "år",
-		"tracks": "låtar"
+		"tracks": "låtar",
+		"add_track": "lägg till låt",
+		"add": "lägg till"
 	},
 	"error": {
 		"connection_refused": "anslutning till servern kunde ej etableras",
 		"connection_timeout": "förfrågan till servern tog för lång tid",
 		"endpoint_default": "oförväntad fel från servern",
-		"user_not_exist": "vald användare existerar ej"
+		"user_not_exist": "vald användare existerar ej",
+		"addtrack_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade"
 	},
 	"warning": {
 		"no_tracks_year": "användare har inga låtar för valt år"

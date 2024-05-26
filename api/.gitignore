@@ -1,3 +1,4 @@
 node_modules
 start_*.sh
 public
+.temp/*
