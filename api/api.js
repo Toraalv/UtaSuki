@@ -107,7 +107,7 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 
-	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE username = ?`, [username]);
+	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE username = ? ORDER BY date`, [username]);
 
 	// om användaren inte har några låtar
 	if (data.length == 0) {
@@ -227,18 +227,32 @@ app.get("/tracks", async (req, res) => {
 });
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
-	console.log(req.path);
+	console.log(req.ip);
 
-	let username = req.body.username;
+	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:85.226.12.104") {
+		res.status(403).json({
+			status: "NOT OK",
+			version: VERSION,
+			message: {
+				severity: "error",
+				code: "error.forbidden"
+			}
+		});
+		return;
+	}
+
+	//let username = req.body.username;
+	let username = "Toralv";
 	let artist = req.body.artist;
 	let album = req.body.album;
 	let title = req.body.title;
-	let date = req.body.date;
-	let released = req.body.released;
+	let date = `${req.body.year}-${req.body.month}`;
+	//let released = req.body.released;
+	let released = "0000-00-00";
 	let description = req.body.description;
 
 	// se till att alla fält är ifyllda
-	if ([username, artist, album, title, date, released, description].includes(undefined)) {
+	if ([username, artist, album, title, date].includes(undefined)) {
 		res.status(400).json({
 			status: "NOT OK",
 			version: VERSION,
@@ -249,6 +263,12 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		});
 		return;
 	}
+	date = `${date}-15`; // padda (annars funkar inte undefined kollen)
+
+	// bilden
+	const tempPath = req.file.path;
+	const imageExt = path.extname(req.file.originalname).toLowerCase();
+	const targetPath = path.join(__dirname, `./public/images/album_covers/${album}${imageExt}`);
 	
 	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
 	let userExist = await dbQuery(`SELECT uid FROM users WHERE username = ?`, [username]);
@@ -300,7 +320,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					album,
 					title,
 					released,
-					`https://utasuki.toralv.dev:8802/static/images/album_covers/${album}.FILFORMAT`
+					`https://utasuki.toralv.dev:8802/static/images/album_covers/${album}${imageExt}`
 				]
 			);
 			let userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
@@ -317,10 +337,15 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		}
 	}
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION
+	fs.rename(tempPath, targetPath, error => {
+		if (error) return handleError(error, res);
+		res.redirect("https://utasuki.toralv.dev/");
 	});
+
+	//res.status(200).json({
+	//	status: "OK",
+	//	version: VERSION
+	//});
 });
 
 const httpServer = http.createServer(app);

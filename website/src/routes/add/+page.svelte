@@ -4,19 +4,36 @@
 
 	let years = Array.from({ length: 2024 - 2017 + 1 }, (_, i) => 2024 - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
-	console.log(months);
+
+	let imageInput;
+	let image;
+	function imageChange() {
+		const file = imageInput.files[0];
+			
+		if (file) {
+			const reader = new FileReader();
+			reader.addEventListener("load", function () {
+				image.setAttribute("src", reader.result);
+			});
+			reader.readAsDataURL(file);	
+			return;
+		} 
+	}
 </script>
 
-<SwayWindow title="{$_('general.add_track')}" altTitle="{$_('general.add_track')}" mainStyle="margin: auto; margin-top: 1rem;">
-	<form method="post" enctype="multipart/form-data" action="/addTrack">
+<SwayWindow title="{$_('general.add_track')}" altTitle="{$_('general.add_track')}" mainStyle="margin: auto; margin-top: 1rem; max-width: 70rem">
+	<form method="post" enctype="multipart/form-data" action="http://localhost:5900/addTrack">
 		<div>
-			<label for="imageSelect"><img src="/add_image_placeholder.webp" id="placeholderImg" alt="input album"><input type="file" name="file" accept="image/*" id="imageSelect"></label>
+			<label for="imageSelect">
+				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
+				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} on:change={imageChange}>
+			</label>
 			<table cellpadding="5" cellspacing="0" id="trackFormInfo">
 				<tbody>
 					<tr>
 						<td>year:</td>
 						<td>
-							<select id="select_year" name="selected_year" required>
+							<select name="year" required>
 								{#each years as year}
 									<option value="{year}">{year}</option>
 								{/each}
@@ -25,7 +42,7 @@
 					</tr>
 						<td>month:</td>
 						<td>
-							<select id="select_month" name="selected_month" required>
+							<select name="month" required>
 								{#each months as month}
 									<option value="{month + 1}">{$_(`months.${month}`)}</option>
 								{/each}
@@ -36,7 +53,7 @@
 					<tr>
 						<td>track name:</td>
 						<td>
-							<input type="text" name="track" autocomplete="off" required>
+							<input type="text" name="title" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
@@ -81,25 +98,28 @@
 		display: none;
 	}
 	label {
-		width: auto;
-		height: 100%;
 	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
 		object-fit: fill;
+		width: 300px;
+		height: 300px;
 	}
 	
 	label > img:hover {
 		outline: 1px solid var(--border);
 	}
-
+	#addBtn {
+		margin-top: 10px;
+	}
 	div {
 		display: flex;
 		flex-direction: row;
 	}
 
 	table {
-		width: 100%;
+		flex-grow: 1;
+		margin-left: 20px;
 	}
 
 	input, select, textarea {
