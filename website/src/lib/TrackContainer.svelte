@@ -1,14 +1,14 @@
 <script>
-	// const är bara för att svelte inte ska klaga, använder inte de fälten precis just nu
+	import { CDN_ADDR } from "$lib/globals.js";
+
 	export let artist = "artist of track";
 	export let album = "album of track";
 	export let title = "title of track";
 	export let image = "/test_album.png";
 	export let description = "this is a description of the track that I've added to my list of favourite tracks for every month, very cool yes I know.";
 </script>
-
 <div class="track">
-	<img src="{image}" alt="{album} cover">
+	<img src="{image.substring(0, 5) == "https" ? image : (CDN_ADDR + image)}" alt="{album} cover">
 	<div class="trackInfo">
 		<h1>{title}</h1>
 		<h3>{artist}</h3>

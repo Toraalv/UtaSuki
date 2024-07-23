@@ -1,6 +1,5 @@
 <script>
 	import { page } from "$app/stores";
-	import { monthMap } from "$lib/helpers.js";
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import TrackContainer from "$lib/TrackContainer.svelte"
@@ -16,7 +15,7 @@
 
 <SwayWindow title="{$_('general.tracks')}" altTitle="{$_('general.tracks')}" id="sway_window_tracks">
 	{#if $page.data.monthTracks.error}
-		<Alert severity="{$page.data.monthTracks.error.severity}" code="{$_($page.data.monthTracks.error.code)}" />
+		<Alert severity="{$page.data.monthTracks.error.severity}" code="{$page.data.monthTracks.error.code}" />
 	{:else}
 		{#each $page.data.monthTracks as month, i}
 			{#if month.length}

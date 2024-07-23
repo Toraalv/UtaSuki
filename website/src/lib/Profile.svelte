@@ -1,6 +1,6 @@
 <script>
 	import { _ } from "svelte-i18n";
-	// const är bara för att svelte inte ska klaga, använder inte de fälten precis just nu
+	import { CDN_ADDR } from "$lib/globals.js";
 	export let username = "artist of track";
 	export let image = "/test_profile.jpg";
 	//export let bio = "this is some users bio, very cool";
@@ -11,7 +11,7 @@
 </script>
 
 <div class="profile">
-	<img src="{image}" alt="profile">
+	<img src="{CDN_ADDR + image}" alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
 		<!-- {#if bio}

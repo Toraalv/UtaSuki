@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 import fs from "fs";
 
 export default defineConfig(() => {
-	const PORT = process.env.APP_ENV == "dev" ? 5901 : 443;
+	const PORT = process.env.APP_ENV == "dev" ? 5901 : 8801;
 
 	if (process.env.APP_ENV == "dev") {
 		return {

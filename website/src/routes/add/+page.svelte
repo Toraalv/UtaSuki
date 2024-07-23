@@ -1,6 +1,7 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import { _ } from "svelte-i18n";
+	import { CDN_ADDR } from "$lib/globals.js";
 
 	let years = Array.from({ length: 2024 - 2017 + 1 }, (_, i) => 2024 - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
@@ -22,7 +23,7 @@
 </script>
 
 <SwayWindow title="{$_('general.add_track')}" altTitle="{$_('general.add_track')}" mainStyle="margin: auto; margin-top: 1rem; max-width: 70rem">
-	<form method="post" enctype="multipart/form-data" action="http://localhost:5900/addTrack">
+	<form method="post" enctype="multipart/form-data" action="{CDN_ADDR}/addTrack">
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>

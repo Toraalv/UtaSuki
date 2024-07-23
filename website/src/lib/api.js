@@ -1,6 +1,4 @@
-import { dev } from "$app/environment";
-
-const PORT = dev ? 5900 : 8800;
+import { API_PORT } from "$lib/globals.js";
 
 class UtaSuki_API {
 	constructor() {}
@@ -33,7 +31,7 @@ class UtaSuki_API {
 	}
 
 	async fetchData(fetch, endpoint, args) {
-		let req = new Request(`http://localhost:${PORT}/${endpoint}?data=${JSON.stringify(args)}`, {
+		let req = new Request(`http://localhost:${API_PORT}/${endpoint}?data=${JSON.stringify(args)}`, {
 			method: "GET",
 		});
 

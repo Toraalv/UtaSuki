@@ -7,7 +7,7 @@
 
 <SwayWindow title="{$_('general.years')}" altTitle="{$_('general.years')}" mainStyle="max-width: 300px; min-width: 300px">
 	{#if $page.data.years.error}
-		<Alert severity="{$page.data.years.error.severity}" code="{$_($page.data.years.error.code)}" />
+		<Alert severity="{$page.data.years.error.severity}" code="{$page.data.years.error.code}" />
 	{:else}
 		{#each $page.data.years as year}
 			<a href="/{$page.url.pathname.split("/")[1]}/{year}"> <!-- hantering av nästade slugs är (；￣Д￣) -->
