@@ -2,3 +2,4 @@ node_modules
 start_*.sh
 public
 .temp/*
+tmux_start_prod.sh
