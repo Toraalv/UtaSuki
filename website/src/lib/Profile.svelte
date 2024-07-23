@@ -11,7 +11,7 @@
 </script>
 
 <div class="profile">
-	<img src="{CDN_ADDR + image}" alt="profile">
+	<img src="{image.substring(0, 5) == "https" ? image : (CDN_ADDR + image)}" alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
 		<!-- {#if bio}
