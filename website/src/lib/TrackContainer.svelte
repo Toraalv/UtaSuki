@@ -8,7 +8,7 @@
 	export let description = "this is a description of the track that I've added to my list of favourite tracks for every month, very cool yes I know.";
 </script>
 <div class="track">
-	<img src="{image.substring(0, 5) == "https" ? image : (CDN_ADDR + image)}" alt="{album} cover">
+	<img src="{CDN_ADDR + image}" alt="{album} cover">
 	<div class="trackInfo">
 		<h1>{title}</h1>
 		<h3>{artist}</h3>

@@ -15,6 +15,7 @@
 	},
 	"general": {
 		"member_since": "användare sedan",
+		"last_activity": "senast aktiv",
 		"login": "inloggning",
 		"user_profiles": "användarprofiler",
 		"user_profiles_alt": "publika användarprofiler på utasuki",
@@ -28,6 +29,7 @@
 		"connection_timeout": "förfrågan till servern tog för lång tid",
 		"endpoint_default": "oförväntad fel från servern",
 		"user_not_exist": "vald användare existerar ej",
+		"user_activity": "uppdatering av användarens senaste aktivitet misslyckades",
 		"addtrack_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade"
 	},
 	"warning": {

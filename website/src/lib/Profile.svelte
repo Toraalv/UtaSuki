@@ -1,25 +1,39 @@
 <script>
-	import { _ } from "svelte-i18n";
 	import { CDN_ADDR } from "$lib/globals.js";
+	import { _ } from "svelte-i18n";
+
 	export let username = "artist of track";
 	export let image = "/test_profile.jpg";
 	//export let bio = "this is some users bio, very cool";
 	export let created = new Date();
-
+	export let activity = null;
 	
-	let memberSince = `${created.getFullYear()}-${(created.getMonth() + 1) < 10 ? "0" + (created.getMonth() + 1) : (created.getMonth() + 1)}-${created.getDate() < 10 ? "0" + created.getDate() : (created.getDate())}`
+	let memberSince = `${created.getFullYear()}-${(created.getMonth() + 1) < 10 ? "0" + (created.getMonth() + 1) : (created.getMonth() + 1)}-${created.getDate() < 10 ? "0" + created.getDate() : (created.getDate())}`;
+
+	if (activity != null) {
+		activity = new Date(activity); // まぁまぁまぁ
+		activity = `${activity.getFullYear()}-${(activity.getMonth() + 1) < 10 ? "0" + (activity.getMonth() + 1) : (activity.getMonth() + 1)}-${activity.getDate() < 10 ? "0" + activity.getDate() : (activity.getDate())}`;
+	}
 </script>
 
 <div class="profile">
-	<img src="{image.substring(0, 5) == "https" ? image : (CDN_ADDR + image)}" alt="profile">
+	<img src="{CDN_ADDR + image}" alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
 		<!-- {#if bio}
 			<p>{bio}</p>
 		{/if} -->
-		{#if created}
-			<h5>{$_("general.member_since")}: {memberSince}</h5>
-		{/if}
+		<div style="display: flex; flex-direction: row">
+			{#if created}
+				<h5>{$_("general.member_since")}: {memberSince}</h5>
+			{/if}
+			{#if created && activity}
+				<div style="margin: 0 8px 0 8px; width: 2px; background-color: var(--unfocused_border)"></div>
+			{/if}
+			{#if activity}
+				<h5>{$_("general.last_activity")}: {activity}</h5>
+			{/if}
+		</div>
 	</div>
 </div>
 

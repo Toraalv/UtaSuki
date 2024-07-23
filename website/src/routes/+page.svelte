@@ -15,7 +15,7 @@
 	{:else}
 		{#each $page.data.users as user}
 			<a href="/{user.username}">
-				<Profile username="{user.username}" image="{user.image}" created="{new Date(user.created)}"/>
+				<Profile username="{user.username}" image="{user.image}" created="{new Date(user.created)}" activity="{user.last_activity}"/>
 			</a>
 		{/each}
 	{/if}

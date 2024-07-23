@@ -59,7 +59,7 @@ const upload = multer({
 app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
 
 app.get("/users", async (req, res) => {
-	let users = await dbQuery(`SELECT username, created, image FROM users WHERE public IS TRUE;`);
+	let users = await dbQuery(`SELECT username, created, image, last_activity FROM users WHERE public IS TRUE;`);
 
 	if (users.length == 0) {
 		res.status(200).json({
@@ -263,7 +263,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		});
 		return;
 	}
-	date = `${date}-15`; // padda (annars funkar inte undefined kollen)
+	date = `${date}-15`; // padda (annars funkar inte undefined kollen) // ケロケロ
 
 	// bilden
 	const tempPath = req.file.path;
@@ -337,15 +337,25 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		}
 	}
 
+	// uppdatera last_activity
+	try {
+		let userUpdateActivity = await dbQuery(`UPDATE users SET last_activity = current_timestamp() WHERE uid = ?`, [userExist[0].uid]);
+	} catch (e) {
+		res.status(404).json({
+			status: "NOT OK",
+			version: VERSION,
+			message: {
+				severity: "error",
+				code: "error.user_activity"
+			}
+		});
+		return;
+	}
+
 	fs.rename(tempPath, targetPath, error => {
 		if (error) return handleError(error, res);
-		res.redirect("https://utasuki.toralv.dev/");
+		res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
 	});
-
-	//res.status(200).json({
-	//	status: "OK",
-	//	version: VERSION
-	//});
 });
 
 const httpServer = http.createServer(app);

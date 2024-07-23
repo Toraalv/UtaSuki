@@ -15,6 +15,7 @@
 	},
 	"general": {
 		"member_since": "member since",
+		"last_activity": "last activity",
 		"login": "login",
 		"user_profiles": "user profiles",
 		"user_profiles_alt": "publicly visible user profiles on utasuki",
@@ -28,6 +29,7 @@
 		"connection_timeout": "request to the server timed out",
 		"endpoint_default": "unexpected error from server",
 		"user_not_exist": "specified user does not exist",
+		"user_activity": "updating user activity failed",
 		"addtrack_fields_not_specified": "the required fields for adding a track were not specified correctly"
 	},
 	"warning": {
