@@ -229,7 +229,7 @@ app.get("/tracks", async (req, res) => {
 app.post("/addTrack", upload.single("file"), async (req, res) => {
 	console.log(req.ip);
 
-	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:85.226.12.104") {
+	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1") {
 		res.status(403).json({
 			status: "NOT OK",
 			version: VERSION,
@@ -320,7 +320,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					album,
 					title,
 					released,
-					`https://utasuki.toralv.dev:8802/static/images/album_covers/${album}${imageExt}`
+					`/static/images/album_covers/${album}${imageExt}`
 				]
 			);
 			let userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
