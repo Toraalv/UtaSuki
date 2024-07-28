@@ -40,7 +40,7 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 // formulär filhantering
 const multer = require("multer");
 const { body, validationResult } = require("express-validator");
-const handleError = (err, res) => {
+const handleFsError = (e, res) => {
 	res.status(500).json({
 		status: "NOT OK",
 		version: VERSION,
@@ -93,7 +93,7 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 	
-	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
+	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
 		res.status(404).json({
@@ -109,7 +109,7 @@ app.get("/years", async (req, res) => {
 
 	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE username = ? ORDER BY date`, [username]);
 
-	// om användaren inte har några låtar
+	// if user has any tracks
 	if (data.length == 0) {
 		res.status(404).json({
 			status: "SEMI-OK",
@@ -122,7 +122,7 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 
-	let years = [...new Set(data.map((item) => item.date.getFullYear()))]; // tar ut unika år, 凄い
+	let years = [...new Set(data.map((item) => item.date.getFullYear()))]; // extracts unique years, 凄い
 
 	res.status(200).json({
 		status: "OK",
@@ -149,7 +149,7 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
+	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
 		res.status(404).json({
@@ -205,7 +205,7 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []]; // det här är ju typ ganska fult
+	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []]; // ugly
 
 	for (let i = 0; i < data.length; i++) {
 		monthTracks[data[i].date.getMonth()].push({
@@ -229,15 +229,25 @@ app.get("/tracks", async (req, res) => {
 app.post("/addTrack", upload.single("file"), async (req, res) => {
 	console.log(req.ip);
 
-	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1") {
-		res.status(403).json({
+	const tempPath = req.file.path;
+	const handleError = (status, code, trackInsert) => {
+		// removes the track if something failed
+		if (trackInsert)
+			dbQuery(`DELETE FROM tracks WHERE id = ?;`, [trackInsert.insertId]);
+
+		fs.rm(tempPath, e => { if (e) return handleFsError(e, res) });
+		res.status(status).json({
 			status: "NOT OK",
 			version: VERSION,
 			message: {
 				severity: "error",
-				code: "error.forbidden"
+				code: code
 			}
 		});
+	}
+
+	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1") {
+		handleError(401, "error.forbidden");
 		return;
 	}
 
@@ -251,62 +261,39 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	let released = "0000-00-00";
 	let description = req.body.description;
 
-	// se till att alla fält är ifyllda
+	// makes sure that every field is filled
 	if ([username, artist, album, title, date].includes(undefined)) {
-		res.status(400).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.addtrack_fields_not_specified"
-			}
-		});
+		handleError(400, "error.addtrack_fields_not_specified");
 		return;
 	}
-	date = `${date}-15`; // padda (annars funkar inte undefined kollen) // ケロケロ
 
-	// bilden
-	const tempPath = req.file.path;
+	date = `${date}-15`; // cannot not add "-15" before undefined check (because then it would never be undefined)
+
+	// the image
 	const imageExt = path.extname(req.file.originalname).toLowerCase();
 	const targetPath = path.join(__dirname, `./public/images/album_covers/${album}${imageExt}`);
 	
-	// kolla så att användaren existerar -- OBS, uid är primärnyckel, men jag kollar username. detta är absolut ett problem
+	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT uid FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
-		res.status(404).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_exist"
-			}
-		});
+		handleError(404, "error.user_not_exist");
 		return;
 	}
 
 	let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?`, [artist, album, title]);
 	
-	// om låt existerar, lägg bara till i user_tracks, annars skapas den och läggs till i tracks
-	if (trackExist.length) { // bör aldrig vara större än 1
+	let userTrackInsert, trackInsert;
+	if (trackExist.length) { // if track already exists, only add to user_tracks, otherwise both tracks and user_tracks
 		try {
-			let userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackExist[0].id, date, description]);
-			console.log(userTrackInsert);
+			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackExist[0].id, date, description]);
 		} catch (e) {
-			console.log(e.code);
-			res.status(404).json({
-				status: "NOT OK",
-				version: VERSION,
-				message: {
-					severity: "error",
-					code: "error.track_already_added"
-				}
-			});
+			handleError(418, "error.track_already_added");
 			return;
 		}
 	}
 	else {
 		try {
-			let trackInsert = await dbQuery(`
+			trackInsert = await dbQuery(`
 				INSERT INTO tracks (
 					artist,
 					album,
@@ -323,39 +310,24 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					`/static/images/album_covers/${album}${imageExt}`
 				]
 			);
-			let userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
+			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
+			throw new error();
 		} catch (e) {
-			res.status(404).json({
-				status: "NOT OK",
-				version: VERSION,
-				message: {
-					severity: "error",
-					code: "error.undefined"
-				}
-			});
+			handleError(500, "error.add_track", trackInsert, userTrackInsert);
 			return;
 		}
 	}
 
-	// uppdatera last_activity
+	// update last_activity
 	try {
 		let userUpdateActivity = await dbQuery(`UPDATE users SET last_activity = current_timestamp() WHERE uid = ?`, [userExist[0].uid]);
 	} catch (e) {
-		res.status(404).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_activity"
-			}
-		});
+		handleError(500, "error.user_activity", trackInsert, userTrackInsert);
 		return;
 	}
 
-	fs.rename(tempPath, targetPath, error => {
-		if (error) return handleError(error, res);
-		res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
-	});
+	fs.rename(tempPath, targetPath, e => { if (e) return handleFsError(e, res); });
+	res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
 });
 
 const httpServer = http.createServer(app);
