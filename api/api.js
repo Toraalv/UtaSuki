@@ -9,7 +9,7 @@ const http = require("http");
 // konstanter
 const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
-const PORT = APP_ENV == "dev" ? 5900 : 8800; // ぱちぱち　ごく
+const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
 const HTTPS_PORT = 8802;
 let privateKey, certificate, ca;
 if (APP_ENV != "dev") {
@@ -23,7 +23,7 @@ const credentials = {
 	ca: ca
 };
 
-// db anslutning
+// db connection
 const mariadb = require("mariadb");
 const pool = mariadb.createPool({
 	socketPath: "/run/mysqld/mysqld.sock",
@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-// formulär filhantering
+// form file management
 const multer = require("multer");
 const { body, validationResult } = require("express-validator");
 const handleFsError = (e, res) => {
@@ -246,7 +246,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		});
 	}
 
-	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1") {
+	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1" && req.ip != "::1") { // 何故この１？何故なの？勘弁してくれ〜〜
 		handleError(401, "error.forbidden");
 		return;
 	}
@@ -311,7 +311,6 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 				]
 			);
 			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
-			throw new error();
 		} catch (e) {
 			handleError(500, "error.add_track", trackInsert, userTrackInsert);
 			return;
@@ -327,7 +326,12 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	}
 
 	fs.rename(tempPath, targetPath, e => { if (e) return handleFsError(e, res); });
-	res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
+
+	res.status(200).json({
+		status: "OK",
+		version: VERSION
+	});
+	//res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
 });
 
 const httpServer = http.createServer(app);

@@ -23,7 +23,7 @@
 </script>
 
 <SwayWindow title="{$_('general.add_track')}" altTitle="{$_('general.add_track')}" mainStyle="margin: auto; margin-top: 1rem; max-width: 70rem">
-	<form method="post" enctype="multipart/form-data" action="{CDN_ADDR}/addTrack">
+	<form method="POST" enctype="multipart/form-data">
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
@@ -84,7 +84,7 @@
 
 <style>
 	form {
-		box-sizing: border-box; /* でもさ～、何で？ */
+		box-sizing: border-box;
 	}
 	
 	* {

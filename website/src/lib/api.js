@@ -3,9 +3,19 @@ import { API_PORT } from "$lib/globals.js";
 class UtaSuki_API {
 	constructor() {}
 
+	async postTrack(fetch, formData) {
+		try {
+			let res = await this.requestData(fetch, "POST", "addTrack", undefined, formData);
+			console.log(res); // TODO: do something with the response
+			return res.data;
+		} catch (e) {
+			return { error: e };
+		}
+	}
+
 	async fetchUsers(fetch) {
 		try {
-			let res = await this.fetchData(fetch, "users");
+			let res = await this.requestData(fetch, "GET", "users");
 			return res.data;
 		} catch (e) {
 			return { error: e };
@@ -14,7 +24,7 @@ class UtaSuki_API {
 
 	async fetchYears(fetch, username) {
 		try {
-			let res = await this.fetchData(fetch, "years", { username: username });
+			let res = await this.requestData(fetch, "GET", "years", { username: username });
 			return res.data;
 		} catch (e) {
 			return { error: e };
@@ -23,16 +33,17 @@ class UtaSuki_API {
 
 	async fetchTracks(fetch, username, year) {
 		try {
-			let res = await this.fetchData(fetch, "tracks", { username: username, year: year });
+			let res = await this.requestData(fetch, "GET", "tracks", { username: username, year: year });
 			return res.data;
 		} catch (e) {
 			return { error: e };
 		}
 	}
 
-	async fetchData(fetch, endpoint, args) {
+	async requestData(fetch, method, endpoint, args, data) {
 		let req = new Request(`http://localhost:${API_PORT}/${endpoint}?data=${JSON.stringify(args)}`, {
-			method: "GET",
+			method: method,
+			body: data
 		});
 
 		try {

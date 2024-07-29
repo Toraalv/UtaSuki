@@ -1,6 +1,6 @@
 <script>
 	export let title = null;
-	export let altTitle = null;
+	export let altTitle = title;
 	export let mainStyle = null;
 	export let titleStyle = null;
 	export let contentStyle = null;

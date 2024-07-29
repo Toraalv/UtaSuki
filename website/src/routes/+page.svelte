@@ -6,7 +6,8 @@
 	import { _ } from "svelte-i18n";
 </script>
 
-<SwayWindow title="{$_('general.login')}" altTitle="{$_('general.login')}" mainStyle="max-width: 300px; min-width: 300px">
+<SwayWindow title="{$_('general.login')}" mainStyle="max-width: 300px; min-width: 300px">
+
 </SwayWindow>
 
 <SwayWindow title="{$_('general.user_profiles')}" altTitle="{$_('general.user_profiles_alt')}">
