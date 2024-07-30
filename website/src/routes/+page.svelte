@@ -12,7 +12,7 @@
 
 <SwayWindow title="{$_('general.user_profiles')}" altTitle="{$_('general.user_profiles_alt')}">
 	{#if $page.data.users.error}
-		<Alert severity="{$page.data.users.error.severity}" code="{$page.data.users.error.code}" />
+		<Alert severity="{$page.data.users.error.severity}" code="{$page.data.users.error.code}"/>
 	{:else}
 		{#each $page.data.users as user}
 			<a href="/{user.username}">

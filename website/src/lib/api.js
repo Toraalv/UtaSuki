@@ -6,8 +6,7 @@ class UtaSuki_API {
 	async postTrack(fetch, formData) {
 		try {
 			let res = await this.requestData(fetch, "POST", "addTrack", undefined, formData);
-			console.log(res); // TODO: do something with the response
-			return res.data;
+			return res;
 		} catch (e) {
 			return { error: e };
 		}

@@ -30,13 +30,15 @@
 		"endpoint_default": "oförväntad fel från servern",
 		"user_not_exist": "vald användare existerar ej",
 		"user_activity": "uppdatering av användarens senaste aktivitet misslyckades",
-		"addtrack_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade",
-		"add_track": "tilläggningen av låten gick ej igenom"
+		"add_track_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade",
+		"add_track": "tilläggningen av låten gick ej igenom",
+		"track_already_added": "låten är redan tillagd på det datumet"
 	},
 	"warning": {
 		"no_tracks_year": "användare har inga låtar för valt år"
 	},
 	"info": {
-		"user_no_tracks": "användaren har inga låtar"
+		"user_no_tracks": "användaren har inga låtar",
+		"add_track_success": "låt inläggningen lyckades"
 	}
 }

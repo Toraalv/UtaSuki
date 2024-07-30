@@ -20,7 +20,7 @@
 <style>
 	.sway_window {
 		border: 1px solid var(--unfocused_border);
-		background-color: var(--bkg);
+		background-color: var(--bg);
 		margin: 10px;
 		display: flex;
 		flex-grow: 1;

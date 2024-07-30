@@ -30,13 +30,15 @@
 		"endpoint_default": "unexpected error from server",
 		"user_not_exist": "specified user does not exist",
 		"user_activity": "updating user activity failed",
-		"addtrack_fields_not_specified": "the required fields for adding a track were not specified correctly",
-		"add_track": "track insertion failed"
+		"add_track_fields_not_specified": "the required fields for adding a track were not specified correctly",
+		"add_track": "track insertion failed",
+		"track_already_added": "track already added on that date"
 	},
 	"warning": {
 		"no_tracks_year": "user does not have any tracks for the specified year"
 	},
 	"info": {
-		"user_no_tracks": "user does not have any tracks"
+		"user_no_tracks": "user does not have any tracks",
+		"add_track_success": "track insertion was successful"
 	}
 }

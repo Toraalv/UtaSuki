@@ -263,7 +263,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 
 	// makes sure that every field is filled
 	if ([username, artist, album, title, date].includes(undefined)) {
-		handleError(400, "error.addtrack_fields_not_specified");
+		handleError(400, "error.add_track_fields_not_specified");
 		return;
 	}
 
@@ -329,7 +329,11 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 
 	res.status(200).json({
 		status: "OK",
-		version: VERSION
+		version: VERSION,
+		message: {
+			severity: "success",
+			code: "info.add_track_success"
+		}
 	});
 	//res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
 });
