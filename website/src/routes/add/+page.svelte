@@ -28,17 +28,17 @@
 	}
 </script>
 
-<SwayWindow title="{$_('general.add_track')}" altTitle="{$_('general.add_track')}" mainStyle="margin: auto; margin-top: 1rem; max-width: 70rem">
+<SwayWindow title="{$_('general.add_track')}" mainStyle="margin: auto; margin-top: 1rem; max-width: 70rem">
 	<form method="POST" enctype="multipart/form-data" action="?/addTrack" use:enhance>
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
 				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} on:change={imageChange}>
 			</label>
-			<table cellpadding="5" cellspacing="0" id="trackFormInfo">
+			<table cellpadding="5" cellspacing="0" >
 				<tbody>
 					<tr>
-						<td>year:</td>
+						<td>{$_("general.year")}:</td>
 						<td>
 							<select name="year" required>
 								{#each years as year}
@@ -47,7 +47,7 @@
 							</select>
 						</td>
 					</tr>
-						<td>month:</td>
+						<td>{$_("general.month")}:</td>
 						<td>
 							<select name="month" required>
 								{#each months as month}
@@ -58,27 +58,27 @@
 					<tr>
 					</tr>
 					<tr>
-						<td>track name:</td>
+						<td>{$_("general.track_name")}:</td>
 						<td>
 							<input type="text" name="title" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
-						<td>artist name:</td>
+						<td>{$_("general.artist_name")}:</td>
 						<td>
 							<input type="text" name="artist" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
-						<td>album name:</td>
+						<td>{$_("general.album_name")}:</td>
 						<td>
 							<input type="text" name="album" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
-						<td>description:</td>
+						<td>{$_("general.notes")}:</td>
 						<td>
-							<textarea name="description" rows="3" autocomplete="off"></textarea>
+							<textarea name="notes" rows="3" autocomplete="off"></textarea>
 						</td>
 					</tr>
 				</tbody>
@@ -115,21 +115,6 @@
 		cursor: pointer;
 	}
 
-	form {
-		box-sizing: border-box;
-	}
-	
-	* {
-		box-sizing: inherit;
-	}
-	
-	input:focus, textarea:focus {
-		outline: 0;
-	}
-	
-	input[type="file"] {
-		display: none;
-	}
 	label {
 	}
 	label > img {
@@ -153,15 +138,5 @@
 	table {
 		flex-grow: 1;
 		margin-left: 20px;
-	}
-
-	input, select, textarea {
-		margin: 0;
-		font-size: 18px;
-		background-color: #111;
-		border: 1px solid var(--unfocused_border);
-		color: var(--text);
-		width: 100%;
-		resize: none;
 	}
 </style>

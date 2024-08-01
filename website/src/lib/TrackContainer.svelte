@@ -5,15 +5,15 @@
 	export let album = "album of track";
 	export let title = "title of track";
 	export let image = "/test_album.png";
-	export let description = "this is a description of the track that I've added to my list of favourite tracks for every month, very cool yes I know.";
+	export let notes = "";
 </script>
 <div class="track">
 	<img src="{CDN_ADDR + image}" alt="{album} cover">
 	<div class="trackInfo">
 		<h1>{title}</h1>
 		<h3>{artist}</h3>
-		{#if description}
-			<p>{description}</p>
+		{#if notes}
+			<p>{notes}</p>
 		{/if}
 	</div>
 </div>

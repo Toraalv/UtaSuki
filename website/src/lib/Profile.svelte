@@ -54,6 +54,7 @@
 		flex-direction: row;
 		background-color: #111111;
 		border: 1px solid var(--unfocused_border);
+		margin-bottom: 10px;
 	}
 	.profileInfo {
 		display: flex;

@@ -25,7 +25,7 @@
 										album={track.album}
 										title={track.title}
 										image={track.image}
-										description={track.description}
+										notes={track.notes}
 						/>
 					{/each}
 				</MonthContainer>

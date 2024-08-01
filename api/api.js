@@ -171,9 +171,9 @@ app.get("/tracks", async (req, res) => {
 								title,
 								released,
 								tracks.image,
-								description,
+								notes,
 								last_edit,
-								track_desc_public
+								track_notes_public
 							FROM
 								user_tracks
 							JOIN
@@ -214,8 +214,8 @@ app.get("/tracks", async (req, res) => {
 			title: data[i].title,
 			released: data[i].released,
 			image: data[i].image,
-			description: data[i].track_desc_public && data[i].description,
-			last_edit: data[i].track_desc_public && data[i].last_edit,
+			notes: data[i].track_notes_public && data[i].notes,
+			last_edit: data[i].track_notes_public && data[i].last_edit,
 		});
 	}
 
@@ -259,7 +259,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	let date = `${req.body.year}-${req.body.month}`;
 	//let released = req.body.released;
 	let released = "0000-00-00";
-	let description = req.body.description;
+	let notes = req.body.notes;
 
 	// makes sure that every field is filled
 	if ([username, artist, album, title, date].includes(undefined)) {
@@ -285,7 +285,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	let userTrackInsert, trackInsert;
 	if (trackExist.length) { // if track already exists, only add to user_tracks, otherwise both tracks and user_tracks
 		try {
-			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackExist[0].id, date, description]);
+			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackExist[0].id, date, notes]);
 		} catch (e) {
 			handleError(418, "error.track_already_added");
 			return;
@@ -310,7 +310,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					`/static/images/album_covers/${album}${imageExt}`
 				]
 			);
-			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, description) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, description]);
+			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, notes]);
 		} catch (e) {
 			handleError(500, "error.add_track", trackInsert, userTrackInsert);
 			return;

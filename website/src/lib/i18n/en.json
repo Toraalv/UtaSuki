@@ -14,12 +14,30 @@
 		"11": "december"
 	},
 	"general": {
+		"home": "home",
+		"links": "links",
+		"about_site": "about this site",
+		"about": "about",
+		"homepage": "homepage",
+		"name": "name",
 		"member_since": "member since",
 		"last_activity": "last activity",
-		"login": "login",
+		"login_verb": "login",
+		"login_noun": "login",
+		"register_verb": "register",
+		"register_noun": "register",
 		"user_profiles": "user profiles",
-		"user_profiles_alt": "publicly visible user profiles on utasuki",
+		"user_profiles+": "publicly visible user profiles on utasuki",
 		"years": "years",
+		"year": "year",
+		"month": "month",
+		"track_name": "track name",
+		"artist_name": "artist",
+		"album_name": "album",
+		"notes": "notes",
+		"email": "email",
+		"username": "username",
+		"password": "password",
 		"tracks": "tracks",
 		"add_track": "add track",
 		"add": "add"
@@ -32,13 +50,23 @@
 		"user_activity": "updating user activity failed",
 		"add_track_fields_not_specified": "the required fields for adding a track were not specified correctly",
 		"add_track": "track insertion failed",
+		"forbidden": "you do not have permission to do that",
 		"track_already_added": "track already added on that date"
 	},
 	"warning": {
-		"no_tracks_year": "user does not have any tracks for the specified year"
+		"no_tracks_year": "user does not have any tracks for the specified year",
+		"WIP": "not yet implemented!"
 	},
 	"info": {
 		"user_no_tracks": "user does not have any tracks",
 		"add_track_success": "track insertion was successful"
+	},
+	"about": {
+		"p1": "This site is meant to be a place where you can add your favourite music for every month.",
+		"p2": "Why?",
+		"p3": "Because if you're like me and listen to A LOT of music, you'll probably have multiple favourite tracks/songs, and I want to store and present that data in a nice way.",
+		"p4": "This project really is just a solution to a non-problem, since you could organise all of this on most streaming platforms today, but hey, programming is fun so why not.",
+		"p5": "This site is far from complete, what you see is what you get. You can follow the development <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">here</a> on github.",
+		"pfp": "(profile picture was drawn by \"Mika Pikazo\", link to the artwork can be found <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/78511602\">here</a>)"
 	}
 }
