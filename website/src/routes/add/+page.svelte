@@ -84,7 +84,7 @@
 				</tbody>
 			</table>
 		</div>
-		<input type="submit" value="{$_('general.add')}" id="addBtn" on:click={() => {image.setAttribute("src", "/add_image_placeholder.webp")}}>
+		<input type="submit" value="{$_('general.add')}" style="margin-top: 10px" on:click={() => {image.setAttribute("src", "/add_image_placeholder.webp")}}>
 	</form>
 </SwayWindow>
 
@@ -115,8 +115,6 @@
 		cursor: pointer;
 	}
 
-	label {
-	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
 		object-fit: fill;
@@ -126,9 +124,6 @@
 	
 	label > img:hover {
 		outline: 1px solid var(--border);
-	}
-	#addBtn {
-		margin-top: 10px;
 	}
 	div {
 		display: flex;

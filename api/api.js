@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
-// konstanter
+
 const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
 const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
