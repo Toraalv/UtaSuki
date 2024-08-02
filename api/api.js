@@ -6,9 +6,11 @@ const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
+const jwt = require("jsonwebtoken");
 
 const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
 const HTTPS_PORT = 8802;
 let privateKey, certificate, ca;
@@ -56,7 +58,16 @@ const upload = multer({
 });
 
 
-app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
+app.get("/status", (req, res) => {
+	res.status(200).json({
+		status: "OK",
+		version: VERSION,
+		message: {
+			severity: "success",
+			message: "info.status_ok"
+		}
+	});
+});
 
 app.get("/users", async (req, res) => {
 	let users = await dbQuery(`SELECT username, created, image, last_activity FROM users WHERE public IS TRUE;`);
@@ -93,7 +104,6 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 	
-	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
 		res.status(404).json({
@@ -149,7 +159,6 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
 		res.status(404).json({
@@ -205,7 +214,7 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []]; // ugly
+	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []];
 
 	for (let i = 0; i < data.length; i++) {
 		monthTracks[data[i].date.getMonth()].push({
@@ -224,6 +233,53 @@ app.get("/tracks", async (req, res) => {
 		version: VERSION,
 		data: monthTracks
 	});
+});
+
+// something something multer, bodyparse and content-type, どうしおかな〜〜
+app.post("/login", upload.single("file"), async (req, res) => {
+	const handleError = (status, code) => {
+		res.status(status).json({
+			status: "NOT OK",
+			version: VERSION,
+			message: {
+				severity: "error",
+				code: code
+			}
+		});
+	}
+	const Token = (username) => { return jwt.sign({ username }, TOKEN_SECRET, { expiresIn: '1800s' }); }
+
+	let username = req.body.username;
+	let password = req.body.password;
+
+	// makes sure that every field is filled
+	if ([username, password].includes(undefined)) {
+		handleError(400, "error.login_fields_not_specified");
+		return;
+	}
+
+	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE username = ?`, [username]);
+	if (!userInfo.length) {
+		handleError(404, "error.user_not_exist");
+		return;
+	}
+
+	if (userInfo[0].password == password) {
+		let userToken = Token(username + userInfo[0].uid);
+		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
+
+		res.status(200).json({
+			status: "OK",
+			version: VERSION,
+			message: {
+				severity: "success",
+				code: "info.login_success"
+			},
+			token: userToken
+		});
+	} else {
+		handleError(406, "error.wrong_password");
+	}
 });
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
@@ -273,7 +329,6 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	const imageExt = path.extname(req.file.originalname).toLowerCase();
 	const targetPath = path.join(__dirname, `./public/images/album_covers/${album}${imageExt}`);
 	
-	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT uid FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
 		handleError(404, "error.user_not_exist");
@@ -337,6 +392,8 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	});
 	//res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
 });
+
+
 
 const httpServer = http.createServer(app);
 httpServer.listen(PORT, () => { console.log("Running on port " + PORT); });

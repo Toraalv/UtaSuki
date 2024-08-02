@@ -9,7 +9,7 @@
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	<SwayWindow title="{$_('general.login_noun')}" mainStyle="max-width: 300px; min-width: 300px; flex-grow: 3">
-		<form style="display: flex" method="POST" use:enhance>
+		<form style="display: flex" method="POST" action="?/login" use:enhance>
 			<table cellpadding="5" cellspacing="0" style="flex-grow: 1">
 				<tbody>
 					<tr>
@@ -17,7 +17,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" autocomplete="off" required>
+							<input type="text" name="username" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
@@ -25,12 +25,12 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="password" autocomplete="off" required>
+							<input type="password" name="password" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type="submit" value="{$_('general.login_verb')}" on:click|preventDefault={() => { alert($_("warning.WIP")) }}>
+							<input type="submit" value="{$_('general.login_verb')}">
 						</td>
 					</tr>
 				</tbody>
@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="email" autocomplete="off" required>
+							<input type="email" name="email" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
@@ -55,7 +55,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" autocomplete="off" required>
+							<input type="text" name="username" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>
@@ -63,7 +63,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="password" autocomplete="off" required>
+							<input type="password" name="password" autocomplete="off" required>
 						</td>
 					</tr>
 					<tr>

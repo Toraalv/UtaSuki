@@ -88,8 +88,6 @@
 	</form>
 </SwayWindow>
 
-<!-- look... I... -->
-<!-- the error and response "system" needs some attention -->
 {#if form?.res.status}
 	<a href="/add">
 		<div class="overlay"></div>
