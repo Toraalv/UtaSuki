@@ -1,5 +1,7 @@
 "use strict"
 
+const helper = require("./helper.js");
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -41,51 +43,35 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 
 // form file management
 const multer = require("multer");
-const { body, validationResult } = require("express-validator");
-const handleFsError = (e, res) => {
-	res.status(500).json({
-		status: "NOT OK",
-		version: VERSION,
-		message: {
-			severity: "error",
-			code: "error.file_upload"
-		}
-	});
-};
-
 const upload = multer({
 	dest: "./.temp/"
 });
+const { body, validationResult } = require("express-validator");
 
-
-app.get("/status", (req, res) => {
-	res.status(200).json({
-		status: "OK",
+const sendStatus = (res, status, severity, code, data) => {
+	res.status(status).json({
 		version: VERSION,
 		message: {
-			severity: "success",
-			message: "info.status_ok"
-		}
+			severity: severity,
+			code: code
+		},
+		data: data
 	});
+};
+
+app.get("/status", (req, res) => {
+	sendStatus(res, 200, "success", "info.status_ok");
 });
 
 app.get("/users", async (req, res) => {
 	let users = await dbQuery(`SELECT username, created, image, last_activity FROM users WHERE public IS TRUE;`);
 
 	if (users.length == 0) {
-		res.status(200).json({
-			status: "SEMI-OK",
-			version: VERSION,
-			data: []
-		});
+		sendStatus(res, 404, "info", "info.no_users", []);
 		return;
 	}
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		data: users
-	});
+	sendStatus(res, 200, "success", "info.users_found", users);
 });
 
 app.get("/years", async (req, res) => {
@@ -93,27 +79,13 @@ app.get("/years", async (req, res) => {
 	try {
 		username = JSON.parse(req.query.data).username;
 	} catch (e) {
-		res.status(400).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_specified"
-			}
-		});
+		sendStatus(res, 400, "error", "error.user_not_specified");
 		return;
 	}
 	
 	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
-		res.status(404).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_exist"
-			}
-		});
+		sendStatus(res, 404, "error", "error.user_not_exist")
 		return;
 	}
 
@@ -121,24 +93,13 @@ app.get("/years", async (req, res) => {
 
 	// if user has any tracks
 	if (data.length == 0) {
-		res.status(404).json({
-			status: "SEMI-OK",
-			version: VERSION,
-			message: {
-				severity: "info",
-				code: "info.user_no_tracks"
-			}
-		});
+		sendStatus(res, 404, "info", "info.user_no_tracks");
 		return;
 	}
 
 	let years = [...new Set(data.map((item) => item.date.getFullYear()))]; // extracts unique years, 凄い
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		data: years
-	});
+	sendStatus(res, 200, "success", undefined, years);
 });
 
 app.get("/tracks", async (req, res) => {
@@ -148,27 +109,13 @@ app.get("/tracks", async (req, res) => {
 		year = JSON.parse(req.query.data).year;
 		username = JSON.parse(req.query.data).username;
 	} catch (e) {
-		res.status(400).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.year_user_not_specified"
-			}
-		});
+		sendStatus(res, 400, "error", "error.year_user_not_specified");
 		return;
 	}
 
 	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
-		res.status(404).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_exist"
-			}
-		});
+		sendStatus(res, 404, "error", "error.user_not_exist");
 		return;
 	}
 	
@@ -203,14 +150,7 @@ app.get("/tracks", async (req, res) => {
 		]);
 
 	if (data.length == 0) {
-		res.status(404).json({
-			status: "SEMI-OK",
-			version: VERSION,
-			message: {
-				severity: "warning",
-				code: "warning.no_tracks_year"
-			}
-		});
+		sendStatus(res, 404, "warning", "warning.no_tracks_year");
 		return;
 	}
 
@@ -228,57 +168,57 @@ app.get("/tracks", async (req, res) => {
 		});
 	}
 
+	sendStatus(res, 200, "success", undefined, monthTracks);
+});
+
+app.get("/verifyAuthToken", async (req, res) => {
+	let token = helper.getCookie("auth_token", req.headers.cookie);
+
+	jwt.verify(token, TOKEN_SECRET, (err, data) => {
+		console.log(err);
+		console.log(data);
+	});
+
 	res.status(200).json({
 		status: "OK",
-		version: VERSION,
-		data: monthTracks
+		version: VERSION
 	});
 });
 
 // something something multer, bodyparse and content-type, どうしおかな〜〜
 app.post("/login", upload.single("file"), async (req, res) => {
-	const handleError = (status, code) => {
-		res.status(status).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: code
-			}
-		});
-	}
-	const Token = (username) => { return jwt.sign({ username }, TOKEN_SECRET, { expiresIn: '1800s' }); }
+	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '300s' }); }
 
 	let username = req.body.username;
 	let password = req.body.password;
 
 	// makes sure that every field is filled
 	if ([username, password].includes(undefined)) {
-		handleError(400, "error.login_fields_not_specified");
+		sendStatus(res, 400, "error", "error.login_fields_not_specified");
 		return;
 	}
 
 	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE username = ?`, [username]);
 	if (!userInfo.length) {
-		handleError(404, "error.user_not_exist");
+		sendStatus(res, 418, "error", "error.login_general");
 		return;
 	}
 
-	if (userInfo[0].password == password) {
-		let userToken = Token(username + userInfo[0].uid);
-		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
+	let checkAttempts = await dbQuery(`SELECT ip FROM logins WHERE ip = ?`, [req.ip]);
+	if (checkAttempts.length > 4) {
+		sendStatus(res, 429, "warning", "warning_too_many_login_attempts");
+		return;
+	}
 
-		res.status(200).json({
-			status: "OK",
-			version: VERSION,
-			message: {
-				severity: "success",
-				code: "info.login_success"
-			},
-			token: userToken
-		});
+	if (userInfo[0].password == password) { // ( ^)o(^ )b
+		let userToken = Token(userInfo[0].uid, username);
+		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
+		sendStatus(res, 200, "success", "info.login_success", { token: userToken });
+		return;
 	} else {
-		handleError(406, "error.wrong_password");
+		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
+		sendStatus(res, 418, "error", "error.login_general");
+		return;
 	}
 });
 
@@ -291,15 +231,8 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		if (trackInsert)
 			dbQuery(`DELETE FROM tracks WHERE id = ?;`, [trackInsert.insertId]);
 
-		fs.rm(tempPath, e => { if (e) return handleFsError(e, res) });
-		res.status(status).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: code
-			}
-		});
+		fs.rm(tempPath, e => { if (e) return sendStatus(res, 500, "error", "error.file_upload") });
+		sendStatus(res, status, "error", code);
 	}
 
 	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1" && req.ip != "::1") { // 何故この１？何故なの？勘弁してくれ〜〜
@@ -380,17 +313,9 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	fs.rename(tempPath, targetPath, e => { if (e) return handleFsError(e, res); });
+	fs.rm(tempPath, e => { if (e) return sendStatus(res, 500, "error", "error.file_upload") });
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		message: {
-			severity: "success",
-			code: "info.add_track_success"
-		}
-	});
-	//res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
+	sendStatus(res, 200, "success", "info.add_track_success");
 });
 
 

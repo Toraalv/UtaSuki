@@ -51,10 +51,13 @@
 		"add_track_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade",
 		"add_track": "tilläggningen av låten gick ej igenom",
 		"forbidden": "du har inte tillåtelse att göra detta",
+		"wrong_password": "fel lösenord",
+		"login_general": "ett eller båda fält är inkorrekta",
 		"track_already_added": "låten är redan tillagd på det datumet"
 	},
 	"warning": {
 		"no_tracks_year": "användare har inga låtar för valt år",
+		"too_many_login_attempts": "för många inloggninsförsök har gjorts, försök igen senare",
 		"WIP": "inte ännu implementerat!"
 	},
 	"info": {
@@ -62,11 +65,11 @@
 		"add_track_success": "låt inläggningen lyckades"
 	},
 	"about": {
-		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad",
+		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad.",
 		"p2": "Varför?",
-		"p3": "För om du är som mig och lyssnar på ofantligt mycket musik, har du troligtvis flera favoritlåtar, och jag vill lagra och presentera den datan på ett fint sätt",
+		"p3": "För om du är som mig och lyssnar på ofantligt mycket musik, har du troligtvis flera favoritlåtar, och jag vill lagra och presentera den datan på ett fint sätt.",
 		"p4": "Detta projekt är verkligen en lösning till ett icke-problem eftersom man kan strukturera allt detta på de flesta streamingtjänster idag, men det är kul att programmera så varför inte.",
-		"p5": "Sidan är långt från färdig. Du kan följa utvecklingen <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">här</a> på github",
-		"pfp": "(profilbilden är ritad av \"Mika Pikazo\", länken till konstverket kan du hitta <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/78511602\">here</a>)"
+		"p5": "Sidan är långt från färdig. Du kan följa utvecklingen på <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">GitHub</a>.",
+		"pfp": "(profilbilden är ritad av \"Mika Pikazo\", länken till konstverket kan du hitta på <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/78511602\">pixiv</a>)"
 	}
 }

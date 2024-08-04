@@ -88,7 +88,7 @@
 	</form>
 </SwayWindow>
 
-{#if form?.res.status}
+{#if form?.res.message}
 	<a href="/add">
 		<div class="overlay"></div>
 		<Alert severity="{form.res.message.severity}" code="{form.res.message.code}" mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>

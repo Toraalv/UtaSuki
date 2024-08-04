@@ -5,13 +5,20 @@ import { locale, waitLocale } from "svelte-i18n";
 const api = new UtaSuki_API();
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ fetch, params }) {
+export async function load({ fetch, params, cookies }) {
 	if (browser) {
 		locale.set(window.navigator.language);
 	}
 	await waitLocale();
 
-	return { users: await api.fetchUsers(fetch) };
+	const authToken = cookies.get("auth_token");
+
+	// ask api if token is ok (sends back some data too if it's ok)
+	let authTokenInfo = await api.verifyAuthToken(fetch, authToken);
+
+	console.log(authTokenInfo);
+
+	return { users: await api.fetchUsers(fetch), authToken };
 }
 
 export const actions = {
@@ -20,7 +27,8 @@ export const actions = {
 
 		let res = await api.login(fetch, data);
 
-		console.log(res);
+		if (!res.error)
+			cookies.set("auth_token", res.data.token, { path: '/' });
 
 		return { res };
 	}

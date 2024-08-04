@@ -14,6 +14,11 @@ class UtaSuki_API {
 		catch (e)	{ return { error: e }; }
 	}
 
+	async verifyAuthToken(fetch, authToken) {
+		try			{ return (await this.requestData(fetch, "GET", "verifyAuthToken")).data; }
+		catch (e)	{ return { error: e }; }
+	}
+
 	async fetchUsers(fetch) {
 		try			{ return (await this.requestData(fetch, "GET", "users")).data; }
 		catch (e)	{ return { error: e }; }
@@ -32,7 +37,7 @@ class UtaSuki_API {
 	async requestData(fetch, method, endpoint, args, data) {
 		let req = new Request(`http://localhost:${API_PORT}/${endpoint}?data=${JSON.stringify(args)}`, {
 			method: method,
-			body: data,
+			body: data
 		});
 
 		try {
