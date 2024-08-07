@@ -56,8 +56,23 @@ const sendStatus = (res, status, severity, code, data) => {
 			code: code
 		},
 		data: data
+		// TODO: include authed
 	});
 };
+
+app.use((req, res, next) => {
+	let token = helper.getCookie("auth_token", req.headers.cookie);
+
+	jwt.verify(token, TOKEN_SECRET, (e, data) => {
+		if (e) req.authed = false;
+		else {
+			req.authed = true;
+			req.uid = data.uid;
+			req.username = data.username;
+		}
+		next();
+	});
+});
 
 app.get("/status", (req, res) => {
 	sendStatus(res, 200, "success", "info.status_ok");
@@ -187,7 +202,7 @@ app.get("/verifyAuthToken", async (req, res) => {
 
 // something something multer, bodyparse and content-type, どうしおかな〜〜
 app.post("/login", upload.single("file"), async (req, res) => {
-	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '300s' }); }
+	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '6000s' }); }
 
 	let username = req.body.username;
 	let password = req.body.password;
