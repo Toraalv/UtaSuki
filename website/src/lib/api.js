@@ -9,28 +9,28 @@ class UtaSuki_API {
 		catch (e)	{ return { error: e }; }
 	}
 
+	async logout(fetch, authToken) {
+		try			{ return await this.requestData(fetch, "POST", "logout", undefined); }
+		catch (e)	{ return { error: e }; }
+	}
+
 	async postTrack(fetch, formData) {
 		try			{ return await this.requestData(fetch, "POST", "addTrack", undefined, formData); }
 		catch (e)	{ return { error: e }; }
 	}
 
-	async verifyAuthToken(fetch, authToken) {
-		try			{ return (await this.requestData(fetch, "GET", "verifyAuthToken")).data; }
-		catch (e)	{ return { error: e }; }
-	}
-
 	async fetchUsers(fetch) {
-		try			{ return (await this.requestData(fetch, "GET", "users")).data; }
+		try			{ return await this.requestData(fetch, "GET", "users"); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async fetchYears(fetch, username) {
-		try			{ return (await this.requestData(fetch, "GET", "years", { username: username })).data; }
+		try			{ return (await this.requestData(fetch, "GET", "years", { username: username })).data; } // return .data is shit
 		catch (e)	{ return { error: e }; }
 	}
 
 	async fetchTracks(fetch, username, year) {
-		try			{ return (await this.requestData(fetch, "GET", "tracks", { username: username, year: year })).data; }
+		try			{ return (await this.requestData(fetch, "GET", "tracks", { username: username, year: year })).data; } // return .data is shit
 		catch (e)	{ return { error: e }; }
 	}
 

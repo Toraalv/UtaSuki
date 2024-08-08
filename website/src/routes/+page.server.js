@@ -11,14 +11,7 @@ export async function load({ fetch, params, cookies }) {
 	}
 	await waitLocale();
 
-	const authToken = cookies.get("auth_token");
-
-	// ask api if token is ok (sends back some data too if it's ok)
-	let authTokenInfo = await api.verifyAuthToken(fetch, authToken);
-
-	console.log(authTokenInfo);
-
-	return { users: await api.fetchUsers(fetch), authToken };
+	return { res: await api.fetchUsers(fetch) };
 }
 
 export const actions = {
@@ -31,5 +24,10 @@ export const actions = {
 			cookies.set("auth_token", res.data.token, { path: '/' });
 
 		return { res };
+	},
+	logout: ({ fetch, cookies }) => {
+		// do or die
+		api.logout(fetch);
+		cookies.set("auth_token", "", { path: '/' });
 	}
 };

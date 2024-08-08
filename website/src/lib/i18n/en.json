@@ -38,9 +38,11 @@
 		"email": "email",
 		"username": "username",
 		"password": "password",
+		"logout": "logout",
 		"tracks": "tracks",
 		"add_track": "add track",
-		"add": "add"
+		"add": "add",
+		"control_panel": "control panel"
 	},
 	"error": {
 		"connection_refused": "connection to the server could not be established",

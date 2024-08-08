@@ -38,9 +38,11 @@
 		"email": "e-post",
 		"username": "användarnamn",
 		"password": "lösenord",
+		"logout": "logga ut",
 		"tracks": "låtar",
 		"add_track": "lägg till låt",
-		"add": "lägg till"
+		"add": "lägg till",
+		"control_panel": "kontrollpanel"
 	},
 	"error": {
 		"connection_refused": "anslutning till servern kunde ej etableras",
