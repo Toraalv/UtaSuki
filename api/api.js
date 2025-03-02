@@ -335,7 +335,7 @@ const httpServer = http.createServer(app);
 httpServer.listen(PORT, () => { console.log("Running on port " + PORT); });
 
 const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(HTTPS_PORT, () => { console.log("Running on port " + HTTPS_PORT); });
+APP_ENV == "prod" && httpsServer.listen(HTTPS_PORT, () => { console.log("Running on port " + HTTPS_PORT); });
 
 async function dbQuery(query, params) {
 	return new Promise(function(resolve, reject) {
