@@ -17,9 +17,9 @@ const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
 const HTTPS_PORT = 8802;
 let privateKey, certificate, ca;
 if (APP_ENV != "dev") {
-	privateKey = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem", "utf8");
-	certificate = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem", "utf8");
-	ca = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/chain.pem", "utf8");
+	privateKey = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/privkey.pem", "utf8");
+	certificate = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/cert.pem", "utf8");
+	ca = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/chain.pem", "utf8");
 }
 const credentials = {
 	key: privateKey,
