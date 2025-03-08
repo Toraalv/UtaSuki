@@ -1,4 +1,4 @@
-import { API_PORT } from "$lib/globals.js";
+import { CDN_ADDR } from "$lib/globals.js";
 
 class UtaSuki_API {
 	constructor() {}
@@ -35,10 +35,13 @@ class UtaSuki_API {
 	}
 
 	async requestData(fetch, method, endpoint, args, data) {
-		let req = new Request(`http://localhost:${API_PORT}/${endpoint}?data=${JSON.stringify(args)}`, {
+		let req = new Request(`${CDN_ADDR}/${endpoint}?data=${JSON.stringify(args)}`, {
 			method: method,
-			body: data
+			body: data,
+			credentials: "include"
 		});
+
+		//console.log(req);
 
 		try {
 			const res = await fetch(req);
@@ -47,6 +50,7 @@ class UtaSuki_API {
 				throw {cause: { code: "SERVER_FAULT", msg: json.message }};
 			return json;
 		} catch (e) {
+			console.log(e);
 			switch (e.cause.code) {
 				case "SERVER_FAULT":	throw { severity: e.cause.msg.severity, code: e.cause.msg.code };	break;
 				case "ECONNREFUSED":	throw { severity: "error", code: "error.connection_refused" };		break;

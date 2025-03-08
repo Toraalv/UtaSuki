@@ -14,17 +14,19 @@ const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
-const HTTPS_PORT = 8802;
 let privateKey, certificate, ca;
 if (APP_ENV != "dev") {
 	privateKey = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/privkey.pem", "utf8");
 	certificate = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/cert.pem", "utf8");
-	ca = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/chain.pem", "utf8");
+	//ca = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/chain.pem", "utf8");
+} else {
+	privateKey = fs.readFileSync("cert/localhost-key.pem", "utf8");
+	certificate = fs.readFileSync("cert/localhost.pem", "utf8");
 }
 const credentials = {
 	key: privateKey,
 	cert: certificate,
-	ca: ca
+	//ca: ca
 };
 
 // db connection
@@ -66,6 +68,8 @@ const sendStatus = (req, res, status, severity, code, data) => {
 
 app.use((req, res, next) => {
 	let token = helper.getCookie("auth_token", req.headers.cookie);
+
+	console.log(req.headers);
 
 	jwt.verify(token, TOKEN_SECRET, (e, data) => {
 		if (e) req.authed = false;
@@ -330,12 +334,8 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 });
 
 
-
-const httpServer = http.createServer(app);
-httpServer.listen(PORT, () => { console.log("Running on port " + PORT); });
-
 const httpsServer = https.createServer(credentials, app);
-APP_ENV == "prod" && httpsServer.listen(HTTPS_PORT, () => { console.log("Running on port " + HTTPS_PORT); });
+httpsServer.listen(PORT, () => { console.log("Running on port " + PORT); });
 
 async function dbQuery(query, params) {
 	return new Promise(function(resolve, reject) {

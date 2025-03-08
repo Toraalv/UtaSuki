@@ -12,7 +12,11 @@ export default defineConfig(() => {
 				include: ['src/**/*.{test,spec}.{js,ts}']
 			},
 			server: {
-				port: PORT
+				port: PORT,
+				https: {
+					key: fs.readFileSync("cert/localhost-key.pem"),
+					cert: fs.readFileSync("cert/localhost.pem")
+				}
 			},
 			preview: { port: PORT }
 		}
