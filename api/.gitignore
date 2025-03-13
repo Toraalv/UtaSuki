@@ -3,3 +3,4 @@ start_*.sh
 public
 .temp/*
 tmux_start_prod.sh
+cert

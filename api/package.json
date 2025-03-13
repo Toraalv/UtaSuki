@@ -1,6 +1,6 @@
 {
   "name": "utasuki-api",
-  "version": "0.0.12-alpha",
+  "version": "0.0.13-alpha",
   "description": "REST API for UtaSuki",
   "main": "api.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.3.0",
     "multer": "^1.4.5-lts.1"
   }

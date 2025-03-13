@@ -9,8 +9,7 @@
 
 <div class="sway_window" style="{mainStyle}">
 	<div class="sway_window_title" style="{titleStyle}">
-		<h5>{title}</h5>
-		<h5>{altTitle}</h5>
+		<h5 title="{altTitle}">{title}</h5>
 	</div>
 	<div class="sway_window_content" id="{id}" style="{contentStyle}">
 		<slot />
@@ -43,10 +42,6 @@
 		background-color: var(--accent);
 		color: var(--text);
 	}
-	
-	.sway_window_title h5:last-child { display: none; }
-	.sway_window_title:hover h5:last-child { display: block; }
-	.sway_window_title:hover h5:first-child { display: none; }
 	
 	.sway_window_content {
 		padding: 10px;

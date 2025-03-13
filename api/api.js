@@ -1,26 +1,30 @@
 "use strict"
 
+const helper = require("./helper.js");
+
 const express = require("express");
 const app = express();
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
 const http = require("http");
+const jwt = require("jsonwebtoken");
 
 const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
-const HTTPS_PORT = 8802;
-let privateKey, certificate, ca;
+let privateKey, certificate;
 if (APP_ENV != "dev") {
-	privateKey = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem", "utf8");
-	certificate = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem", "utf8");
-	ca = fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/chain.pem", "utf8");
+	privateKey = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/privkey.pem", "utf8");
+	certificate = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/cert.pem", "utf8");
+} else {
+	privateKey = fs.readFileSync("cert/localhost-key.pem", "utf8");
+	certificate = fs.readFileSync("cert/localhost.pem", "utf8");
 }
 const credentials = {
 	key: privateKey,
 	cert: certificate,
-	ca: ca
 };
 
 // db connection
@@ -39,42 +43,55 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 
 // form file management
 const multer = require("multer");
+const upload = multer({
+	dest: "./.temp/"
+});
 const { body, validationResult } = require("express-validator");
-const handleFsError = (e, res) => {
-	res.status(500).json({
-		status: "NOT OK",
+
+const sendStatus = (req, res, status, severity, code, data) => {
+	res.status(status).json({
 		version: VERSION,
 		message: {
-			severity: "error",
-			code: "error.file_upload"
+			severity: severity,
+			code: code
+		},
+		data: data,
+		auth_info: {
+			authed: req.authed,
+			uid: req.uid,
+			username: req.username
 		}
 	});
 };
 
-const upload = multer({
-	dest: "./.temp/"
+app.use((req, res, next) => {
+	let token = helper.getCookie("auth_token", req.headers.cookie);
+
+	jwt.verify(token, TOKEN_SECRET, (e, data) => {
+		if (e) req.authed = false;
+		else {
+			req.authed = true;
+			req.uid = data.uid;
+			req.username = data.username;
+		}
+		next();
+	});
 });
 
-
-app.get("/status", (res) => res.status(200).json({ status: "OK", version: VERSION }));
+app.get("/status", (req, res) => {
+	sendStatus(req, res, 200, "success", "info.status_ok");
+});
 
 app.get("/users", async (req, res) => {
-	let users = await dbQuery(`SELECT username, created, image, last_activity FROM users WHERE public IS TRUE;`);
-
+	let users = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE public IS TRUE;`);
+	// TODO: send your own profile if you're logged in
+	// change altTitle on SwayWindow for profiles
 	if (users.length == 0) {
-		res.status(200).json({
-			status: "SEMI-OK",
-			version: VERSION,
-			data: []
-		});
+		sendStatus(req, res, 200, "info", "info.no_users", []);
 		return;
 	}
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		data: users
-	});
+	sendStatus(req, res, 200, "success", "info.users_found", users);
 });
 
 app.get("/years", async (req, res) => {
@@ -82,28 +99,13 @@ app.get("/years", async (req, res) => {
 	try {
 		username = JSON.parse(req.query.data).username;
 	} catch (e) {
-		res.status(400).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_specified"
-			}
-		});
+		sendStatus(req, res, 400, "error", "error.user_not_specified");
 		return;
 	}
 	
-	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
-		res.status(404).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_exist"
-			}
-		});
+		sendStatus(req, res, 404, "error", "error.user_not_exist")
 		return;
 	}
 
@@ -111,24 +113,13 @@ app.get("/years", async (req, res) => {
 
 	// if user has any tracks
 	if (data.length == 0) {
-		res.status(404).json({
-			status: "SEMI-OK",
-			version: VERSION,
-			message: {
-				severity: "info",
-				code: "info.user_no_tracks"
-			}
-		});
+		sendStatus(req, res, 404, "info", "info.user_no_tracks");
 		return;
 	}
 
 	let years = [...new Set(data.map((item) => item.date.getFullYear()))]; // extracts unique years, 凄い
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		data: years
-	});
+	sendStatus(req, res, 200, "success", undefined, years);
 });
 
 app.get("/tracks", async (req, res) => {
@@ -138,28 +129,13 @@ app.get("/tracks", async (req, res) => {
 		year = JSON.parse(req.query.data).year;
 		username = JSON.parse(req.query.data).username;
 	} catch (e) {
-		res.status(400).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.year_user_not_specified"
-			}
-		});
+		sendStatus(req, res, 400, "error", "error.year_user_not_specified");
 		return;
 	}
 
-	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
 	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
 	if (!userExist.length) {
-		res.status(404).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: "error.user_not_exist"
-			}
-		});
+		sendStatus(req, res, 404, "error", "error.user_not_exist");
 		return;
 	}
 	
@@ -194,18 +170,11 @@ app.get("/tracks", async (req, res) => {
 		]);
 
 	if (data.length == 0) {
-		res.status(404).json({
-			status: "SEMI-OK",
-			version: VERSION,
-			message: {
-				severity: "warning",
-				code: "warning.no_tracks_year"
-			}
-		});
+		sendStatus(req, res, 404, "warning", "warning.no_tracks_year");
 		return;
 	}
 
-	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []]; // ugly
+	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []];
 
 	for (let i = 0; i < data.length; i++) {
 		monthTracks[data[i].date.getMonth()].push({
@@ -219,40 +188,85 @@ app.get("/tracks", async (req, res) => {
 		});
 	}
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		data: monthTracks
-	});
+	sendStatus(req, res, 200, "success", undefined, monthTracks);
+});
+
+app.post("/login", upload.single("file"), async (req, res) => {
+	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '1h' }); }
+
+	let username = req.body.username;
+	let password = req.body.password;
+
+	// makes sure that every field is filled
+	if ([username, password].includes(undefined)) {
+		sendStatus(req, res, 400, "error", "error.login_fields_not_specified");
+		return;
+	}
+
+	// check login attempts
+	let checkAttempts = await dbQuery(`SELECT ip FROM logins WHERE ip = ?`, [req.ip]);
+	if (checkAttempts.length > 4) {
+		sendStatus(req, res, 429, "warning", "warning.too_many_login_attempts");
+		return;
+	}
+
+	// does the user exist?
+	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE username = ?`, [username]);
+	if (!userInfo.length) {
+		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
+		sendStatus(req, res, 418, "error", "error.login_general");
+		return;
+	}
+
+	// is the password correct?
+	if (userInfo[0].password == password) { // ( ^)o(^ )b
+		let userToken = Token(userInfo[0].uid, username);
+		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
+		sendStatus(req, res, 200, "success", "info.login_success", { token: userToken });
+		return;
+	} else {
+		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
+		sendStatus(req, res, 418, "error", "error.login_general");
+		return;
+	}
+});
+
+app.post("/logout", upload.single("file"), (req, res) => {
+	if (!req.authed) {
+		sendStatus(req, res, 404, "error", "error.not_logged_in");
+		return;
+	}
+
+	dbQuery(`UPDATE users SET auth_token = NULL WHERE uid = ?`, [req.uid]);
+
+	sendStatus(req, res, 200, "success", "info.logout_success");
 });
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
-	console.log(req.ip);
+	let tempPath;
+	if (req.file != undefined)
+		tempPath = req.file.path;
+	else {
+		sendStatus(req, res, 400, "error", "error.no_image");
+		return
+	}
 
-	const tempPath = req.file.path;
 	const handleError = (status, code, trackInsert) => {
 		// removes the track if something failed
 		if (trackInsert)
 			dbQuery(`DELETE FROM tracks WHERE id = ?;`, [trackInsert.insertId]);
 
-		fs.rm(tempPath, e => { if (e) return handleFsError(e, res) });
-		res.status(status).json({
-			status: "NOT OK",
-			version: VERSION,
-			message: {
-				severity: "error",
-				code: code
-			}
-		});
+		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
+		sendStatus(req, res, status, "error", code);
 	}
 
-	if (req.ip != "::ffff:127.0.0.1" && req.ip != "::ffff:192.168.50.1" && req.ip != "::1") { // 何故この１？何故なの？勘弁してくれ〜〜
+	if (!req.authed) {
 		handleError(401, "error.forbidden");
 		return;
 	}
 
 	//let username = req.body.username;
-	let username = "Toralv";
+	let uid = req.uid;
 	let artist = req.body.artist;
 	let album = req.body.album;
 	let title = req.body.title;
@@ -262,7 +276,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	let notes = req.body.notes;
 
 	// makes sure that every field is filled
-	if ([username, artist, album, title, date].includes(undefined)) {
+	if ([uid, artist, album, title, date].includes(undefined)) {
 		handleError(400, "error.add_track_fields_not_specified");
 		return;
 	}
@@ -273,19 +287,12 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	const imageExt = path.extname(req.file.originalname).toLowerCase();
 	const targetPath = path.join(__dirname, `./public/images/album_covers/${album}${imageExt}`);
 	
-	// check if user exists -- NB, uid is primary key but I use username here. this is a problem
-	let userExist = await dbQuery(`SELECT uid FROM users WHERE username = ?`, [username]);
-	if (!userExist.length) {
-		handleError(404, "error.user_not_exist");
-		return;
-	}
-
 	let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?`, [artist, album, title]);
 	
 	let userTrackInsert, trackInsert;
 	if (trackExist.length) { // if track already exists, only add to user_tracks, otherwise both tracks and user_tracks
 		try {
-			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackExist[0].id, date, notes]);
+			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [uid, trackExist[0].id, date, notes]);
 		} catch (e) {
 			handleError(418, "error.track_already_added");
 			return;
@@ -310,7 +317,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					`/static/images/album_covers/${album}${imageExt}`
 				]
 			);
-			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [userExist[0].uid, trackInsert.insertId, date, notes]);
+			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [uid, trackInsert.insertId, date, notes]);
 		} catch (e) {
 			handleError(500, "error.add_track", trackInsert, userTrackInsert);
 			return;
@@ -319,30 +326,20 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 
 	// update last_activity
 	try {
-		let userUpdateActivity = await dbQuery(`UPDATE users SET last_activity = current_timestamp() WHERE uid = ?`, [userExist[0].uid]);
+		let userUpdateActivity = await dbQuery(`UPDATE users SET last_activity = current_timestamp() WHERE uid = ?`, [uid]);
 	} catch (e) {
 		handleError(500, "error.user_activity", trackInsert, userTrackInsert);
 		return;
 	}
 
-	fs.rename(tempPath, targetPath, e => { if (e) return handleFsError(e, res); });
+	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
 
-	res.status(200).json({
-		status: "OK",
-		version: VERSION,
-		message: {
-			severity: "success",
-			code: "info.add_track_success"
-		}
-	});
-	//res.redirect(APP_ENV == "dev" ? "http://127.0.0.1:5901/" : "https://utasuki.toralv.dev/");
+	sendStatus(req, res, 200, "success", "info.add_track_success");
 });
 
-const httpServer = http.createServer(app);
-httpServer.listen(PORT, () => { console.log("Running on port " + PORT); });
 
 const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(HTTPS_PORT, () => { console.log("Running on port " + HTTPS_PORT); });
+httpsServer.listen(PORT, () => { console.log("Running on port " + PORT); });
 
 async function dbQuery(query, params) {
 	return new Promise(function(resolve, reject) {

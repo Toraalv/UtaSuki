@@ -9,7 +9,8 @@
 	/** @type {import("./$types").ActionData} */
 	export let form;
 
-	let years = Array.from({ length: 2024 - 2017 + 1 }, (_, i) => 2024 - i);
+	const year = new Date().getFullYear();
+	let years = Array.from({ length: year - 2017 + 1 }, (_, i) => year - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
 
 	let imageInput;
@@ -33,7 +34,7 @@
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
-				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} on:change={imageChange}>
+				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} on:change={imageChange} required> <!-- show user they have to attach image -->
 			</label>
 			<table cellpadding="5" cellspacing="0" >
 				<tbody>
@@ -88,9 +89,7 @@
 	</form>
 </SwayWindow>
 
-<!-- look... I... -->
-<!-- the error and response "system" needs some attention -->
-{#if form?.res.status}
+{#if form?.res.message}
 	<a href="/add">
 		<div class="overlay"></div>
 		<Alert severity="{form.res.message.severity}" code="{form.res.message.code}" mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
@@ -104,6 +103,9 @@
 {/if}
 
 <style>
+	input[type="file"] {
+		display: none;
+	}
 	.overlay {
 		position: fixed;
 		width: 100%;

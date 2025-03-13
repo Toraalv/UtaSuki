@@ -38,9 +38,11 @@
 		"email": "email",
 		"username": "username",
 		"password": "password",
+		"logout": "logout",
 		"tracks": "tracks",
 		"add_track": "add track",
-		"add": "add"
+		"add": "add",
+		"control_panel": "control panel"
 	},
 	"error": {
 		"connection_refused": "connection to the server could not be established",
@@ -51,10 +53,13 @@
 		"add_track_fields_not_specified": "the required fields for adding a track were not specified correctly",
 		"add_track": "track insertion failed",
 		"forbidden": "you do not have permission to do that",
+		"wrong_password": "wrong password",
+		"login_general": "one or both fields are incorrect",
 		"track_already_added": "track already added on that date"
 	},
 	"warning": {
 		"no_tracks_year": "user does not have any tracks for the specified year",
+		"too_many_login_attempts": "too many login attempts have been made, try again later",
 		"WIP": "not yet implemented!"
 	},
 	"info": {
@@ -66,7 +71,7 @@
 		"p2": "Why?",
 		"p3": "Because if you're like me and listen to A LOT of music, you'll probably have multiple favourite tracks/songs, and I want to store and present that data in a nice way.",
 		"p4": "This project really is just a solution to a non-problem, since you could organise all of this on most streaming platforms today, but hey, programming is fun so why not.",
-		"p5": "This site is far from complete, what you see is what you get. You can follow the development <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">here</a> on github.",
-		"pfp": "(profile picture was drawn by \"Mika Pikazo\", link to the artwork can be found <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/78511602\">here</a>)"
+		"p5": "This site is far from complete, what you see is what you get. You can follow the development on <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">GitHub</a>.",
+		"pfp": "(profile picture was drawn by \"Mika Pikazo\", link to the artwork can be found on <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/78511602\">pixiv</a>)"
 	}
 }
