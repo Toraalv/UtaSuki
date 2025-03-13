@@ -1,5 +1,11 @@
 # 歌好き (UtaSuki)
-Currently, this is only a simple list of my favourite songs per month since february 2020. I have a hard time thinking that there would be a market for a site like this, where you can add your favourite songs per month, since sites like [ask.fm](https://ask.fm) already exists, but I made this because I thought it was neat. 
+Currently, this is only a simple list of my favourite songs per month since february 2020. The site is available at [utasuki.toralv.dev](https://utasuki.toralv.dev).
+
+Current plans include:
+- [ ] User registration
+
+What is done:
+- [x] User login
 
 ## screenshots:
 ![screenshot1](screenshots/screenshot1.png)

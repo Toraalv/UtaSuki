@@ -14,11 +14,10 @@ const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
-let privateKey, certificate, ca;
+let privateKey, certificate;
 if (APP_ENV != "dev") {
 	privateKey = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/privkey.pem", "utf8");
 	certificate = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/cert.pem", "utf8");
-	//ca = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/chain.pem", "utf8");
 } else {
 	privateKey = fs.readFileSync("cert/localhost-key.pem", "utf8");
 	certificate = fs.readFileSync("cert/localhost.pem", "utf8");
@@ -26,7 +25,6 @@ if (APP_ENV != "dev") {
 const credentials = {
 	key: privateKey,
 	cert: certificate,
-	//ca: ca
 };
 
 // db connection
@@ -68,8 +66,6 @@ const sendStatus = (req, res, status, severity, code, data) => {
 
 app.use((req, res, next) => {
 	let token = helper.getCookie("auth_token", req.headers.cookie);
-
-	console.log(req.headers);
 
 	jwt.verify(token, TOKEN_SECRET, (e, data) => {
 		if (e) req.authed = false;
@@ -195,9 +191,8 @@ app.get("/tracks", async (req, res) => {
 	sendStatus(req, res, 200, "success", undefined, monthTracks);
 });
 
-// something something multer, bodyparse and content-type, どうしおかな〜〜
 app.post("/login", upload.single("file"), async (req, res) => {
-	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '300s' }); }
+	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '1h' }); }
 
 	let username = req.body.username;
 	let password = req.body.password;
@@ -208,18 +203,22 @@ app.post("/login", upload.single("file"), async (req, res) => {
 		return;
 	}
 
+	// check login attempts
+	let checkAttempts = await dbQuery(`SELECT ip FROM logins WHERE ip = ?`, [req.ip]);
+	if (checkAttempts.length > 4) {
+		sendStatus(req, res, 429, "warning", "warning.too_many_login_attempts");
+		return;
+	}
+
+	// does the user exist?
 	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE username = ?`, [username]);
 	if (!userInfo.length) {
+		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
 		sendStatus(req, res, 418, "error", "error.login_general");
 		return;
 	}
 
-	let checkAttempts = await dbQuery(`SELECT ip FROM logins WHERE ip = ?`, [req.ip]);
-	if (checkAttempts.length > 4) {
-		sendStatus(req, res, 429, "warning", "warning_too_many_login_attempts");
-		return;
-	}
-
+	// is the password correct?
 	if (userInfo[0].password == password) { // ( ^)o(^ )b
 		let userToken = Token(userInfo[0].uid, username);
 		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
@@ -244,9 +243,14 @@ app.post("/logout", upload.single("file"), (req, res) => {
 });
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
-	console.log(req.ip);
+	let tempPath;
+	if (req.file != undefined)
+		tempPath = req.file.path;
+	else {
+		sendStatus(req, res, 400, "error", "error.no_image");
+		return
+	}
 
-	const tempPath = req.file.path;
 	const handleError = (status, code, trackInsert) => {
 		// removes the track if something failed
 		if (trackInsert)

@@ -33,7 +33,7 @@
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
-				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} on:change={imageChange}>
+				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} on:change={imageChange} required> <!-- show user they have to attach image -->
 			</label>
 			<table cellpadding="5" cellspacing="0" >
 				<tbody>
@@ -102,6 +102,9 @@
 {/if}
 
 <style>
+	input[type="file"] {
+		display: none;
+	}
 	.overlay {
 		position: fixed;
 		width: 100%;

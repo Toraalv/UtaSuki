@@ -41,8 +41,6 @@ class UtaSuki_API {
 			credentials: "include"
 		});
 
-		//console.log(req);
-
 		try {
 			const res = await fetch(req);
 			const json = await res.json();
@@ -50,7 +48,6 @@ class UtaSuki_API {
 				throw {cause: { code: "SERVER_FAULT", msg: json.message }};
 			return json;
 		} catch (e) {
-			console.log(e);
 			switch (e.cause.code) {
 				case "SERVER_FAULT":	throw { severity: e.cause.msg.severity, code: e.cause.msg.code };	break;
 				case "ECONNREFUSED":	throw { severity: "error", code: "error.connection_refused" };		break;

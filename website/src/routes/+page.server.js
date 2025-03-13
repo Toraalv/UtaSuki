@@ -19,8 +19,6 @@ export const actions = {
 		const data = await request.formData();
 
 		let res = await api.login(fetch, data);
-		
-		console.log(res.data);
 
 		if (!res.error)
 			cookies.set("auth_token", res.data.token, { path: '/' });
