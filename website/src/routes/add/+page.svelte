@@ -9,7 +9,8 @@
 	/** @type {import("./$types").ActionData} */
 	export let form;
 
-	let years = Array.from({ length: 2025 - 2017 + 1 }, (_, i) => 2025 - i);
+	const year = new Date().getFullYear();
+	let years = Array.from({ length: year - 2017 + 1 }, (_, i) => year - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
 
 	let imageInput;
