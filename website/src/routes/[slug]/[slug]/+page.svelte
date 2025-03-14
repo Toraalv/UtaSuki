@@ -4,18 +4,12 @@
 	import Alert from "$lib/Alert.svelte";
 	import TrackContainer from "$lib/TrackContainer.svelte"
 	import MonthContainer from "$lib/MonthContainer.svelte"
-	import { afterUpdate } from "svelte";
 	import { _ } from "svelte-i18n";
-
-	afterUpdate(() => {
-		document.getElementById("sway_window_tracks").scrollTop = 0;
-	});
 </script>
 
-
-<SwayWindow title="{$_('general.tracks')}" altTitle="{$_('general.tracks')}" id="sway_window_tracks">
+<SwayWindow title={$_('general.tracks')} altTitle={$_('general.tracks')} id="sway_window_tracks">
 	{#if $page.data.monthTracks.error}
-		<Alert severity="{$page.data.monthTracks.error.severity}" code="{$page.data.monthTracks.error.code}" />
+		<Alert severity={$page.data.monthTracks.error.severity} code={$page.data.monthTracks.error.code}/>
 	{:else}
 		{#each $page.data.monthTracks as month, i}
 			{#if month.length}
@@ -25,8 +19,7 @@
 										album={track.album}
 										title={track.title}
 										image={track.image}
-										notes={track.notes}
-						/>
+										notes={track.notes}/>
 					{/each}
 				</MonthContainer>
 			{/if}

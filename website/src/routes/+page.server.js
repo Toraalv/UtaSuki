@@ -15,6 +15,8 @@ export async function load({ fetch, params, cookies }) {
 }
 
 export const actions = {
+	register: () => {
+	},
 	login: async ({ fetch, cookies, request }) => {
 		const data = await request.formData();
 

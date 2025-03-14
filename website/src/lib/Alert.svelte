@@ -2,9 +2,7 @@
 	import { _ } from "svelte-i18n";
 	import SwayWindow from "$lib/SwayWindow.svelte";
 
-	export let mainStyle = null;
-	export let severity = null;
-	export let code = null;
+	let { mainStyle = null, severity = null, code = null } = $props();
 </script>
 
 <SwayWindow

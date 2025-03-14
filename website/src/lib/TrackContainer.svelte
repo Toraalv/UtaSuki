@@ -1,14 +1,16 @@
 <script>
 	import { CDN_ADDR } from "$lib/globals.js";
 
-	export let artist = "artist of track";
-	export let album = "album of track";
-	export let title = "title of track";
-	export let image = "/test_album.png";
-	export let notes = "";
+	let {
+		artist = "artist of track",
+		album = "album of track",
+		title = "title of track",
+		image = "/test_album.png",
+		notes = ""
+	} = $props();
 </script>
 <div class="track">
-	<img src="{CDN_ADDR + image}" alt="{album} cover">
+	<img src={CDN_ADDR + image} alt="{album} cover">
 	<div class="trackInfo">
 		<h1>{title}</h1>
 		<h3>{artist}</h3>

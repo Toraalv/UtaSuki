@@ -2,12 +2,13 @@
 	import { _ } from "svelte-i18n";
 	import { CDN_ADDR } from "$lib/globals.js";
 
-	export let username = "artist of track";
-	export let image = "/test_profile.jpg";
-	//export let bio = "this is some users bio, very cool";
-	export let created = new Date();
-	export let activity = null;
-	export let authed = false;
+	let {
+		username = "artist of track",
+		image = "/test_profile.jpg",
+		created = new Date(),
+		activity = $bindable(null),
+		authed = false
+	} = $props();
 	
 	let memberSince = `${created.getFullYear()}-${(created.getMonth() + 1) < 10 ? "0" + (created.getMonth() + 1) : (created.getMonth() + 1)}-${created.getDate() < 10 ? "0" + created.getDate() : (created.getDate())}`;
 
@@ -17,8 +18,8 @@
 	}
 </script>
 
-<div class="profile" style="{authed && "background-color: #1b1b1b"}"> <!-- need better colour management -->
-	<img src="{CDN_ADDR + image}" alt="profile">
+<div class="profile" style={authed && "background-color: #1b1b1b"}> <!-- need better colour management -->
+	<img src={CDN_ADDR + image} alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
 		<!-- {#if bio}
