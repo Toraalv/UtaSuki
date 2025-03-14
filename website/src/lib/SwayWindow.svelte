@@ -1,18 +1,21 @@
 <script>
-	export let title = null;
-	export let altTitle = title;
-	export let mainStyle = null;
-	export let titleStyle = null;
-	export let contentStyle = null;
-	export let id = null;
+	let {
+		title = null,
+		altTitle = title,
+		mainStyle = null,
+		titleStyle = null,
+		contentStyle = null,
+		id = null,
+		children
+	} = $props();
 </script>
 
-<div class="sway_window" style="{mainStyle}">
-	<div class="sway_window_title" style="{titleStyle}">
-		<h5 title="{altTitle}">{title}</h5>
+<div class="sway_window" style={mainStyle}>
+	<div class="sway_window_title" style={titleStyle}>
+		<h5 title={altTitle}>{title}</h5>
 	</div>
-	<div class="sway_window_content" id="{id}" style="{contentStyle}">
-		<slot />
+	<div class="sway_window_content" id={id} style={contentStyle}>
+		{@render children?.()}
 	</div>
 </div>
 

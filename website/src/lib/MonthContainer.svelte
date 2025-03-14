@@ -1,10 +1,10 @@
 <script>
-	export let date = "YYYY-MM";
+	let { date = "YYYY-MM", children } = $props();
 </script>
 
 <fieldset>
 	<legend>{date}</legend>
-	<slot />
+	{@render children?.()}
 </fieldset>
 
 <style>

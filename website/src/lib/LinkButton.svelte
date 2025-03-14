@@ -1,13 +1,17 @@
 <!-- was this component really necessary? -->
 <script>
-	export let href = null;
-	export let active = false;
-	export let style = "";
+	let {
+		href = null,
+		active = false,
+		style = "",
+		onclick = null,
+		children
+	} = $props();
 </script>
 
-<a href="{href}">
+<a onclick={() => onclick()} href="{href}">
 	<h4 style="{active ? "background-color: var(--accent); border-color: var(--accent);" : ""} {style}">
-		<slot />
+		{@render children?.()}
 	</h4>
 </a>
 
