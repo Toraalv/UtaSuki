@@ -1,10 +1,9 @@
-<!-- was this component really necessary? -->
 <script>
 	let {
 		href = null,
 		active = false,
 		style = "",
-		onclick = null,
+		onclick = () => {},
 		children
 	} = $props();
 </script>
@@ -16,11 +15,13 @@
 </a>
 
 <style>
+	a {
+		margin: 5px 0;
+	}
 	h4 {
 		background-color: #111111;
 		text-align: center;
 		padding: 6px;
-		margin-bottom: 10px;
 		font-size: 14pt;
 	}
 	h4:hover {

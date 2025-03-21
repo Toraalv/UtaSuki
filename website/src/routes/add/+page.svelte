@@ -1,10 +1,14 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
+	import ControlPanel from "$lib/ControlPanel.svelte";
+	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import { CDN_ADDR } from "$lib/globals.js";
+
+	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { enhance } from "$app/forms";
 	import { _ } from "svelte-i18n";
-	import { CDN_ADDR } from "$lib/globals.js";
 
 	let { form } = $props();
 
@@ -28,7 +32,12 @@
 	}
 </script>
 
-<SwayWindow title={$_('general.add_track')} mainStyle="margin: auto; margin-top: 1rem; max-width: 70rem">
+<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
+	<ControlPanel/>
+	<Footer/>
+</div>
+
+<SwayWindow title={$_("general.add_track")}>
 	<form method="POST" enctype="multipart/form-data" action="?/addTrack" use:enhance>
 		<div>
 			<label for="imageSelect">
@@ -42,7 +51,11 @@
 						<td>
 							<select name="year" required>
 								{#each years as year}
-									<option value="{year}">{year}</option>
+									{#if year == new Date().getFullYear()}
+										<option value="{year}" selected>{year}</option>
+									{:else}
+										<option value="{year}">{year}</option>
+									{/if}
 								{/each}
 							</select>
 						</td>
@@ -52,7 +65,11 @@
 						<td>
 							<select name="month" required>
 								{#each months as month}
-									<option value="{month + 1}">{$_(`months.${month}`)}</option>
+									{#if month + 1 == new Date().getMonth()} <!-- based on my use I only add tracks at the start of the next month -->
+										<option value="{month + 1}" selected>{$_(`months.${month}`)}</option>
+									{:else}
+										<option value="{month + 1}">{$_(`months.${month}`)}</option>
+									{/if}
 								{/each}
 							</select>
 						</td>
@@ -76,7 +93,7 @@
 				</tbody>
 			</table>
 		</div>
-		<input type="submit" value={$_('general.add')} style="margin-top: 10px" onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp")}}>
+		<input type="submit" value={$_("general.add")} style="margin-top: 10px" onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); setTimeout(() => goto("/add"), 2000)}}>
 	</form>
 </SwayWindow>
 

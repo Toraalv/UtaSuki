@@ -1,17 +1,21 @@
 <script>
-	import { page } from "$app/stores";
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Alert from "$lib/Alert.svelte";
-	import TrackContainer from "$lib/TrackContainer.svelte"
-	import MonthContainer from "$lib/MonthContainer.svelte"
-	import { _ } from "svelte-i18n";
+	import TrackContainer from "$lib/TrackContainer.svelte";
+	import MonthContainer from "$lib/MonthContainer.svelte";
+	import { possessiveForm } from "$lib/i18n/names.js";
+
+	import { page } from "$app/stores";
+	import { locale, _ } from "svelte-i18n";
+
+	let username = $state(decodeURIComponent($page.url.pathname).split('/')[1]);
 </script>
 
-<SwayWindow title={$_('general.tracks')} altTitle={$_('general.tracks')} id="sway_window_tracks">
-	{#if $page.data.monthTracks.error}
-		<Alert severity={$page.data.monthTracks.error.severity} code={$page.data.monthTracks.error.code}/>
+<SwayWindow title={$_("general.tracks", { values: { username: possessiveForm(username) }})} id="sway_window_tracks">
+	{#if $page.data.trackRes.error}
+		<Alert severity={$page.data.trackRes.error.severity} code={$page.data.trackRes.error.code}/>
 	{:else}
-		{#each $page.data.monthTracks as month, i}
+		{#each $page.data.trackRes.data as month, i}
 			{#if month.length}
 				<MonthContainer date={$_(`months.${i}`)}>
 					{#each month as track}
