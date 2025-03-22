@@ -58,8 +58,7 @@ const sendStatus = (req, res, status, severity, code, data) => {
 		data: data,
 		auth_info: {
 			authed: req.authed,
-			uid: req.uid,
-			username: req.username
+			profile: req.profile
 		}
 	});
 };
@@ -67,12 +66,16 @@ const sendStatus = (req, res, status, severity, code, data) => {
 app.use((req, res, next) => {
 	let token = helper.getCookie("auth_token", req.headers.cookie);
 
-	jwt.verify(token, TOKEN_SECRET, (e, data) => {
+	jwt.verify(token, TOKEN_SECRET, async (e, data) => {
 		if (e) req.authed = false;
 		else {
-			req.authed = true;
-			req.uid = data.uid;
-			req.username = data.username;
+			// check if token matches the stored token
+			if ((await dbQuery(`SELECT 1 FROM users WHERE uid = ? AND auth_token = ?`, [data.uid, token])).length) {
+				req.authed = true;
+				// chuck the whole profile with auth_info, why not
+				let user = await dbQuery(`SELECT uid, username, created, image, last_activity, public FROM users WHERE auth_token = ?;`, [token]);
+				req.profile = user[0];
+			}
 		}
 		next();
 	});
@@ -84,8 +87,7 @@ app.get("/status", (req, res) => {
 
 app.get("/users", async (req, res) => {
 	let users = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE public IS TRUE;`);
-	// TODO: send your own profile if you're logged in
-	// change altTitle on SwayWindow for profiles
+
 	if (users.length == 0) {
 		sendStatus(req, res, 200, "info", "info.no_users", []);
 		return;
@@ -103,8 +105,8 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 	
-	let userExist = await dbQuery(`SELECT 1 FROM users WHERE username = ?`, [username]);
-	if (!userExist.length) {
+	let profile = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE username = ?`, [username]);
+	if (!profile.length) {
 		sendStatus(req, res, 404, "error", "error.user_not_exist")
 		return;
 	}
@@ -113,13 +115,15 @@ app.get("/years", async (req, res) => {
 
 	// if user has any tracks
 	if (data.length == 0) {
-		sendStatus(req, res, 404, "info", "info.user_no_tracks");
+		sendStatus(req, res, 200, "info", "info.user_no_tracks", {profile: profile[0], undefined, totalTracks: 0});
 		return;
 	}
 
+	let totalTracks = data.length;
+
 	let years = [...new Set(data.map((item) => item.date.getFullYear()))]; // extracts unique years, 凄い
 
-	sendStatus(req, res, 200, "success", undefined, years);
+	sendStatus(req, res, 200, "success", undefined, {profile: profile[0], years: years, totalTracks: totalTracks});
 });
 
 app.get("/tracks", async (req, res) => {
@@ -174,7 +178,10 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []];
+	// I'll leave this here for memories sake
+	//let monthTracks = [[], [], [], [], [], [], [], [], [], [], [], []];
+	//let monthTracks = new Array(12).fill([]);
+	let monthTracks = new Array(12).fill(null).map(() => []);
 
 	for (let i = 0; i < data.length; i++) {
 		monthTracks[data[i].date.getMonth()].push({
@@ -266,22 +273,21 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	}
 
 	//let username = req.body.username;
-	let uid = req.uid;
+	let uid = req.profile.uid;
 	let artist = req.body.artist;
 	let album = req.body.album;
 	let title = req.body.title;
-	let date = `${req.body.year}-${req.body.month}`;
+	let date = `${req.body.year}-${req.body.month}-15`;
 	//let released = req.body.released;
 	let released = "0000-00-00";
 	let notes = req.body.notes;
 
 	// makes sure that every field is filled
-	if ([uid, artist, album, title, date].includes(undefined)) {
-		handleError(400, "error.add_track_fields_not_specified");
-		return;
-	}
-
-	date = `${date}-15`; // cannot not add "-15" before undefined check (because then it would never be undefined)
+	if ([uid, artist, album, title, req.body.year, req.body.month].includes(undefined))
+		if (typeof(req.body.year) == "number" && req.body.month > 0 && req.body.month < 13) {
+			handleError(400, "error.add_track_fields_not_specified");
+			return;
+		}
 
 	// the image
 	const imageExt = path.extname(req.file.originalname).toLowerCase();

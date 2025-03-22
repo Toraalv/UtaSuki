@@ -1,24 +1,21 @@
 <script>
-	import { _ } from "svelte-i18n";
 	import { CDN_ADDR } from "$lib/globals.js";
 
+	import { _ } from "svelte-i18n";
+
 	let {
-		username = "artist of track",
-		image = "/test_profile.jpg",
+		username = "username",
+		image = "/static/images/profile_pictures/default",
 		created = new Date(),
-		activity = $bindable(null),
-		authed = false
+		activity = new Date()
 	} = $props();
 	
 	let memberSince = `${created.getFullYear()}-${(created.getMonth() + 1) < 10 ? "0" + (created.getMonth() + 1) : (created.getMonth() + 1)}-${created.getDate() < 10 ? "0" + created.getDate() : (created.getDate())}`;
 
-	if (activity != null) {
-		activity = new Date(activity); // まぁまぁまぁ
-		activity = `${activity.getFullYear()}-${(activity.getMonth() + 1) < 10 ? "0" + (activity.getMonth() + 1) : (activity.getMonth() + 1)}-${activity.getDate() < 10 ? "0" + activity.getDate() : (activity.getDate())}`;
-	}
+	let last_activity = activity.getFullYear() != 1970 ? `${activity.getFullYear()}-${(activity.getMonth() + 1) < 10 ? "0" + (activity.getMonth() + 1) : (activity.getMonth() + 1)}-${activity.getDate() < 10 ? "0" + activity.getDate() : (activity.getDate())}` : false;
 </script>
 
-<div class="profile" style={authed && "background-color: #1b1b1b"}> <!-- need better colour management -->
+<div class="profile">
 	<img src={CDN_ADDR + image} alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
@@ -29,11 +26,11 @@
 			{#if created}
 				<h5>{$_("general.member_since")}: {memberSince}</h5>
 			{/if}
-			{#if created && activity}
+			{#if created && last_activity}
 				<div style="margin: 0 8px 0 8px; width: 2px; background-color: var(--unfocused_border)"></div>
 			{/if}
-			{#if activity}
-				<h5>{$_("general.last_activity")}: {activity}</h5>
+			{#if last_activity}
+				<h5>{$_("general.last_activity")}: {last_activity}</h5>
 			{/if}
 		</div>
 	</div>

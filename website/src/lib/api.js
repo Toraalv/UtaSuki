@@ -3,7 +3,6 @@ import { CDN_ADDR } from "$lib/globals.js";
 class UtaSuki_API {
 	constructor() {}
 
-	// formatting like this really brings me to tears, tears of happiness
 	async login(fetch, formData) {
 		try			{ return await this.requestData(fetch, "POST", "login", undefined, formData); }
 		catch (e)	{ return { error: e }; }
@@ -25,12 +24,17 @@ class UtaSuki_API {
 	}
 
 	async fetchYears(fetch, username) {
-		try			{ return (await this.requestData(fetch, "GET", "years", { username: username })).data; } // return .data is shit
+		try			{ return (await this.requestData(fetch, "GET", "years", { username: username })); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async fetchTracks(fetch, username, year) {
-		try			{ return (await this.requestData(fetch, "GET", "tracks", { username: username, year: year })).data; } // return .data is shit
+		try			{ return (await this.requestData(fetch, "GET", "tracks", { username: username, year: year })); }
+		catch (e)	{ return { error: e }; }
+	}
+
+	async auth(fetch) {
+		try			{ return await this.requestData(fetch, "GET", "status"); } //use status endpoint just to authenticate
 		catch (e)	{ return { error: e }; }
 	}
 

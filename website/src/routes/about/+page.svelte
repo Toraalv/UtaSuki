@@ -1,15 +1,16 @@
 <script>
-	import { page } from "$app/stores";
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import { _ } from "svelte-i18n";
 	import { CDN_ADDR } from "$lib/globals.js";
+
+	import { page } from "$app/stores";
+	import { _ } from "svelte-i18n";
 </script>
 
-<SwayWindow title={$_('general.about_site')} contentStyle="display: flex; flex-direction: column; flex-grow: 1; align-items: center; justify-content: space-between">
+<SwayWindow title={$_("general.about_site")} contentStyle="display: flex; flex-direction: column; flex-grow: 1; align-items: center; justify-content: space-between">
 	<div style="display: flex; flex-direction: column; align-items: center">
 		<div style="display: flex;">
 			<a href="https://github.com/Toraalv">
-				<img src={CDN_ADDR + '/static/images/profile_pictures/toralv.png'} alt="author">
+				<img src={CDN_ADDR + "/static/images/profile_pictures/toralv.png"} alt="author">
 			</a>
 			<div id="bioInfo" style="margin-left: 20px">
 				<p>{$_("general.name")}: Toralv</p>
