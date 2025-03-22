@@ -37,7 +37,7 @@
 	<Footer/>
 </div>
 
-<SwayWindow title={$_("general.add_track")}>
+<SwayWindow contentStyle="padding: 20px;" title={$_("general.add_track")}>
 	<form method="POST" enctype="multipart/form-data" action="?/addTrack" use:enhance>
 		<div>
 			<label for="imageSelect">
@@ -93,7 +93,9 @@
 				</tbody>
 			</table>
 		</div>
-		<input type="submit" value={$_("general.add")} style="margin-top: 10px" onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); setTimeout(() => goto("/add"), 2000)}}>
+		<div style="display: flex;">
+			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")} onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); setTimeout(() => goto("/add"), 2000)}}>
+		</div>
 	</form>
 </SwayWindow>
 
@@ -143,5 +145,8 @@
 	table {
 		flex-grow: 1;
 		margin-left: 20px;
+	}
+	td {
+		padding: 0;
 	}
 </style>

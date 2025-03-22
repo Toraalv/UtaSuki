@@ -28,6 +28,9 @@
 
 {#snippet authDewanaiControlPanel()}
 <SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
+	{#if $page.data.res.error}
+		<Alert mainStyle="margin-bottom: 5px;" severity={$page.data.res.error.severity} code={$page.data.res.error.code}/>
+	{/if}
 	<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 </SwayWindow>
 {/snippet}
