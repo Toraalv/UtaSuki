@@ -3,42 +3,49 @@ import { CDN_ADDR } from "$lib/globals.js";
 class UtaSuki_API {
 	constructor() {}
 
+	// POST endpoints
 	async login(fetch, formData) {
-		try			{ return await this.requestData(fetch, "POST", "login", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "login", undefined, formData); }
+		catch (e)	{ return { error: e }; }
+	}
+
+	async register(fetch, formData) {
+		try			{ return await this.request(fetch, "POST", "register", undefined, formData); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async logout(fetch, authToken) {
-		try			{ return await this.requestData(fetch, "POST", "logout", undefined); }
+		try			{ return await this.request(fetch, "POST", "logout", undefined); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async postTrack(fetch, formData) {
-		try			{ return await this.requestData(fetch, "POST", "addTrack", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "addTrack", undefined, formData); }
 		catch (e)	{ return { error: e }; }
 	}
 
+	// GET endpoints
 	async fetchUsers(fetch) {
-		try			{ return await this.requestData(fetch, "GET", "users"); }
+		try			{ return await this.request(fetch, "GET", "users"); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async fetchYears(fetch, username) {
-		try			{ return (await this.requestData(fetch, "GET", "years", { username: username })); }
+		try			{ return (await this.request(fetch, "GET", "years", { username: username })); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async fetchTracks(fetch, username, year) {
-		try			{ return (await this.requestData(fetch, "GET", "tracks", { username: username, year: year })); }
+		try			{ return (await this.request(fetch, "GET", "tracks", { username: username, year: year })); }
 		catch (e)	{ return { error: e }; }
 	}
 
 	async auth(fetch) {
-		try			{ return await this.requestData(fetch, "GET", "status"); } //use status endpoint just to authenticate
+		try			{ return await this.request(fetch, "GET", "status"); } //use status endpoint just to authenticate
 		catch (e)	{ return { error: e }; }
 	}
 
-	async requestData(fetch, method, endpoint, args, data) {
+	async request(fetch, method, endpoint, args, data) {
 		let req = new Request(`${CDN_ADDR}/${endpoint}?data=${JSON.stringify(args)}`, {
 			method: method,
 			body: data,

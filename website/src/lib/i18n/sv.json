@@ -46,6 +46,7 @@
 		"control_panel": "kontrollpanel",
 		"edit_profile": "redigera profil",
 		"profile": "{username} profil",
+		"profile_picture": "profilbild",
 		"WIP": "under arbete"
 	},
 	"error": {
@@ -60,6 +61,8 @@
 		"wrong_password": "fel lösenord",
 		"login_general": "ett eller båda fält är inkorrekta",
 		"404": "hittades inte",
+		"fields_not_specified": "efterfrågade fält ej ifyllda",
+		"user_email_exists": "en användare med den eposten finns redan",
 		"track_already_added": "låten är redan tillagd på det datumet"
 	},
 	"warning": {
@@ -70,6 +73,7 @@
 	},
 	"info": {
 		"user_no_tracks": "användaren har inga låtar",
+		"user_created": "användare är nu skapad",
 		"add_track_success": "låt inläggningen lyckades"
 	},
 	"about": {

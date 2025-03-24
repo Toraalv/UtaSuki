@@ -20,15 +20,15 @@
 	let image = $state();
 	function imageChange() {
 		const file = imageInput.files[0];
-			
+
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", function () {
 				image.setAttribute("src", reader.result);
 			});
-			reader.readAsDataURL(file);	
+			reader.readAsDataURL(file);
 			return;
-		} 
+		}
 	}
 </script>
 

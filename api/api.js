@@ -206,7 +206,7 @@ app.post("/login", upload.single("file"), async (req, res) => {
 
 	// makes sure that every field is filled
 	if ([username, password].includes(undefined)) {
-		sendStatus(req, res, 400, "error", "error.login_fields_not_specified");
+		sendStatus(req, res, 400, "error", "error.fields_not_specified");
 		return;
 	}
 
@@ -226,7 +226,7 @@ app.post("/login", upload.single("file"), async (req, res) => {
 	}
 
 	// is the password correct?
-	if (userInfo[0].password == password) { // ( ^)o(^ )b
+	if (userInfo[0].password == password) {
 		let userToken = Token(userInfo[0].uid, username);
 		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
 		sendStatus(req, res, 200, "success", "info.login_success", { token: userToken });
@@ -236,6 +236,50 @@ app.post("/login", upload.single("file"), async (req, res) => {
 		sendStatus(req, res, 418, "error", "error.login_general");
 		return;
 	}
+});
+
+app.post("/register", upload.single("file"), async (req, res) => {
+	let tempPath;
+	if (req.file != undefined)
+		tempPath = req.file.path;
+	else {
+		sendStatus(req, res, 400, "error", "error.no_image");
+		return
+	}
+
+	let email = req.body.email;
+	let username = req.body.username;
+	let password = req.body.password;
+
+	if ([email, username, password].includes(undefined)) {
+		sendStatus(req, res, 400, "error", "error.fields_not_specified");
+		return;
+	}
+
+	let userExist = await dbQuery(`SELECT 1 FROM users WHERE email = ?`, [email]);
+	if (userExist.length) {
+		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
+		sendStatus(req, res, 418, "error", "error.user_email_exists");
+		return;
+	}
+
+	let createUser;
+	try  {
+		createUser = await dbQuery(`INSERT INTO users (email, username, password) VALUES (?, ?, ?)`, [email, username, password]);
+	} catch (e) {
+		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
+		sendStatus(req, res, 500, "error", "error.create_user");
+		return;
+	}
+
+	// add image after user creation so we can link uid instead
+	const imageExt = path.extname(req.file.originalname).toLowerCase();
+	const targetPath = path.join(__dirname, `./public/images/profile_pictures/${createUser.insertId}${imageExt}`);
+	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
+
+	let userPicture = await dbQuery(`UPDATE users SET image = ? WHERE uid = ?`, [`/static/images/profile_pictures/${createUser.insertId}${imageExt}`, createUser.insertId]);
+
+	sendStatus(req, res, 200, "success", "info.user_created");
 });
 
 app.post("/logout", upload.single("file"), (req, res) => {

@@ -9,8 +9,6 @@ export async function load({ fetch, params, cookies }) {
 }
 
 export const actions = {
-	register: () => {
-	},
 	login: async ({ fetch, cookies, request }) => {
 		const data = await request.formData();
 
@@ -19,7 +17,14 @@ export const actions = {
 		if (!res.error)
 			cookies.set("auth_token", res.data.token, { path: '/' });
 
-		return { res };
+		return { type: "login", res: res };
+	},
+	register: async ({ fetch, cookies, request }) => {
+		const data = await request.formData();
+
+		let res = await api.register(fetch, data);
+
+		return { type: "register", res: res };
 	},
 	logout: ({ fetch, cookies }) => {
 		// do or die

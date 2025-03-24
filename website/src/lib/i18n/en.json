@@ -46,6 +46,7 @@
 		"control_panel": "control panel",
 		"edit_profile": "edit profile",
 		"profile": "{username} profile",
+		"profile_picture": "profile picture",
 		"WIP": "work in progress"
 	},
 	"error": {
@@ -60,6 +61,8 @@
 		"wrong_password": "wrong password",
 		"login_general": "one or both fields are incorrect",
 		"404": "not found",
+		"fields_not_specified": "required fields were not specified",
+		"user_email_exists": "a user with that email already exists",
 		"track_already_added": "track already added on that date"
 	},
 	"warning": {
@@ -70,6 +73,7 @@
 	},
 	"info": {
 		"user_no_tracks": "user does not have any tracks",
+		"user_created": "user created successfully",
 		"add_track_success": "track insertion was successful"
 	},
 	"about": {
