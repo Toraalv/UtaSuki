@@ -30,13 +30,13 @@ class UtaSuki_API {
 		catch (e)	{ return { error: e }; }
 	}
 
-	async fetchYears(fetch, username) {
-		try			{ return (await this.request(fetch, "GET", "years", { username: username })); }
+	async fetchYears(fetch, uid) {
+		try			{ return (await this.request(fetch, "GET", "years", { uid: uid })); }
 		catch (e)	{ return { error: e }; }
 	}
 
-	async fetchTracks(fetch, username, year) {
-		try			{ return (await this.request(fetch, "GET", "tracks", { username: username, year: year })); }
+	async fetchTracks(fetch, uid, year) {
+		try			{ return (await this.request(fetch, "GET", "tracks", { uid: uid, year: year })); }
 		catch (e)	{ return { error: e }; }
 	}
 
@@ -56,18 +56,16 @@ class UtaSuki_API {
 			const res = await fetch(req);
 			const json = await res.json();
 			if (res.status !== 200)
-				throw {cause: { code: "SERVER_FAULT", msg: json.message }};
+				throw {cause: { code: json.code }};
 			return json;
 		} catch (e) {
 			switch (e.cause.code) {
-				case "SERVER_FAULT":	throw { severity: e.cause.msg.severity, code: e.cause.msg.code };	break;
-				case "ECONNREFUSED":	throw { severity: "error", code: "error.connection_refused" };		break;
+				case "ECONNREFUSED":	throw { code: "error.connection_refused" };		break;
 				case "UND_ERR_CONNECT_TIMEOUT":
-				case "ETIMEDOUT": 		throw { severity: "error", code: "error.connection_timeout" };		break;
-				default: 				throw { severity: "error", code: "error.endpoint_default" };		break;
+				case "ETIMEDOUT": 		throw { code: "error.connection_timeout" };		break;
+				default: 				throw { code: e.cause.code };					break;
 			}
 		}
-
 		return {};
 	}
 }

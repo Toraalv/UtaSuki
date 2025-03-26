@@ -32,7 +32,7 @@
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	{#if $page.data.res.error}
 		<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
-			<!-- <Alert mainStyle="flex-grow: 0" severity="{$page.data.res.error.severity}" code="{$page.data.res.error.code}"/> --> <!-- maybe there's no need for an alert here? -->
+			<!-- <Alert mainStyle="flex-grow: 0" code="{$page.data.res.error.code}"/> --> <!-- maybe there's no need for an alert here? -->
 		</SwayWindow>
 	{:else}
 		{#if $page.data.res.auth_info.authed}
@@ -45,11 +45,11 @@
 					<table cellpadding="5" cellspacing="0" style="flex-grow: 1">
 						<tbody>
 							<tr>
-								<td>{$_("general.username")}:</td>
+								<td>{$_("general.email")}:</td>
 							</tr>
 							<tr>
 								<td>
-									<input type="text" name="username" autocomplete="off" required>
+									<input type="email" name="email" autocomplete="off" required>
 								</td>
 							</tr>
 							<tr>
@@ -69,7 +69,7 @@
 					</table>
 				</form>
 				{#if form?.type == "login" && form?.res.error}
-					<Alert severity={form.res.error.severity} code={form.res.error.code}/>
+					<Alert code={form.res.error.code}/>
 				{/if}
 			</SwayWindow>
 			<!---- REGISTRATION FORM ---->
@@ -125,7 +125,7 @@
 					</table>
 				</form>
 				{#if form?.type == "register" && form?.res.error}
-					<Alert severity={form.res.error.severity} code={form.res.error.code}/>
+					<Alert code={form.res.error.code}/>
 				{/if}
 			</SwayWindow>
 		{/if}
@@ -135,19 +135,19 @@
 </div>
 
 <!-- popup when registering -->
-{#if form?.type == "register" && form?.res.message}
+{#if form?.type == "register" && form?.res}
 	<a href="/">
 		<div class="overlay"></div>
-		<Alert severity={form.res.message.severity} code={form.res.message.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
+		<Alert code={form.res.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 	</a>
 {/if}
 
 <SwayWindow title={$_("general.user_profiles")} altTitle={$_("general.user_profiles+")}>
 	{#if $page.data.res.error}
-		<Alert severity={$page.data.res.error.severity} code={$page.data.res.error.code}/>
+		<Alert code={$page.data.res.error.code}/>
 	{:else}
 		{#each $page.data.res.data as user}
-			<a href="/{user.username}">
+			<a href="/{user.uid}">
 				<Profile username={user.username} image={user.image} created={new Date(user.created)} activity={new Date(user.last_activity)}/>
 			</a>
 		{/each}

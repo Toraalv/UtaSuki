@@ -12,14 +12,16 @@
 
 	let { children } = $props();
 
-	let username = $derived(decodeURIComponent($page.url.pathname).split('/')[1]);
+
+	// let username = $derived(decodeURIComponent($page.url.pathname).split('/')[1]); // this was a very good idea until username couldn't be used to seperate users
+	let username = $derived(!$page.data.res.error ? $page.data.res.data.profile.username : $_("general.unknown"));
 </script>
 
 {#snippet yearList()}
 	<SwayWindow title={$_("general.years")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-		{#if $page.data.res.message.severity == "info"}
+		{#if $page.data.res.code.split('.')[0] == "info"}
 			<div>
-				<Alert severity={$page.data.res.message.severity} code={$page.data.res.message.code}/>
+				<Alert code={$page.data.res.code}/>
 			</div>
 		{:else}
 			<div style="display: flex; flex-direction: column;">
@@ -47,7 +49,7 @@
 	{#key $page.params.slug}
 		<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 			<div>
-				<Alert severity={$page.data.res.error.severity} code={$page.data.res.error.code}/>
+				<Alert code={$page.data.res.error.code}/>
 			</div>
 		</SwayWindow>
 	{/key}

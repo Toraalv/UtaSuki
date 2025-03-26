@@ -47,6 +47,7 @@
 		"edit_profile": "redigera profil",
 		"profile": "{username} profil",
 		"profile_picture": "profilbild",
+		"unknown": "okänd",
 		"WIP": "under arbete"
 	},
 	"error": {
@@ -74,7 +75,7 @@
 	"info": {
 		"user_no_tracks": "användaren har inga låtar",
 		"user_created": "användare är nu skapad",
-		"add_track_success": "låt inläggningen lyckades"
+		"add_track": "låt inläggningen lyckades"
 	},
 	"about": {
 		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad.",

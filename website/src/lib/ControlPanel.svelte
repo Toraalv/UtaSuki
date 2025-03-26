@@ -18,7 +18,7 @@
 			<img alt="profile" src={CDN_ADDR + $page.data.res.auth_info.profile.image}/>
 		</fieldset>
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
-		<LinkButton active={$page.url.pathname == "/" + $page.data.res.auth_info.profile.username || $page.url.pathname.substring(1, $page.data.res.auth_info.profile.username.length + 1) == $page.data.res.auth_info.profile.username} href={"/" + $page.data.res.auth_info.profile.username}>{$_("general.user_tracks")}</LinkButton>
+		<LinkButton active={$page.url.pathname == "/" + $page.data.res.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.res.auth_info.profile.uid} href={"/" + $page.data.res.auth_info.profile.uid}>{$_("general.user_tracks")}</LinkButton>
 		<LinkButton active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</LinkButton>
 		<form style="margin-top: auto" action="/?/logout" method="POST" use:enhance>
 			<input type="submit" value="{$_("general.logout")}">
@@ -29,7 +29,7 @@
 {#snippet authDewanaiControlPanel()}
 <SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
 	{#if $page.data.res.error}
-		<Alert mainStyle="margin-bottom: 5px;" severity={$page.data.res.error.severity} code={$page.data.res.error.code}/>
+		<Alert mainStyle="margin-bottom: 5px;" code={$page.data.res.error.code}/>
 	{/if}
 	<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 </SwayWindow>

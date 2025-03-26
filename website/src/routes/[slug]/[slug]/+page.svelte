@@ -8,12 +8,12 @@
 	import { page } from "$app/stores";
 	import { locale, _ } from "svelte-i18n";
 
-	let username = $state(decodeURIComponent($page.url.pathname).split('/')[1]);
+	let username = $derived(!$page.data.res.error ? $page.data.res.data.profile.username : $_("general.unknown"));
 </script>
 
 <SwayWindow title={$_("general.tracks", { values: { username: possessiveForm(username) }})} id="sway_window_tracks">
 	{#if $page.data.trackRes.error}
-		<Alert severity={$page.data.trackRes.error.severity} code={$page.data.trackRes.error.code}/>
+		<Alert code={$page.data.trackRes.error.code}/>
 	{:else}
 		{#each $page.data.trackRes.data as month, i}
 			{#if month.length}

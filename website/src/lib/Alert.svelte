@@ -3,7 +3,8 @@
 
 	import { _ } from "svelte-i18n";
 
-	let { mainStyle = null, severity = null, code = null } = $props();
+	let { mainStyle = null, code = null } = $props();
+	let severity = code.split('.')[0];
 </script>
 
 <SwayWindow

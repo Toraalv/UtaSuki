@@ -48,13 +48,10 @@ const upload = multer({
 });
 const { body, validationResult } = require("express-validator");
 
-const sendStatus = (req, res, status, severity, code, data) => {
+const sendStatus = (req, res, status, code, data) => {
 	res.status(status).json({
 		version: VERSION,
-		message: {
-			severity: severity,
-			code: code
-		},
+		code: code,
 		data: data,
 		auth_info: {
 			authed: req.authed,
@@ -82,40 +79,40 @@ app.use((req, res, next) => {
 });
 
 app.get("/status", (req, res) => {
-	sendStatus(req, res, 200, "success", "info.status_ok");
+	sendStatus(req, res, 200, "success.status_ok");
 });
 
 app.get("/users", async (req, res) => {
 	let users = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE public IS TRUE;`);
 
 	if (users.length == 0) {
-		sendStatus(req, res, 200, "info", "info.no_users", []);
+		sendStatus(req, res, 200, "info.no_users", []);
 		return;
 	}
 
-	sendStatus(req, res, 200, "success", "info.users_found", users);
+	sendStatus(req, res, 200, "success.users_found", users);
 });
 
 app.get("/years", async (req, res) => {
-	let username = "";
+	let uid = 0;
 	try {
-		username = JSON.parse(req.query.data).username;
+		uid = JSON.parse(req.query.data).uid;
 	} catch (e) {
-		sendStatus(req, res, 400, "error", "error.user_not_specified");
+		sendStatus(req, res, 400, "error.user_not_specified");
 		return;
 	}
 	
-	let profile = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE username = ?`, [username]);
+	let profile = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE uid = ?`, [uid]);
 	if (!profile.length) {
-		sendStatus(req, res, 404, "error", "error.user_not_exist")
+		sendStatus(req, res, 404, "error.user_not_exist")
 		return;
 	}
 
-	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE username = ? ORDER BY date`, [username]);
+	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE users.uid = ? ORDER BY date`, [uid]);
 
 	// if user has any tracks
 	if (data.length == 0) {
-		sendStatus(req, res, 200, "info", "info.user_no_tracks", {profile: profile[0], undefined, totalTracks: 0});
+		sendStatus(req, res, 200, "info.user_no_tracks", {profile: profile[0], undefined, totalTracks: 0});
 		return;
 	}
 
@@ -123,23 +120,23 @@ app.get("/years", async (req, res) => {
 
 	let years = [...new Set(data.map((item) => item.date.getFullYear()))]; // extracts unique years, 凄い
 
-	sendStatus(req, res, 200, "success", undefined, {profile: profile[0], years: years, totalTracks: totalTracks});
+	sendStatus(req, res, 200, "success.years_found", {profile: profile[0], years: years, totalTracks: totalTracks});
 });
 
 app.get("/tracks", async (req, res) => {
 	let year = "";
-	let username = "";
+	let uid = 0;
 	try {
 		year = JSON.parse(req.query.data).year;
-		username = JSON.parse(req.query.data).username;
+		uid = JSON.parse(req.query.data).uid;
 	} catch (e) {
-		sendStatus(req, res, 400, "error", "error.year_user_not_specified");
+		sendStatus(req, res, 400, "error.year_user_not_specified");
 		return;
 	}
 
-	let userExist = await dbQuery(`SELECT 1	FROM users WHERE username = ?`, [username]);
+	let userExist = await dbQuery(`SELECT 1	FROM users WHERE uid = ?`, [uid]);
 	if (!userExist.length) {
-		sendStatus(req, res, 404, "error", "error.user_not_exist");
+		sendStatus(req, res, 404, "error.user_not_exist");
 		return;
 	}
 	
@@ -164,17 +161,17 @@ app.get("/tracks", async (req, res) => {
 								users
 							ON
 								users.uid = user_tracks.uid
-							WHERE username = ?
+							WHERE users.uid = ?
 								AND date >= ?
 									AND date < ?;`,
 		[
-			username,
+			uid,
 			`${year}-01-01`,
 			`${Number(year) + 1}-01-01`,
 		]);
 
 	if (data.length == 0) {
-		sendStatus(req, res, 404, "warning", "warning.no_tracks_year");
+		sendStatus(req, res, 404, "warning.no_tracks_year");
 		return;
 	}
 
@@ -195,45 +192,45 @@ app.get("/tracks", async (req, res) => {
 		});
 	}
 
-	sendStatus(req, res, 200, "success", undefined, monthTracks);
+	sendStatus(req, res, 200, "success.tracks_found", monthTracks);
 });
 
 app.post("/login", upload.single("file"), async (req, res) => {
-	const Token = (uid, username) => { return jwt.sign({ uid, username }, TOKEN_SECRET, { expiresIn: '1h' }); }
+	const Token = (uid, email) => { return jwt.sign({ uid, email }, TOKEN_SECRET, { expiresIn: '1h' }); }
 
-	let username = req.body.username;
+	let email = req.body.email;
 	let password = req.body.password;
 
 	// makes sure that every field is filled
-	if ([username, password].includes(undefined)) {
-		sendStatus(req, res, 400, "error", "error.fields_not_specified");
+	if ([email, password].includes(undefined)) {
+		sendStatus(req, res, 400, "error.fields_not_specified");
 		return;
 	}
 
 	// check login attempts
 	let checkAttempts = await dbQuery(`SELECT ip FROM logins WHERE ip = ?`, [req.ip]);
 	if (checkAttempts.length > 4) {
-		sendStatus(req, res, 429, "warning", "warning.too_many_login_attempts");
+		sendStatus(req, res, 429, "warning.too_many_login_attempts");
 		return;
 	}
 
 	// does the user exist?
-	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE username = ?`, [username]);
+	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE email = ?`, [email]);
 	if (!userInfo.length) {
 		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
-		sendStatus(req, res, 418, "error", "error.login_general");
+		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}
 
 	// is the password correct?
 	if (userInfo[0].password == password) {
-		let userToken = Token(userInfo[0].uid, username);
+		let userToken = Token(userInfo[0].uid, email);
 		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
-		sendStatus(req, res, 200, "success", "info.login_success", { token: userToken });
+		sendStatus(req, res, 200, "success.login_success", { token: userToken });
 		return;
 	} else {
 		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
-		sendStatus(req, res, 418, "error", "error.login_general");
+		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}
 });
@@ -243,7 +240,7 @@ app.post("/register", upload.single("file"), async (req, res) => {
 	if (req.file != undefined)
 		tempPath = req.file.path;
 	else {
-		sendStatus(req, res, 400, "error", "error.no_image");
+		sendStatus(req, res, 400, "error.no_image");
 		return
 	}
 
@@ -252,14 +249,14 @@ app.post("/register", upload.single("file"), async (req, res) => {
 	let password = req.body.password;
 
 	if ([email, username, password].includes(undefined)) {
-		sendStatus(req, res, 400, "error", "error.fields_not_specified");
+		sendStatus(req, res, 400, "error.fields_not_specified");
 		return;
 	}
 
 	let userExist = await dbQuery(`SELECT 1 FROM users WHERE email = ?`, [email]);
 	if (userExist.length) {
-		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
-		sendStatus(req, res, 418, "error", "error.user_email_exists");
+		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		sendStatus(req, res, 418, "error.user_email_exists");
 		return;
 	}
 
@@ -267,30 +264,30 @@ app.post("/register", upload.single("file"), async (req, res) => {
 	try  {
 		createUser = await dbQuery(`INSERT INTO users (email, username, password) VALUES (?, ?, ?)`, [email, username, password]);
 	} catch (e) {
-		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
-		sendStatus(req, res, 500, "error", "error.create_user");
+		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		sendStatus(req, res, 500, "error.create_user");
 		return;
 	}
 
 	// add image after user creation so we can link uid instead
 	const imageExt = path.extname(req.file.originalname).toLowerCase();
 	const targetPath = path.join(__dirname, `./public/images/profile_pictures/${createUser.insertId}${imageExt}`);
-	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
+	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
 	let userPicture = await dbQuery(`UPDATE users SET image = ? WHERE uid = ?`, [`/static/images/profile_pictures/${createUser.insertId}${imageExt}`, createUser.insertId]);
 
-	sendStatus(req, res, 200, "success", "info.user_created");
+	sendStatus(req, res, 200, "success.user_created");
 });
 
 app.post("/logout", upload.single("file"), (req, res) => {
 	if (!req.authed) {
-		sendStatus(req, res, 404, "error", "error.not_logged_in");
+		sendStatus(req, res, 404, "error.not_logged_in");
 		return;
 	}
 
 	dbQuery(`UPDATE users SET auth_token = NULL WHERE uid = ?`, [req.uid]);
 
-	sendStatus(req, res, 200, "success", "info.logout_success");
+	sendStatus(req, res, 200, "success.logout");
 });
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
@@ -298,7 +295,7 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	if (req.file != undefined)
 		tempPath = req.file.path;
 	else {
-		sendStatus(req, res, 400, "error", "error.no_image");
+		sendStatus(req, res, 400, "error.no_image");
 		return
 	}
 
@@ -307,8 +304,8 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		if (trackInsert)
 			dbQuery(`DELETE FROM tracks WHERE id = ?;`, [trackInsert.insertId]);
 
-		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
-		sendStatus(req, res, status, "error", code);
+		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		sendStatus(req, res, status, code);
 	}
 
 	if (!req.authed) {
@@ -316,7 +313,6 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	//let username = req.body.username;
 	let uid = req.profile.uid;
 	let artist = req.body.artist;
 	let album = req.body.album;
@@ -382,9 +378,9 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error", "error.file_upload") });
+	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
-	sendStatus(req, res, 200, "success", "info.add_track_success");
+	sendStatus(req, res, 200, "success.add_track");
 });
 
 

@@ -99,16 +99,16 @@
 	</form>
 </SwayWindow>
 
-{#if form?.res.message}
+{#if form?.res}
 	<a href="/add">
 		<div class="overlay"></div>
-		<Alert severity={form.res.message.severity} code={form.res.message.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
+		<Alert code={form.res.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 	</a>
 {/if}
 {#if form?.res.error}
 	<a href="/add">
 		<div class="overlay"></div>
-		<Alert severity={form.res.error.severity} code={form.res.error.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
+		<Alert code={form.res.error.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 	</a>
 {/if}
 

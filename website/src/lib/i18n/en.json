@@ -47,6 +47,7 @@
 		"edit_profile": "edit profile",
 		"profile": "{username} profile",
 		"profile_picture": "profile picture",
+		"unknown": "unknown",
 		"WIP": "work in progress"
 	},
 	"error": {
@@ -71,10 +72,13 @@
 		"WIP": "not yet implemented!",
 		"not_logged_in": "you're not currently logged in!"
 	},
-	"info": {
+	"success": {
 		"user_no_tracks": "user does not have any tracks",
 		"user_created": "user created successfully",
-		"add_track_success": "track insertion was successful"
+		"add_track": "track insertion was successful"
+	},
+	"info": {
+		"no_users": "no users exists"
 	},
 	"about": {
 		"p1": "This site is meant to be a place where you can add your favourite music for every month.",
