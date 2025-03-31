@@ -14,7 +14,7 @@ export const actions = {
 
 		let res = await api.login(fetch, data);
 
-		if (!res.error)
+		if (res.code.split('.')[0] != "error")
 			cookies.set("auth_token", res.data.token, { path: '/' });
 
 		return { type: "login", res: res };

@@ -10,7 +10,7 @@
 	} = $props();
 </script>
 <div class="track">
-	<img src={CDN_ADDR + image} alt="{album} cover">
+	<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
 	<div class="trackInfo">
 		<h1>{title}</h1>
 		<h3>{artist}</h3>

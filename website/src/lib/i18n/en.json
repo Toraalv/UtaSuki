@@ -63,6 +63,7 @@
 		"login_general": "one or both fields are incorrect",
 		"404": "not found",
 		"fields_not_specified": "required fields were not specified",
+		"field_too_long": "field value was too long",
 		"user_email_exists": "a user with that email already exists",
 		"track_already_added": "track already added on that date"
 	},
@@ -70,6 +71,8 @@
 		"no_tracks_year": "user does not have any tracks for the specified year",
 		"too_many_login_attempts": "too many login attempts have been made, try again later",
 		"WIP": "not yet implemented!",
+		"name_too_long": "name too long",
+		"too_long": "too long",
 		"not_logged_in": "you're not currently logged in!"
 	},
 	"success": {

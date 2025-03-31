@@ -292,7 +292,7 @@ app.post("/logout", upload.single("file"), (req, res) => {
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
 	let tempPath;
-	if (req.file != undefined)
+	if (req.file != undefined && req.file.path)
 		tempPath = req.file.path;
 	else {
 		sendStatus(req, res, 400, "error.no_image");
@@ -322,16 +322,22 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	let released = "0000-00-00";
 	let notes = req.body.notes;
 
-	// makes sure that every field is filled
-	if ([uid, artist, album, title, req.body.year, req.body.month].includes(undefined))
-		if (typeof(req.body.year) == "number" && req.body.month > 0 && req.body.month < 13) {
-			handleError(400, "error.add_track_fields_not_specified");
-			return;
-		}
+	// makes sure that every field is filled and correct
+	if ([uid, artist, album, title, req.body.year, req.body.month].map((obj) => obj == undefined || obj == '').includes(true)) {
+		handleError(400, "error.add_track_fields_not_specified");
+		return;
+	}
+	if (typeof(req.body.year) == "number" && req.body.month > 0 && req.body.month < 13) {
+		handleError(400, "error.add_track_fields_not_specified");
+		return;
+	}
+	if ([artist, encodeURIComponent(album) + ".jpeg", title].map((obj) => obj.length > 255).includes(true) || notes.length > 1024) {
+		handleError(400, "error.field_too_long");
+		return;
+	}
 
-	// the image
 	const imageExt = path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, `./public/images/album_covers/${album}${imageExt}`);
+	const targetPath = path.join(__dirname, `./public/images/album_covers/${encodeURIComponent(album)}${imageExt}`);
 	
 	let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?`, [artist, album, title]);
 	
@@ -360,11 +366,12 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					album,
 					title,
 					released,
-					`/static/images/album_covers/${album}${imageExt}`
+					`${encodeURIComponent(album)}${imageExt}`
 				]
 			);
 			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [uid, trackInsert.insertId, date, notes]);
 		} catch (e) {
+			console.log(e);
 			handleError(500, "error.add_track", trackInsert, userTrackInsert);
 			return;
 		}

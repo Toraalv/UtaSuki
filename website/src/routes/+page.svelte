@@ -30,9 +30,9 @@
 </script>
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
-	{#if $page.data.res.error}
+	{#if $page.data.res.code.split('.')[0] == "error"}
 		<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
-			<!-- <Alert mainStyle="flex-grow: 0" code="{$page.data.res.error.code}"/> --> <!-- maybe there's no need for an alert here? -->
+			<!-- <Alert mainStyle="flex-grow: 0" code="{$page.data.res.code}"/> --> <!-- maybe there's no need for an alert here? -->
 		</SwayWindow>
 	{:else}
 		{#if $page.data.res.auth_info.authed}
@@ -68,8 +68,8 @@
 						</tbody>
 					</table>
 				</form>
-				{#if form?.type == "login" && form?.res.error}
-					<Alert code={form.res.error.code}/>
+				{#if form?.type == "login" && form?.res.code.split('.')[0] == "error"}
+					<Alert code={form.res.code}/>
 				{/if}
 			</SwayWindow>
 			<!---- REGISTRATION FORM ---->
@@ -124,8 +124,8 @@
 						</tbody>
 					</table>
 				</form>
-				{#if form?.type == "register" && form?.res.error}
-					<Alert code={form.res.error.code}/>
+				{#if form?.type == "register" && form?.res.code.split('.')[0] == "error"}
+					<Alert code={form.res.code}/>
 				{/if}
 			</SwayWindow>
 		{/if}
@@ -143,8 +143,8 @@
 {/if}
 
 <SwayWindow title={$_("general.user_profiles")} altTitle={$_("general.user_profiles+")}>
-	{#if $page.data.res.error}
-		<Alert code={$page.data.res.error.code}/>
+	{#if $page.data.res.code.split('.')[0] == "error"}
+		<Alert code={$page.data.res.code}/>
 	{:else}
 		{#each $page.data.res.data as user}
 			<a href="/{user.uid}">

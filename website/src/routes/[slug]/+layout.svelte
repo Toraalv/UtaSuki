@@ -14,7 +14,7 @@
 
 
 	// let username = $derived(decodeURIComponent($page.url.pathname).split('/')[1]); // this was a very good idea until username couldn't be used to seperate users
-	let username = $derived(!$page.data.res.error ? $page.data.res.data.profile.username : $_("general.unknown"));
+	let username = $derived($page.data.res.code.split('.')[0] != "error" ? $page.data.res.data.profile.username : $_("general.unknown"));
 </script>
 
 {#snippet yearList()}
@@ -35,7 +35,7 @@
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	<ControlPanel mainStyle="min-height: 50vh;"/>
-	{#if !$page.data.res.error}
+	{#if $page.data.res.code.split('.')[0] != "error"}
 		{#if $page.data.res.auth_info.authed && $page.data.res.auth_info.profile.username == username}
 			{@render yearList()}
 		{/if}
@@ -45,11 +45,11 @@
 
 {@render children?.()}
 
-{#if $page.data.res.error}
+{#if $page.data.res.code.split('.')[0] == "error"}
 	{#key $page.params.slug}
 		<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 			<div>
-				<Alert code={$page.data.res.error.code}/>
+				<Alert code={$page.data.res.code}/>
 			</div>
 		</SwayWindow>
 	{/key}

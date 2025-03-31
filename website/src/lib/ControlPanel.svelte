@@ -28,21 +28,21 @@
 
 {#snippet authDewanaiControlPanel()}
 <SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
-	{#if $page.data.res.error}
-		<Alert mainStyle="margin-bottom: 5px;" code={$page.data.res.error.code}/>
+	{#if $page.data.res.code.split('.')[0] == "error"}
+		<Alert mainStyle="margin-bottom: 5px;" code={$page.data.res.code}/>
 	{/if}
 	<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 </SwayWindow>
 {/snippet}
 
-{#if !$page.data.res.error}
+{#if $page.data.res.code.split('.')[0] != "error"}
 	{#if $page.data.res.auth_info.authed}
 		{@render authedControlPanel()}
 	{:else}
 		{@render authDewanaiControlPanel()}
 	{/if}
 {:else}
-	{#if $page.data.res.error.severity == "info"}
+	{#if $page.data.res.code.split('.')[0] == "info"}
 		{@render authedControlPanel()}
 	{:else}
 		{@render authDewanaiControlPanel()}

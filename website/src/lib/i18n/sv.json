@@ -63,6 +63,7 @@
 		"login_general": "ett eller båda fält är inkorrekta",
 		"404": "hittades inte",
 		"fields_not_specified": "efterfrågade fält ej ifyllda",
+		"field_too_long": "fältvärde för långt",
 		"user_email_exists": "en användare med den eposten finns redan",
 		"track_already_added": "låten är redan tillagd på det datumet"
 	},
@@ -70,6 +71,8 @@
 		"no_tracks_year": "användare har inga låtar för valt år",
 		"too_many_login_attempts": "för många inloggninsförsök har gjorts, försök igen senare",
 		"WIP": "inte ännu implementerat!",
+		"name_too_long": "namnet är för långt",
+		"too_long": "för långt",
 		"not_logged_in": "du är inte inloggad just nu!"
 	},
 	"info": {

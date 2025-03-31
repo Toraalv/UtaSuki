@@ -6,43 +6,43 @@ class UtaSuki_API {
 	// POST endpoints
 	async login(fetch, formData) {
 		try			{ return await this.request(fetch, "POST", "login", undefined, formData); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async register(fetch, formData) {
 		try			{ return await this.request(fetch, "POST", "register", undefined, formData); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async logout(fetch, authToken) {
 		try			{ return await this.request(fetch, "POST", "logout", undefined); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async postTrack(fetch, formData) {
 		try			{ return await this.request(fetch, "POST", "addTrack", undefined, formData); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	// GET endpoints
 	async fetchUsers(fetch) {
 		try			{ return await this.request(fetch, "GET", "users"); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async fetchYears(fetch, uid) {
 		try			{ return (await this.request(fetch, "GET", "years", { uid: uid })); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async fetchTracks(fetch, uid, year) {
 		try			{ return (await this.request(fetch, "GET", "tracks", { uid: uid, year: year })); }
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async auth(fetch) {
 		try			{ return await this.request(fetch, "GET", "status"); } //use status endpoint just to authenticate
-		catch (e)	{ return { error: e }; }
+		catch (e)	{ return e; }
 	}
 
 	async request(fetch, method, endpoint, args, data) {
