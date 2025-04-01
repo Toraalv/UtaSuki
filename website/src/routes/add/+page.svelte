@@ -35,6 +35,9 @@
 		}
 	}
 
+	let redirectTimeoutID = $state();
+	let redirectTimeout = () => redirectTimeoutID = setTimeout(() => goto("/add"), 2000);
+
 	// form feedback
 	let trackInputVal = $state("");
 	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > GENERAL_MAX_LEN);
@@ -141,13 +144,13 @@
 			</table>
 		</div>
 		<div style="display: flex;">
-			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")} onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); setTimeout(() => goto("/add"), 2000)}}>
+			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")} onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); redirectTimeout(); }}>
 		</div>
 	</form>
 </SwayWindow>
 
 {#if form?.res}
-	<a href="/add">
+	<a onclick={() => clearTimeout(redirectTimeoutID)} href="/add">
 		<div class="overlay"></div>
 		<Alert code={form.res.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 	</a>

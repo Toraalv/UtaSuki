@@ -15,8 +15,10 @@
 
 	let imageInput = $state();
 	let image = $state();
+	let showImage = $state(false);
 	function imageChange() {
 		const file = imageInput.files[0];
+		showImage = true;
 
 		if (file) {
 			const reader = new FileReader();
@@ -27,6 +29,9 @@
 			return;
 		}
 	}
+
+	let redirectTimeoutID = $state();
+	let redirectTimeout = () => redirectTimeoutID = setTimeout(() => goto('/'), 2500);
 </script>
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
@@ -40,7 +45,7 @@
 			<ControlPanel/>
 		{:else}
 			<!---- LOGIN FORM ---->
-			<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 0;">
+			<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;">
 				<form style="display: flex" method="POST" action="?/login" use:enhance>
 					<table cellpadding="5" cellspacing="0" style="flex-grow: 1">
 						<tbody>
@@ -73,7 +78,7 @@
 				{/if}
 			</SwayWindow>
 			<!---- REGISTRATION FORM ---->
-			<SwayWindow title={$_("general.register_noun")} mainStyle="max-width: 300px; min-width: 300px; flex: 1">
+			<SwayWindow title={$_("general.register_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1">
 				<form style="display: flex;" enctype="multipart/form-data" action="?/register" method="POST" use:enhance>
 					<table cellpadding="5" cellspacing="0" style="flex-grow: 1">
 						<tbody>
@@ -83,8 +88,8 @@
 							<tr>
 								<td>
 									<label for="imageSelect">
-										<img src="/empty_profile_picture.webp" alt="input profile" bind:this={image}>
-										<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} onchange={imageChange} required>
+										<img style={`display: ${showImage ? "block" : "none"}`} src="" alt="input profile" bind:this={image}>
+										<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} onchange={imageChange} autocomplete="off" required>
 									</label>
 								</td>
 							</tr>
@@ -118,7 +123,7 @@
 
 							<tr>
 								<td>
-									<input type="submit" value={$_("general.register_verb")} onclick={() => {image.setAttribute("src", "/empty_profile_picture.webp"); setTimeout(() => goto("/"), 2500)}}>
+									<input type="submit" value={$_("general.register_verb")} onclick={() => { showImage = false; redirectTimeout(); }}>
 								</td>
 							</tr>
 						</tbody>
@@ -136,7 +141,7 @@
 
 <!-- popup when registering -->
 {#if form?.type == "register" && form?.res}
-	<a href="/">
+	<a onclick={() => clearTimeout(redirectTimeoutID)} href="/">
 		<div class="overlay"></div>
 		<Alert code={form.res.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 	</a>
@@ -155,9 +160,6 @@
 </SwayWindow>
 
 <style>
-	input[type="file"] {
-		display: none;
-	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
 		object-fit: contain;
