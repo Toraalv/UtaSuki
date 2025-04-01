@@ -18,7 +18,7 @@
 </script>
 
 {#snippet yearList()}
-	<SwayWindow title={$_("general.years")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+	<SwayWindow title={$_("general.years")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 		{#if $page.data.res.code.split('.')[0] == "info"}
 			<div>
 				<Alert code={$page.data.res.code}/>

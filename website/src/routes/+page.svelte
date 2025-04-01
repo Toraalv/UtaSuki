@@ -47,7 +47,7 @@
 			<!---- LOGIN FORM ---->
 			<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;">
 				<form style="display: flex" method="POST" action="?/login" use:enhance>
-					<table cellpadding="5" cellspacing="0" style="flex-grow: 1">
+					<table style="flex-grow: 1">
 						<tbody>
 							<tr>
 								<td>{$_("general.email")}:</td>
@@ -80,7 +80,7 @@
 			<!---- REGISTRATION FORM ---->
 			<SwayWindow title={$_("general.register_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1">
 				<form style="display: flex;" enctype="multipart/form-data" action="?/register" method="POST" use:enhance>
-					<table cellpadding="5" cellspacing="0" style="flex-grow: 1">
+					<table style="flex-grow: 1">
 						<tbody>
 							<tr>
 								<td>{$_("general.profile_picture")}:</td>
@@ -169,15 +169,5 @@
 
 	label > img:hover {
 		outline: 1px solid var(--border);
-	}
-	.overlay {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 1;
-		cursor: pointer;
 	}
 </style>

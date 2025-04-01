@@ -48,6 +48,8 @@
 		"profile": "{username} profil",
 		"profile_picture": "profilbild",
 		"unknown": "okänd",
+		"settings": "inställningar",
+		"save": "spara",
 		"WIP": "under arbete"
 	},
 	"error": {
