@@ -13,19 +13,21 @@
 	let { children } = $props();
 
 
+	console.log($page.data);
+
 	// let username = $derived(decodeURIComponent($page.url.pathname).split('/')[1]); // this was a very good idea until username couldn't be used to seperate users
-	let username = $derived($page.data.res.code.split('.')[0] != "error" ? $page.data.res.data.profile.username : $_("general.unknown"));
+	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 </script>
 
 {#snippet yearList()}
 	<SwayWindow title={$_("general.years")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-		{#if $page.data.res.code.split('.')[0] == "info"}
+		{#if $page.data.code.split('.')[0] == "info"}
 			<div>
-				<Alert code={$page.data.res.code}/>
+				<Alert code={$page.data.code}/>
 			</div>
 		{:else}
 			<div style="display: flex; flex-direction: column;">
-				{#each $page.data.res.data.years as year}
+				{#each $page.data.data.years as year}
 					<LinkButton onclick={() => document.getElementById("sway_window_tracks").scrollTop = 0} href="/{$page.url.pathname.split("/")[1]}/{year}" active={$page.params.slug == year}>{year}</LinkButton> <!-- I really don't like this document.getElementById(...) but I have not succesfully implemented a solution using $effect.pre and tick() yet -->
 				{/each}
 			</div>
@@ -35,8 +37,8 @@
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	<ControlPanel mainStyle="min-height: 50vh;"/>
-	{#if $page.data.res.code.split('.')[0] != "error"}
-		{#if $page.data.res.auth_info.authed && $page.data.res.auth_info.profile.username == username}
+	{#if $page.data.code.split('.')[0] != "error"}
+		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
 			{@render yearList()}
 		{/if}
 	{/if}
@@ -45,30 +47,30 @@
 
 {@render children?.()}
 
-{#if $page.data.res.code.split('.')[0] == "error"}
+{#if $page.data.code.split('.')[0] == "error"}
 	{#key $page.params.slug}
 		<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 			<div>
-				<Alert code={$page.data.res.code}/>
+				<Alert code={$page.data.code}/>
 			</div>
 		</SwayWindow>
 	{/key}
 {:else}
 	<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
-		{#if $page.data.res.auth_info.authed && $page.data.res.auth_info.profile.username == username}
+		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
 		{:else}
 			<!-- pseudo user profile -->
 			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 				<fieldset>
 					<legend>{username}</legend>
-					<img alt="profile" src={CDN_ADDR + $page.data.res.data.profile.image}/>
+					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image}/>
 				</fieldset>
 				<h3>stats:</h3>
-				<p>total tracks: {$page.data.res.data.totalTracks}</p>
+				<p>total tracks: {$page.data.data.totalTracks}</p>
 			</SwayWindow>
 			<!-- /pseudo user profile -->
 		{/if}
-		{#if $page.data.res.auth_info.authed && $page.data.res.auth_info.profile.username == username}
+		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
 		{:else}
 			{@render yearList()}
 		{/if}

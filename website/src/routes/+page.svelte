@@ -35,12 +35,12 @@
 </script>
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
-	{#if $page.data.res.code.split('.')[0] == "error"}
+	{#if $page.data.code.split('.')[0] == "error"}
 		<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
-			<!-- <Alert mainStyle="flex-grow: 0" code="{$page.data.res.code}"/> --> <!-- maybe there's no need for an alert here? -->
+			<!-- <Alert mainStyle="flex-grow: 0" code="{$page.data.code}"/> --> <!-- maybe there's no need for an alert here? -->
 		</SwayWindow>
 	{:else}
-		{#if $page.data.res.auth_info.authed}
+		{#if $page.data.auth_info.authed}
 			<!---- CONTROL PANEL ---->
 			<ControlPanel/>
 		{:else}
@@ -148,10 +148,10 @@
 {/if}
 
 <SwayWindow title={$_("general.user_profiles")} altTitle={$_("general.user_profiles+")}>
-	{#if $page.data.res.code.split('.')[0] == "error"}
-		<Alert code={$page.data.res.code}/>
+	{#if $page.data.code.split('.')[0] == "error"}
+		<Alert code={$page.data.code}/>
 	{:else}
-		{#each $page.data.res.data as user}
+		{#each $page.data.data as user}
 			<a href="/{user.uid}">
 				<Profile username={user.username} image={user.image} created={new Date(user.created)} activity={new Date(user.last_activity)}/>
 			</a>

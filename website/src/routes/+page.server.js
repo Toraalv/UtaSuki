@@ -5,7 +5,7 @@ const api = new UtaSuki_API();
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, params, cookies }) {
-	return { res: await api.fetchUsers(fetch) };
+	return await api.fetchUsers(fetch);
 }
 
 export const actions = {

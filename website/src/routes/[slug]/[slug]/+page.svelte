@@ -8,14 +8,14 @@
 	import { page } from "$app/stores";
 	import { locale, _ } from "svelte-i18n";
 
-	let username = $derived($page.data.res.code.split('.')[0] != "error" ? $page.data.res.data.profile.username : $_("general.unknown"));
+	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 </script>
 
 <SwayWindow title={$_("general.tracks", { values: { username: possessiveForm(username) }})} id="sway_window_tracks">
-	{#if $page.data.trackRes.code.split('.')[0] == "error"}
-		<Alert code={$page.data.trackRes.code}/>
+	{#if $page.data.tracks.code.split('.')[0] == "error"}
+		<Alert code={$page.data.tracks.code}/>
 	{:else}
-		{#each $page.data.trackRes.data as month, i}
+		{#each $page.data.tracks.data as month, i}
 			{#if month.length}
 				<MonthContainer date={$_(`months.${i}`)}>
 					{#each month as track}

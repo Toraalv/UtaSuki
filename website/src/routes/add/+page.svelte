@@ -149,10 +149,10 @@
 	</form>
 </SwayWindow>
 
-{#if form?.res}
+{#if form}
 	<a onclick={() => clearTimeout(redirectTimeoutID)} href="/add">
 		<div class="overlay"></div>
-		<Alert code={form.res.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
+		<Alert code={form.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 	</a>
 {/if}
 
