@@ -50,6 +50,8 @@
 		"unknown": "unknown",
 		"settings": "settings",
 		"save": "save",
+		"public": "public",
+		"public_title": "your profile will be publicly available and listed on the front page",
 		"WIP": "work in progress"
 	},
 	"error": {
@@ -80,6 +82,7 @@
 	"success": {
 		"user_no_tracks": "user does not have any tracks",
 		"user_created": "user created successfully",
+		"updated_settings": "settings successfully updated",
 		"add_track": "track insertion was successful"
 	},
 	"info": {

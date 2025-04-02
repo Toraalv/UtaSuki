@@ -3,7 +3,7 @@
 	import ControlPanel from "$lib/ControlPanel.svelte";
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
@@ -36,31 +36,35 @@
 	}
 
 	let redirectTimeoutID = $state();
-	let redirectTimeout = () => redirectTimeoutID = setTimeout(() => goto("/add"), 2000);
+	let redirectTimeout = () => redirectTimeoutID = setTimeout(() => {
+		image.setAttribute("src", "/add_image_placeholder.webp");
+		goto("/add");
+	}, 2000);
 
 	// form feedback
 	let trackInputVal = $state("");
-	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > GENERAL_MAX_LEN);
+	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.GENERAL);
 
 	let artistInputVal = $state("");
-	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > GENERAL_MAX_LEN);
+	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.GENERAL);
 
 	let albumInputVal = $state("");
-	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > ALBUM_MAX_LEN);
+	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > LEN_LIMITS.ALBUM);
 
 	let noteInputVal = $state("");
-	let noteErr = $derived(encodeURIComponent(noteInputVal).length > NOTE_MAX_LEN);
+	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
 </script>
 
+<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
 {#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
+	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
 {/snippet}
 
 {#snippet inputWarning(err, code)}
 	{#if err}
 		<tr>
-			<td>
-			<td style="color: var(--warning)">{$_(code)}</td>
+			<td style="padding-top: 0;"></td>
+			<td style="padding-top: 0; color: var(--warning)">{$_(code)}</td>
 		</tr>
 	{/if}
 {/snippet}
@@ -112,7 +116,7 @@
 						<td>
 							<!-- these maxlength are just to limit the user somewhat. the server will never accept the values either way -->
 							<input type="text" name="title" autocomplete="off" maxlength="255" bind:value={trackInputVal} required>
-							{@render textCounter(trackInputVal, trackNameErr, GENERAL_MAX_LEN)}
+							{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.GENERAL)}
 						</td>
 					</tr>
 					{@render inputWarning(trackNameErr, "warning.name_too_long")}
@@ -120,7 +124,7 @@
 						<td>{$_("general.artist_name")}:</td>
 						<td>
 							<input type="text" name="artist" autocomplete="off" maxlength="255" bind:value={artistInputVal} required>
-							{@render textCounter(artistInputVal, artistNameErr, GENERAL_MAX_LEN)}
+							{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.GENERAL)}
 						</td>
 					</tr>
 					{@render inputWarning(artistNameErr, "warning.name_too_long")}
@@ -128,15 +132,15 @@
 						<td>{$_("general.album_name")}:</td>
 						<td style="position: relative;">
 							<input type="text" name="album" autocomplete="off" maxlength="250" bind:value={albumInputVal} required>
-							{@render textCounter(albumInputVal, albumNameErr, ALBUM_MAX_LEN)}
+							{@render textCounter(albumInputVal, albumNameErr, LEN_LIMITS.ALBUM)}
 						</td>
 					</tr>
 					{@render inputWarning(albumNameErr, "warning.name_too_long")}
-					<tr>
-						<td>{$_("general.notes")}:</td>
-						<td>
-							<textarea name="notes" rows="3" autocomplete="off" maxlength="1024" bind:value={noteInputVal}></textarea>
-							{@render textCounter(noteInputVal, noteErr, NOTE_MAX_LEN)}
+					<tr style="height: 100%;">
+						<td style="padding-bottom: 0;">{$_("general.notes")}:</td>
+						<td style="padding-bottom: 0; height: 100%;">
+							<textarea name="notes" autocomplete="off" maxlength="1024" bind:value={noteInputVal}></textarea>
+							{@render textCounter(noteInputVal, noteErr, LEN_LIMITS.NOTE)}
 						</td>
 					</tr>
 					{@render inputWarning(noteErr, "warning.too_long")}
@@ -144,17 +148,17 @@
 			</table>
 		</div>
 		<div style="display: flex;">
-			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")} onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); redirectTimeout(); }}>
+			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")} onclick={() => redirectTimeout() }>
 		</div>
 	</form>
+	{#if form}
+		<a onclick={() => { image.setAttribute("src", "/add_image_placeholder.webp"); clearTimeout(redirectTimeoutID); }} href="/add">
+			<div class="overlay"></div>
+			<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
+		</a>
+	{/if}
 </SwayWindow>
 
-{#if form}
-	<a onclick={() => clearTimeout(redirectTimeoutID)} href="/add">
-		<div class="overlay"></div>
-		<Alert code={form.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
-	</a>
-{/if}
 
 <style>
 	input[type="file"] {
@@ -163,10 +167,19 @@
 	input[type="text"], textarea {
 		padding-right: 70px;
 	}
+	textarea {
+		height: 100%;
+		padding-bottom: 0;
+		font-size: 16px;
+	}
 
+	label {
+		height: 300px;
+		width: 300px;
+	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
-		object-fit: fill;
+		object-fit: cover;
 		width: 300px;
 		height: 300px;
 	}
@@ -184,7 +197,7 @@
 		margin-left: 20px;
 	}
 	td {
-		padding: 0;
+		padding-top: 4px;
 		position: relative;
 	}
 </style>

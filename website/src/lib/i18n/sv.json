@@ -50,6 +50,8 @@
 		"unknown": "okänd",
 		"settings": "inställningar",
 		"save": "spara",
+		"public": "offentlig",
+		"public_title": "din profil kommer offentlig göras och visas upp på startsidan",
 		"WIP": "under arbete"
 	},
 	"error": {
@@ -77,10 +79,14 @@
 		"too_long": "för långt",
 		"not_logged_in": "du är inte inloggad just nu!"
 	},
-	"info": {
+	"success": {
 		"user_no_tracks": "användaren har inga låtar",
 		"user_created": "användare är nu skapad",
+		"updated_settings": "inställningar sparade",
 		"add_track": "låt inläggningen lyckades"
+	},
+	"info": {
+		"no_users": "inga användare existerar"
 	},
 	"about": {
 		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad.",

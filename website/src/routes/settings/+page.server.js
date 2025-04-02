@@ -15,3 +15,11 @@ export async function load({ fetch, params, cookies }) {
 
 	return res;
 }
+
+export const actions = {
+	updateSettings: async ({ fetch, cookies, request }) => {
+		const data = await request.formData();
+
+		return await api.updateSettings(fetch, data);
+	}
+};

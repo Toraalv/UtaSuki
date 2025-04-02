@@ -24,6 +24,11 @@ class UtaSuki_API {
 		catch (e)	{ return e; }
 	}
 
+	async updateSettings(fetch, formData) {
+		try			{ return await this.request(fetch, "POST", "updateSettings", undefined, formData); }
+		catch (e)	{ return e; }
+	}
+
 	// GET endpoints
 	async fetchUsers(fetch) {
 		try			{ return await this.request(fetch, "GET", "users"); }

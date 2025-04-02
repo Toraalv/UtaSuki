@@ -67,10 +67,10 @@ app.use((req, res, next) => {
 		if (e) req.authed = false;
 		else {
 			// check if token matches the stored token
-			if ((await dbQuery(`SELECT 1 FROM users WHERE uid = ? AND auth_token = ?`, [data.uid, token])).length) {
+			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
 				// chuck the whole profile with auth_info, why not
-				let user = await dbQuery(`SELECT uid, username, created, image, last_activity, public FROM users WHERE auth_token = ?;`, [token]);
+				let user = await dbQuery("SELECT uid, username, created, image, last_activity, public FROM users WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
 			}
 		}
@@ -83,7 +83,7 @@ app.get("/status", (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
-	let users = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE public IS TRUE;`);
+	let users = await dbQuery("SELECT uid, username, created, image, last_activity FROM users WHERE public IS TRUE;");
 
 	if (users.length == 0) {
 		sendStatus(req, res, 200, "info.no_users", []);
@@ -102,13 +102,13 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 	
-	let profile = await dbQuery(`SELECT uid, username, created, image, last_activity FROM users WHERE uid = ?`, [uid]);
+	let profile = await dbQuery("SELECT uid, username, created, image, last_activity FROM users WHERE uid = ?", [uid]);
 	if (!profile.length) {
 		sendStatus(req, res, 404, "error.user_not_exist")
 		return;
 	}
 
-	let data = await dbQuery(`SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE users.uid = ? ORDER BY date`, [uid]);
+	let data = await dbQuery("SELECT date FROM user_tracks JOIN users ON users.uid = user_tracks.uid WHERE users.uid = ? ORDER BY date", [uid]);
 
 	// if user has any tracks
 	if (data.length == 0) {
@@ -134,7 +134,7 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	let userExist = await dbQuery(`SELECT 1	FROM users WHERE uid = ?`, [uid]);
+	let userExist = await dbQuery("SELECT 1	FROM users WHERE uid = ?", [uid]);
 	if (!userExist.length) {
 		sendStatus(req, res, 404, "error.user_not_exist");
 		return;
@@ -195,7 +195,7 @@ app.get("/tracks", async (req, res) => {
 	sendStatus(req, res, 200, "success.tracks_found", monthTracks);
 });
 
-app.post("/login", upload.single("file"), async (req, res) => {
+app.post("/login", upload.none(), async (req, res) => {
 	const Token = (uid, email) => { return jwt.sign({ uid, email }, TOKEN_SECRET, { expiresIn: '1h' }); }
 
 	let email = req.body.email;
@@ -208,16 +208,16 @@ app.post("/login", upload.single("file"), async (req, res) => {
 	}
 
 	// check login attempts
-	let checkAttempts = await dbQuery(`SELECT ip FROM logins WHERE ip = ?`, [req.ip]);
+	let checkAttempts = await dbQuery("SELECT ip FROM logins WHERE ip = ?", [req.ip]);
 	if (checkAttempts.length > 4) {
 		sendStatus(req, res, 429, "warning.too_many_login_attempts");
 		return;
 	}
 
 	// does the user exist?
-	let userInfo = await dbQuery(`SELECT uid, password FROM users WHERE email = ?`, [email]);
+	let userInfo = await dbQuery("SELECT uid, password FROM users WHERE email = ?", [email]);
 	if (!userInfo.length) {
-		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
+		let setLoginAttempt = await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.ip]);
 		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}
@@ -225,21 +225,18 @@ app.post("/login", upload.single("file"), async (req, res) => {
 	// is the password correct?
 	if (userInfo[0].password == password) {
 		let userToken = Token(userInfo[0].uid, email);
-		let setUserTokenRes = await dbQuery(`UPDATE users SET auth_token = ? WHERE uid = ?`, [userToken, userInfo[0].uid]);
+		let setUserTokenRes = await dbQuery("UPDATE users SET auth_token = ? WHERE uid = ?", [userToken, userInfo[0].uid]);
 		sendStatus(req, res, 200, "success.login_success", { token: userToken });
 		return;
 	} else {
-		let setLoginAttempt = await dbQuery(`INSERT INTO logins (ip) VALUES (?)`, [req.ip]);
+		let setLoginAttempt = await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.ip]);
 		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}
 });
 
 app.post("/register", upload.single("file"), async (req, res) => {
-	let tempPath;
-	if (req.file != undefined)
-		tempPath = req.file.path;
-	else {
+	if (req.file == undefined) {
 		sendStatus(req, res, 400, "error.no_image");
 		return
 	}
@@ -253,48 +250,84 @@ app.post("/register", upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	let userExist = await dbQuery(`SELECT 1 FROM users WHERE email = ?`, [email]);
+	let userExist = await dbQuery("SELECT 1 FROM users WHERE email = ?", [email]);
 	if (userExist.length) {
-		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 		sendStatus(req, res, 418, "error.user_email_exists");
 		return;
 	}
 
 	let createUser;
 	try  {
-		createUser = await dbQuery(`INSERT INTO users (email, username, password) VALUES (?, ?, ?)`, [email, username, password]);
+		createUser = await dbQuery("INSERT INTO users (email, username, password) VALUES (?, ?, ?)", [email, username, password]);
 	} catch (e) {
-		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 		sendStatus(req, res, 500, "error.create_user");
 		return;
 	}
 
 	// add image after user creation so we can link uid instead
-	const imageExt = path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, `./public/images/profile_pictures/${createUser.insertId}${imageExt}`);
-	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+	const filename = createUser.insertId + path.extname(req.file.originalname).toLowerCase();
+	const targetPath = path.join(__dirname, "./public/images/profile_pictures/" + filename);
+	fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
-	let userPicture = await dbQuery(`UPDATE users SET image = ? WHERE uid = ?`, [`/static/images/profile_pictures/${createUser.insertId}${imageExt}`, createUser.insertId]);
+	let userPicture = await dbQuery("UPDATE users SET image = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, createUser.insertId]);
 
 	sendStatus(req, res, 200, "success.user_created");
 });
 
-app.post("/logout", upload.single("file"), (req, res) => {
+app.post("/updateSettings", upload.single("profile_picture"), async (req, res) => {
+	// update name
+	let username = req.body.userhandle;
+	if (username != undefined || username != '') {
+		try {
+			dbQuery("UPDATE users SET username = ? WHERE uid = ?", [username, req.profile.uid]);
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_username");
+			return;
+		}
+	}
+
+	// update profile picture
+	if (req.file != undefined) {
+		try {
+			const filename = req.profile.uid + path.extname(req.file.originalname).toLowerCase();
+			const targetPath = path.join(__dirname, "./public/images/profile_pictures/" + filename);
+			fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+
+			dbQuery("UPDATE users SET image = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.uid]);
+		} catch (e) {
+			fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+			sendStatus(req, res, 500, "error.update_profile_picture");
+			return;
+		}
+	}
+
+	// update public setting
+	let isPublic = req.body.public == "on" ? 1 : 0;
+	try {
+		await dbQuery("UPDATE users SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
+	} catch (e) {
+		sendStatus(req, res, 500, "error.update_public");
+		return;
+	}
+
+	sendStatus(req, res, 200, "success.updated_settings");
+});
+
+app.post("/logout", upload.none(), (req, res) => {
 	if (!req.authed) {
 		sendStatus(req, res, 404, "error.not_logged_in");
 		return;
 	}
 
-	dbQuery(`UPDATE users SET auth_token = NULL WHERE uid = ?`, [req.uid]);
+	dbQuery("UPDATE users SET auth_token = NULL WHERE uid = ?", [req.uid]);
 
 	sendStatus(req, res, 200, "success.logout");
 });
 
 app.post("/addTrack", upload.single("file"), async (req, res) => {
-	let tempPath;
-	if (req.file != undefined && req.file.path)
-		tempPath = req.file.path;
-	else {
+	if (req.file == undefined) {
 		sendStatus(req, res, 400, "error.no_image");
 		return
 	}
@@ -302,9 +335,9 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 	const handleError = (status, code, trackInsert) => {
 		// removes the track if something failed
 		if (trackInsert)
-			dbQuery(`DELETE FROM tracks WHERE id = ?;`, [trackInsert.insertId]);
+			dbQuery("DELETE FROM tracks WHERE id = ?;", [trackInsert.insertId]);
 
-		fs.rm(tempPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 		sendStatus(req, res, status, code);
 	}
 
@@ -336,15 +369,15 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	const imageExt = path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, `./public/images/album_covers/${encodeURIComponent(album)}${imageExt}`);
+	const filename = encodeURIComponent(album) + path.extname(req.file.originalname).toLowerCase();
+	const targetPath = path.join(__dirname, "./public/images/album_covers/" + filename);
 	
-	let trackExist = await dbQuery(`SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?`, [artist, album, title]);
+	let trackExist = await dbQuery("SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?", [artist, album, title]);
 	
 	let userTrackInsert, trackInsert;
 	if (trackExist.length) { // if track already exists, only add to user_tracks, otherwise both tracks and user_tracks
 		try {
-			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [uid, trackExist[0].id, date, notes]);
+			userTrackInsert = await dbQuery("INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)", [uid, trackExist[0].id, date, notes]);
 		} catch (e) {
 			handleError(418, "error.track_already_added");
 			return;
@@ -366,10 +399,10 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 					album,
 					title,
 					released,
-					`${encodeURIComponent(album)}${imageExt}`
+					filename
 				]
 			);
-			userTrackInsert = await dbQuery(`INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)`, [uid, trackInsert.insertId, date, notes]);
+			userTrackInsert = await dbQuery("INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)", [uid, trackInsert.insertId, date, notes]);
 		} catch (e) {
 			console.log(e);
 			handleError(500, "error.add_track", trackInsert, userTrackInsert);
@@ -379,13 +412,13 @@ app.post("/addTrack", upload.single("file"), async (req, res) => {
 
 	// update last_activity
 	try {
-		let userUpdateActivity = await dbQuery(`UPDATE users SET last_activity = current_timestamp() WHERE uid = ?`, [uid]);
+		let userUpdateActivity = await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [uid]);
 	} catch (e) {
 		handleError(500, "error.user_activity", trackInsert, userTrackInsert);
 		return;
 	}
 
-	fs.rename(tempPath, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+	fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
 	sendStatus(req, res, 200, "success.add_track");
 });

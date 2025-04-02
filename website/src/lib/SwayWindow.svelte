@@ -21,6 +21,7 @@
 
 <style>
 	.sway_window {
+		position: relative;
 		border: 1px solid var(--unfocused_border);
 		background-color: var(--bg);
 		margin: 10px;

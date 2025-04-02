@@ -1,18 +1,25 @@
 import { UtaSuki_API } from "$lib/api.js";
+import { redirect } from "@sveltejs/kit";
 
 const api = new UtaSuki_API();
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, params, cookies }) {
-	return await api.auth(fetch);
+	let res = await api.auth(fetch);
+
+	if (res.code.split('.')[0] == "error")
+		redirect(303, '/');
+	//redirect user if not logged in
+	if (!res.auth_info.authed)
+		redirect(303, '/');
+
+	return res;
 }
 
 export const actions = {
 	addTrack: async ({ fetch, cookies, request }) => {
 		const data = await request.formData();
 
-		let res = await api.postTrack(fetch, data);
-
-		return res;
+		return await api.postTrack(fetch, data);
 	}
 };
