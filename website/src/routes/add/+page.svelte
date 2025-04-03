@@ -3,9 +3,8 @@
 	import ControlPanel from "$lib/ControlPanel.svelte";
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
-	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { enhance } from "$app/forms";
 	import { _ } from "svelte-i18n";
@@ -20,17 +19,55 @@
 	let image = $state();
 	function imageChange() {
 		const file = imageInput.files[0];
-			
+
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", function () {
 				image.setAttribute("src", reader.result);
 			});
-			reader.readAsDataURL(file);	
+			reader.readAsDataURL(file);
 			return;
-		} 
+		}
 	}
+
+	let popupTimerID = $state();
+	let popup = $state();
+	let hidePopup = () => {
+		if (popup != null) {
+			image.setAttribute("src", "/add_image_placeholder.webp");
+			popup.style.display = "none";
+			clearTimeout(popupTimerID);
+		}
+	};
+	let popupTimer = () => popupTimerID = setTimeout(() => hidePopup(), 2000);
+
+	// form feedback
+	let trackInputVal = $state("");
+	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.GENERAL);
+
+	let artistInputVal = $state("");
+	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.GENERAL);
+
+	let albumInputVal = $state("");
+	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > LEN_LIMITS.ALBUM);
+
+	let noteInputVal = $state("");
+	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
 </script>
+
+<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
+{#snippet textCounter(inputVal, err, MAX_LEN)}
+	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
+{/snippet}
+
+{#snippet inputWarning(err, code)}
+	{#if err}
+		<tr>
+			<td style="padding-top: 0;"></td>
+			<td style="padding-top: 0; color: var(--warning)">{$_(code)}</td>
+		</tr>
+	{/if}
+{/snippet}
 
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	<ControlPanel/>
@@ -38,13 +75,13 @@
 </div>
 
 <SwayWindow contentStyle="padding: 20px;" title={$_("general.add_track")}>
-	<form method="POST" enctype="multipart/form-data" action="?/addTrack" use:enhance>
+	<form onsubmit={() => popupTimer()} method="POST" enctype="multipart/form-data" action="?/addTrack" use:enhance>
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
 				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} onchange={imageChange} required> <!-- show user they have to attach image -->
 			</label>
-			<table cellpadding="5" cellspacing="0" >
+			<table>
 				<tbody>
 					<tr>
 						<td>{$_("general.year")}:</td>
@@ -76,60 +113,69 @@
 					</tr>
 					<tr>
 						<td>{$_("general.track_name")}:</td>
-						<td><input type="text" name="title" autocomplete="off" required></td>
+						<td>
+							<!-- these maxlength are just to limit the user somewhat. the server will never accept the values either way -->
+							<input type="text" name="title" autocomplete="off" maxlength="255" bind:value={trackInputVal} required>
+							{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.GENERAL)}
+						</td>
 					</tr>
+					{@render inputWarning(trackNameErr, "warning.too_long")}
 					<tr>
 						<td>{$_("general.artist_name")}:</td>
-						<td><input type="text" name="artist" autocomplete="off" required></td>
+						<td>
+							<input type="text" name="artist" autocomplete="off" maxlength="255" bind:value={artistInputVal} required>
+							{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.GENERAL)}
+						</td>
 					</tr>
+					{@render inputWarning(artistNameErr, "warning.too_long")}
 					<tr>
 						<td>{$_("general.album_name")}:</td>
-						<td><input type="text" name="album" autocomplete="off" required></td>
+						<td style="position: relative;">
+							<input type="text" name="album" autocomplete="off" maxlength="250" bind:value={albumInputVal} required>
+							{@render textCounter(albumInputVal, albumNameErr, LEN_LIMITS.ALBUM)}
+						</td>
 					</tr>
-					<tr>
-						<td>{$_("general.notes")}:</td>
-						<td><textarea name="notes" rows="3" autocomplete="off"></textarea></td>
+					{@render inputWarning(albumNameErr, "warning.too_long")}
+					<tr style="height: 100%;">
+						<td style="padding-bottom: 0;">{$_("general.notes")}:</td>
+						<td style="padding-bottom: 0; height: 100%;">
+							<textarea name="notes" autocomplete="off" maxlength="1024" bind:value={noteInputVal}></textarea>
+							{@render textCounter(noteInputVal, noteErr, LEN_LIMITS.NOTE)}
+						</td>
 					</tr>
+					{@render inputWarning(noteErr, "warning.too_long")}
 				</tbody>
 			</table>
 		</div>
 		<div style="display: flex;">
-			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")} onclick={() => {image.setAttribute("src", "/add_image_placeholder.webp"); setTimeout(() => goto("/add"), 2000)}}>
+			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")}>
 		</div>
 	</form>
+	{#if form}
+		<a bind:this={popup} class="overlay" onclick={() => hidePopup()} href="/add">
+			<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
+		</a>
+	{/if}
 </SwayWindow>
 
-{#if form?.res.message}
-	<a href="/add">
-		<div class="overlay"></div>
-		<Alert severity={form.res.message.severity} code={form.res.message.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
-	</a>
-{/if}
-{#if form?.res.error}
-	<a href="/add">
-		<div class="overlay"></div>
-		<Alert severity={form.res.error.severity} code={form.res.error.code} mainStyle="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
-	</a>
-{/if}
 
 <style>
 	input[type="file"] {
 		display: none;
 	}
-	.overlay {
-		position: fixed;
-		width: 100%;
+	textarea {
 		height: 100%;
-		top: 0;
-		left: 0;
-		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 1;
-		cursor: pointer;
+		padding-bottom: 0;
+		font-size: 16px;
 	}
 
+	label {
+		height: 300px;
+		width: 300px;
+	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
-		object-fit: fill;
+		object-fit: cover;
 		width: 300px;
 		height: 300px;
 	}
@@ -147,6 +193,7 @@
 		margin-left: 20px;
 	}
 	td {
-		padding: 0;
+		padding-top: 4px;
+		position: relative;
 	}
 </style>

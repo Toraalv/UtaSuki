@@ -5,21 +5,26 @@ const api = new UtaSuki_API();
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, params, cookies }) {
-	return { res: await api.fetchUsers(fetch) };
+	return await api.fetchUsers(fetch);
 }
 
 export const actions = {
-	register: () => {
-	},
 	login: async ({ fetch, cookies, request }) => {
 		const data = await request.formData();
 
 		let res = await api.login(fetch, data);
 
-		if (!res.error)
+		if (res.code.split('.')[0] != "error")
 			cookies.set("auth_token", res.data.token, { path: '/' });
 
-		return { res };
+		return { type: "login", res: res };
+	},
+	register: async ({ fetch, cookies, request }) => {
+		const data = await request.formData();
+
+		let res = await api.register(fetch, data);
+
+		return { type: "register", res: res };
 	},
 	logout: ({ fetch, cookies }) => {
 		// do or die

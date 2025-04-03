@@ -46,6 +46,14 @@
 		"control_panel": "control panel",
 		"edit_profile": "edit profile",
 		"profile": "{username} profile",
+		"profile_picture": "profile picture",
+		"unknown": "unknown",
+		"settings": "settings",
+		"save": "save",
+		"public": "public",
+		"public_title": "your profile will be publicly available and listed on the front page",
+		"track_notes_public": "track note public",
+		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
 		"WIP": "work in progress"
 	},
 	"error": {
@@ -60,17 +68,27 @@
 		"wrong_password": "wrong password",
 		"login_general": "one or both fields are incorrect",
 		"404": "not found",
+		"fields_not_specified": "required fields were not specified",
+		"field_too_long": "field value was too long",
+		"user_email_exists": "a user with that email already exists",
+		"user_private": "user is private",
 		"track_already_added": "track already added on that date"
 	},
 	"warning": {
 		"no_tracks_year": "user does not have any tracks for the specified year",
 		"too_many_login_attempts": "too many login attempts have been made, try again later",
 		"WIP": "not yet implemented!",
+		"too_long": "too long",
 		"not_logged_in": "you're not currently logged in!"
 	},
-	"info": {
+	"success": {
 		"user_no_tracks": "user does not have any tracks",
-		"add_track_success": "track insertion was successful"
+		"user_created": "user created successfully",
+		"updated_settings": "settings successfully updated",
+		"add_track": "track insertion was successful"
+	},
+	"info": {
+		"no_users": "no users exists"
 	},
 	"about": {
 		"p1": "This site is meant to be a place where you can add your favourite music for every month.",

@@ -17,9 +17,9 @@ export async function load({ fetch, params, cookies }) {
 }
 
 export const actions = {
-	addTrack: async ({ fetch, cookies, request }) => {
+	updateSettings: async ({ fetch, cookies, request }) => {
 		const data = await request.formData();
 
-		return await api.postTrack(fetch, data);
+		return await api.updateSettings(fetch, data);
 	}
 };

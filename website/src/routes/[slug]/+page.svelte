@@ -5,7 +5,7 @@
 	import { page } from "$app/stores";
 	import { locale, _ } from "svelte-i18n";
 
-	let username = $derived(decodeURIComponent($page.url.pathname).split('/')[1]);
+	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 </script>
 
 <SwayWindow title={$_("general.tracks", { values: { username: possessiveForm(username) }})} id="sway_window_tracks">

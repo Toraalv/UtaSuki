@@ -4,5 +4,5 @@
 	import { page } from '$app/state';
 </script>
 
-<Alert mainStyle="margin-top: 33vh;" severity="error" code={"error." + page.status}/>
+<Alert mainStyle="margin-top: 33vh;" code={"error." + page.status}/>
 

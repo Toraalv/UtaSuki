@@ -11,8 +11,5 @@ export async function load({ fetch, params, url }) {
 	}
 	await waitLocale();
 
-
-	let api = new UtaSuki_API();
-	let trackRes = await api.fetchTracks(fetch, url.pathname.split("/")[1], params.slug);
-	return { trackRes };
+	return { tracks: await new UtaSuki_API().fetchTracks(fetch, url.pathname.split("/")[1], params.slug) };
 }

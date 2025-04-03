@@ -6,6 +6,7 @@
 	let {
 		username = "username",
 		image = "/static/images/profile_pictures/default",
+		imageVer = 0,
 		created = new Date(),
 		activity = new Date()
 	} = $props();
@@ -16,7 +17,7 @@
 </script>
 
 <div class="profile">
-	<img src={CDN_ADDR + image} alt="profile">
+	<img src={CDN_ADDR + image + `?${imageVer}`} alt="profile">
 	<div class="profileInfo">
 		<h1>{username}</h1>
 		<!-- {#if bio}

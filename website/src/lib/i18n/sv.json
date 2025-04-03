@@ -46,6 +46,14 @@
 		"control_panel": "kontrollpanel",
 		"edit_profile": "redigera profil",
 		"profile": "{username} profil",
+		"profile_picture": "profilbild",
+		"unknown": "okänd",
+		"settings": "inställningar",
+		"save": "spara",
+		"public": "offentlig",
+		"public_title": "din profil kommer offentlig göras och visas upp på startsidan",
+		"track_notes_public": "offentliga låtanteckningar",
+		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
 		"WIP": "under arbete"
 	},
 	"error": {
@@ -60,17 +68,27 @@
 		"wrong_password": "fel lösenord",
 		"login_general": "ett eller båda fält är inkorrekta",
 		"404": "hittades inte",
+		"fields_not_specified": "efterfrågade fält ej ifyllda",
+		"field_too_long": "fältvärde för långt",
+		"user_email_exists": "en användare med den eposten finns redan",
+		"user_private": "användare privat",
 		"track_already_added": "låten är redan tillagd på det datumet"
 	},
 	"warning": {
 		"no_tracks_year": "användare har inga låtar för valt år",
 		"too_many_login_attempts": "för många inloggninsförsök har gjorts, försök igen senare",
 		"WIP": "inte ännu implementerat!",
+		"too_long": "för långt",
 		"not_logged_in": "du är inte inloggad just nu!"
 	},
-	"info": {
+	"success": {
 		"user_no_tracks": "användaren har inga låtar",
-		"add_track_success": "låt inläggningen lyckades"
+		"user_created": "användare är nu skapad",
+		"updated_settings": "inställningar sparade",
+		"add_track": "låt inläggningen lyckades"
+	},
+	"info": {
+		"no_users": "inga användare existerar"
 	},
 	"about": {
 		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad.",
