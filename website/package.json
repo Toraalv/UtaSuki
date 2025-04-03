@@ -1,6 +1,6 @@
 {
 	"name": "UtaSuki",
-	"version": "0.0.15-alpha",
+	"version": "0.1.0-beta",
 	"private": true,
 	"scripts": {
 		"dev": "APP_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 vite dev --host",
