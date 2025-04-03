@@ -5,12 +5,14 @@
 	import Alert from "$lib/Alert.svelte";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
-	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { enhance } from "$app/forms";
 	import { _ } from "svelte-i18n";
 
 	let { form } = $props();
+
+	let publicCheckbox = $state($page.data.auth_info.profile.public);
+	let notesPublicCheckbox = $state($page.data.auth_info.profile.track_notes_public);
 
 	let imageInput = $state();
 	let image = $state();
@@ -28,8 +30,15 @@
 		}
 	}
 
-	let redirectTimeoutID = $state();
-	let redirectTimeout = () => redirectTimeoutID = setTimeout(() => goto("/settings"), 2000);
+	let popupTimerID = $state();
+	let popup = $state();
+	let hidePopup = () => {
+		if (popup != null) {
+			popup.style.display = "none";
+			clearTimeout(popupTimerID);
+		}
+	};
+	let popupTimer = () => popupTimerID = setTimeout(() => hidePopup(), 2000);
 
 	// form feedback
 	let usernameInputVal = $state($page.data.auth_info.profile.username);
@@ -56,14 +65,14 @@
 </div>
 
 <SwayWindow contentStyle="padding: 20px;" title={$_("general.settings")}>
-	<form method="POST" enctype="multipart/form-data" action="?/updateSettings" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }}>
+	<form onsubmit={() => popupTimer()} method="POST" enctype="multipart/form-data" action="?/updateSettings" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }}>
 		<table>
 			<tbody>
 				<tr>
 					<td></td>
 					<td>
 						<label for="imageSelect">
-							<img style="object-fit: cover;" src={CDN_ADDR + $page.data.auth_info.profile.image} alt="input profile" bind:this={image}>
+							<img style:object-fit="cover" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`} alt="input profile" bind:this={image}>
 						</label>
 					</td>
 				</tr>
@@ -81,25 +90,30 @@
 						{@render textCounter(usernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
 					</td>
 				</tr>
-				{@render inputWarning(usernameErr, "warning.name_too_long")}
+				{@render inputWarning(usernameErr, "warning.too_long")}
 				<tr>
 					<td title={$_("general.public_title")}>{$_("general.public")}:</td>
 					<td>
-						<!-- inline would be nice -->
-						{#if $page.data.auth_info.profile.public}
-							<input type="checkbox" name="public" autocomplete="off" checked>
-						{:else}
-							<input type="checkbox" name="public" autocomplete="off">
-						{/if}
+						<input bind:checked={publicCheckbox} type="checkbox" name="public" autocomplete="off">
 					</td>
 				</tr>
+				<!-- a really nice side effect of not showing this checkbox when the first public setting is turned
+				off is that the value is considered undefined on the api, which then turns off this setting too	-->
+				{#if publicCheckbox}
+					<tr>
+						<td title={$_("general.track_notes_public_title")}>{$_("general.track_notes_public")}:</td>
+						<td>
+							<input bind:checked={notesPublicCheckbox} type="checkbox" name="track_notes_public" autocomplete="off">
+						</td>
+					</tr>
+				{/if}
 			</tbody>
 		</table>
 		<table>
 			<tbody>
 				<tr>
-					<td>
-						<input style="padding: 2px 10px;" type="submit" value={$_("general.save")} onclick={() => redirectTimeout()}>
+					<td style:min-width="unset">
+						<input style="padding: 2px 10px;" type="submit" value={$_("general.save")}>
 					</td>
 				</tr>
 			</tbody>
@@ -107,7 +121,7 @@
 	</form>
 
 	{#if form}
-		<a class="overlay" onclick={() => clearTimeout(redirectTimeoutID)} href="/settings">
+		<a bind:this={popup} class="overlay" onclick={() => hidePopup()} href="/settings">
 			<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 		</a>
 	{/if}
@@ -120,9 +134,7 @@
 	td {
 		padding-top: 4px;
 		position: relative;
-	}
-	input[type="text"] {
-		padding-right: 70px;
+		min-width: 200px;
 	}
 	input[type="checkbox"] {
 		width: auto;

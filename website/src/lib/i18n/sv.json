@@ -52,6 +52,8 @@
 		"save": "spara",
 		"public": "offentlig",
 		"public_title": "din profil kommer offentlig göras och visas upp på startsidan",
+		"track_notes_public": "offentliga låtanteckningar",
+		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
 		"WIP": "under arbete"
 	},
 	"error": {
@@ -69,13 +71,13 @@
 		"fields_not_specified": "efterfrågade fält ej ifyllda",
 		"field_too_long": "fältvärde för långt",
 		"user_email_exists": "en användare med den eposten finns redan",
+		"user_private": "användare privat",
 		"track_already_added": "låten är redan tillagd på det datumet"
 	},
 	"warning": {
 		"no_tracks_year": "användare har inga låtar för valt år",
 		"too_many_login_attempts": "för många inloggninsförsök har gjorts, försök igen senare",
 		"WIP": "inte ännu implementerat!",
-		"name_too_long": "namnet är för långt",
 		"too_long": "för långt",
 		"not_logged_in": "du är inte inloggad just nu!"
 	},

@@ -52,6 +52,8 @@
 		"save": "save",
 		"public": "public",
 		"public_title": "your profile will be publicly available and listed on the front page",
+		"track_notes_public": "track note public",
+		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
 		"WIP": "work in progress"
 	},
 	"error": {
@@ -69,13 +71,13 @@
 		"fields_not_specified": "required fields were not specified",
 		"field_too_long": "field value was too long",
 		"user_email_exists": "a user with that email already exists",
+		"user_private": "user is private",
 		"track_already_added": "track already added on that date"
 	},
 	"warning": {
 		"no_tracks_year": "user does not have any tracks for the specified year",
 		"too_many_login_attempts": "too many login attempts have been made, try again later",
 		"WIP": "not yet implemented!",
-		"name_too_long": "name too long",
 		"too_long": "too long",
 		"not_logged_in": "you're not currently logged in!"
 	},

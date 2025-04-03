@@ -15,7 +15,7 @@
 	<SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 1;">
 		<fieldset>
 			<legend>{$page.data.auth_info.profile.username}</legend>
-			<img alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image}/>
+			<img alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
 		</fieldset>
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 		<LinkButton active={$page.url.pathname == "/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</LinkButton>
@@ -29,9 +29,9 @@
 
 {#snippet authDewanaiControlPanel()}
 	<SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
-		{#if $page.data.code.split('.')[0] == "error"}
+		<!-- {#if $page.data.code.split('.')[0] == "error"}
 			<Alert mainStyle="margin-bottom: 5px;" code={$page.data.code}/>
-		{/if}
+		{/if} -->
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 	</SwayWindow>
 {/snippet}

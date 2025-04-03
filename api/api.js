@@ -70,7 +70,7 @@ app.use((req, res, next) => {
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
 				// chuck the whole profile with auth_info, why not
-				let user = await dbQuery("SELECT uid, username, created, image, last_activity, public FROM users WHERE auth_token = ?;", [token]);
+				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public FROM users WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
 			}
 		}
@@ -83,7 +83,7 @@ app.get("/status", (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
-	let users = await dbQuery("SELECT uid, username, created, image, last_activity FROM users WHERE public IS TRUE;");
+	let users = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity FROM users WHERE public IS TRUE;");
 
 	if (users.length == 0) {
 		sendStatus(req, res, 200, "info.no_users", []);
@@ -102,9 +102,14 @@ app.get("/years", async (req, res) => {
 		return;
 	}
 	
-	let profile = await dbQuery("SELECT uid, username, created, image, last_activity FROM users WHERE uid = ?", [uid]);
+	let profile = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public FROM users WHERE uid = ?", [uid]);
 	if (!profile.length) {
 		sendStatus(req, res, 404, "error.user_not_exist")
+		return;
+	}
+
+	if (!profile[0].public && uid != req.profile?.uid) {
+		sendStatus(req, res, 403, "error.user_private");
 		return;
 	}
 
@@ -134,9 +139,14 @@ app.get("/tracks", async (req, res) => {
 		return;
 	}
 
-	let userExist = await dbQuery("SELECT 1	FROM users WHERE uid = ?", [uid]);
+	let userExist = await dbQuery("SELECT public FROM users WHERE uid = ?", [uid]);
 	if (!userExist.length) {
 		sendStatus(req, res, 404, "error.user_not_exist");
+		return;
+	}
+
+	if (!userExist[0].public && uid != req.profile?.uid) {
+		sendStatus(req, res, 403, "error.user_private");
 		return;
 	}
 	
@@ -187,7 +197,7 @@ app.get("/tracks", async (req, res) => {
 			title: data[i].title,
 			released: data[i].released,
 			image: data[i].image,
-			notes: data[i].track_notes_public && data[i].notes,
+			notes: uid == req.profile?.uid ? data[i].notes : data[i].track_notes_public && data[i].notes,
 			last_edit: data[i].track_notes_public && data[i].last_edit,
 		});
 	}
@@ -295,7 +305,7 @@ app.post("/updateSettings", upload.single("profile_picture"), async (req, res) =
 			const targetPath = path.join(__dirname, "./public/images/profile_pictures/" + filename);
 			fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
-			dbQuery("UPDATE users SET image = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.uid]);
+			dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.image_ver + 1, req.profile.uid]);
 		} catch (e) {
 			fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 			sendStatus(req, res, 500, "error.update_profile_picture");
@@ -307,6 +317,14 @@ app.post("/updateSettings", upload.single("profile_picture"), async (req, res) =
 	let isPublic = req.body.public == "on" ? 1 : 0;
 	try {
 		await dbQuery("UPDATE users SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
+	} catch (e) {
+		sendStatus(req, res, 500, "error.update_public");
+		return;
+	}
+	// update track notes public setting
+	let isTrackNotesPublic = req.body.track_notes_public == "on" ? 1 : 0;
+	try {
+		await dbQuery("UPDATE users SET track_notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
 	} catch (e) {
 		sendStatus(req, res, 500, "error.update_public");
 		return;

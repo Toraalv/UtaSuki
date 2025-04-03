@@ -12,10 +12,6 @@
 
 	let { children } = $props();
 
-
-	console.log($page.data);
-
-	// let username = $derived(decodeURIComponent($page.url.pathname).split('/')[1]); // this was a very good idea until username couldn't be used to seperate users
 	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 </script>
 
@@ -28,7 +24,7 @@
 		{:else}
 			<div style="display: flex; flex-direction: column;">
 				{#each $page.data.data.years as year}
-					<LinkButton onclick={() => document.getElementById("sway_window_tracks").scrollTop = 0} href="/{$page.url.pathname.split("/")[1]}/{year}" active={$page.params.slug == year}>{year}</LinkButton> <!-- I really don't like this document.getElementById(...) but I have not succesfully implemented a solution using $effect.pre and tick() yet -->
+					<LinkButton href="/{$page.url.pathname.split("/")[1]}/{year}" active={$page.params.slug == year}>{year}</LinkButton>
 				{/each}
 			</div>
 		{/if}
@@ -59,16 +55,14 @@
 	<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
 		{:else}
-			<!-- pseudo user profile -->
 			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 				<fieldset>
 					<legend>{username}</legend>
-					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image}/>
+					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
 				</fieldset>
 				<h3>stats:</h3>
 				<p>total tracks: {$page.data.data.totalTracks}</p>
 			</SwayWindow>
-			<!-- /pseudo user profile -->
 		{/if}
 		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
 		{:else}
