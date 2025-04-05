@@ -55,6 +55,8 @@
 				--unfocused_background: #222222;
 				--unfocused_text: #9e9e9e;
 				--unfocused_indicator: #292d2e;
+
+				--input_bg: #111111;
 			}
 
 			html {
@@ -97,11 +99,20 @@
 				width: 100%;
 				resize: none;
 			}
+			input:disabled {
+				color: var(--d2_text);
+			}
 			input[type="submit"]:hover {
 				background-color: var(--unfocused_background);
 			}
+			input:disabled:hover {
+				background-color: var(--input_bg)
+			}
 			input[type="text"], input[type="email"], input[type="password"], textarea {
 				padding-right: 70px;
+			}
+			input[type="radio"] {
+				width: unset;
 			}
 			.overlay {
 				position: absolute;

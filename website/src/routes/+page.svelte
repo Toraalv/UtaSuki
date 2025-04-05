@@ -98,7 +98,7 @@
 						</tbody>
 					</table>
 				</form>
-				{#if form?.type == "login" && form?.res.code.split('.')[0] == "error"}
+				{#if form?.type == "login" && form?.res.code.split('.')[0] != "success"}
 					<Alert code={form.res.code} mainStyle="margin-top: 10px;"/> <!-- margin matches sway_content's padding -->
 				{/if}
 			</SwayWindow>

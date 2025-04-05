@@ -70,7 +70,7 @@ app.use((req, res, next) => {
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
 				// chuck the whole profile with auth_info, why not
-				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public FROM users WHERE auth_token = ?;", [token]);
+				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public, language FROM users WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
 			}
 		}
@@ -287,11 +287,20 @@ app.post("/register", upload.single("file"), async (req, res) => {
 });
 
 app.post("/updateSettings", upload.single("profile_picture"), async (req, res) => {
+	// this error will never be shown to the user since /settings redirects unauthed users to /
+	// only time this happens is when an user's cookie expires, as they try to change their settings
+	if (!req.authed) {
+		sendStatus(req, res, 401, "error.forbidden");
+		return;
+	}
+
+	let change = false;
 	// update name
 	let username = req.body.userhandle;
-	if (username != undefined || username != '') {
+	if ((username != undefined || username != '') && username != req.profile.username) {
 		try {
-			dbQuery("UPDATE users SET username = ? WHERE uid = ?", [username, req.profile.uid]);
+			await dbQuery("UPDATE users SET username = ? WHERE uid = ?", [username, req.profile.uid]);
+			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_username");
 			return;
@@ -305,7 +314,8 @@ app.post("/updateSettings", upload.single("profile_picture"), async (req, res) =
 			const targetPath = path.join(__dirname, "./public/images/profile_pictures/" + filename);
 			fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
-			dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.image_ver + 1, req.profile.uid]);
+			await dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.image_ver + 1, req.profile.uid]);
+			change = true;
 		} catch (e) {
 			fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 			sendStatus(req, res, 500, "error.update_profile_picture");
@@ -315,22 +325,42 @@ app.post("/updateSettings", upload.single("profile_picture"), async (req, res) =
 
 	// update public setting
 	let isPublic = req.body.public == "on" ? 1 : 0;
-	try {
-		await dbQuery("UPDATE users SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
-	} catch (e) {
-		sendStatus(req, res, 500, "error.update_public");
-		return;
+	if (isPublic != req.profile.public) {
+		try {
+			await dbQuery("UPDATE users SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_public");
+			return;
+		}
 	}
 	// update track notes public setting
 	let isTrackNotesPublic = req.body.track_notes_public == "on" ? 1 : 0;
-	try {
-		await dbQuery("UPDATE users SET track_notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
-	} catch (e) {
-		sendStatus(req, res, 500, "error.update_public");
-		return;
+	if (isTrackNotesPublic != req.profile.track_notes_public) {
+		try {
+			await dbQuery("UPDATE users SET track_notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_public");
+			return;
+		}
 	}
 
-	sendStatus(req, res, 200, "success.updated_settings");
+	// language
+	if (req.body.language && req.body.language != req.profile.language) {
+		try {
+			await dbQuery("UPDATE users SET language = ? WHERE uid = ?", [req.body.language, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_lang");
+			return;
+		}
+	}
+
+	if (change)
+		sendStatus(req, res, 200, "success.updated_settings");
+	else
+		sendStatus(req, res, 200, "info.no_change");
 });
 
 app.post("/logout", upload.none(), (req, res) => {
