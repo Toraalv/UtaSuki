@@ -3,16 +3,17 @@
 	import ControlPanel from "$lib/ControlPanel.svelte";
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import { setLang } from "$lib/helpers.js";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
 	import { enhance } from "$app/forms";
-	import { _ } from "svelte-i18n";
+	import { _, locale, locales } from "svelte-i18n";
 
 	let { form } = $props();
 
 	let publicCheckbox = $state($page.data.auth_info.profile.public);
-	let notesPublicCheckbox = $state($page.data.auth_info.profile.track_notes_public);
+	let notesPublicCheckbox = $derived(publicCheckbox && $page.data.auth_info.profile.track_notes_public);
 
 	let imageInput = $state();
 	let image = $state();
@@ -35,6 +36,7 @@
 	let hidePopup = () => {
 		if (popup != null) {
 			popup.style.display = "none";
+			imageInput.value = "";
 			clearTimeout(popupTimerID);
 		}
 	};
@@ -72,7 +74,7 @@
 					<td></td>
 					<td>
 						<label for="imageSelect">
-							<img style:object-fit="cover" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`} alt="input profile" bind:this={image}>
+							<img src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`} alt="input profile" bind:this={image}>
 						</label>
 					</td>
 				</tr>
@@ -99,21 +101,41 @@
 				</tr>
 				<!-- a really nice side effect of not showing this checkbox when the first public setting is turned
 				off is that the value is considered undefined on the api, which then turns off this setting too	-->
-				{#if publicCheckbox}
-					<tr>
-						<td title={$_("general.track_notes_public_title")}>{$_("general.track_notes_public")}:</td>
-						<td>
-							<input bind:checked={notesPublicCheckbox} type="checkbox" name="track_notes_public" autocomplete="off">
-						</td>
-					</tr>
-				{/if}
+				<tr>
+					<td title={$_("general.track_notes_public_title")}>{$_("general.track_notes_public")}:</td>
+					<td>
+						<input bind:checked={notesPublicCheckbox} disabled={!publicCheckbox} type="checkbox" name="track_notes_public" autocomplete="off">
+					</td>
+				</tr>
+				<!--
+				<tr>
+					<td>{$_("general.language")}:</td>
+					<td>
+						<select onchange={(_this) => setLang(_this.srcElement.value)} name="language">
+							<option value="en" selected={$locale == "en" && true}>{$_("general.english")}</option>
+							<option value="sv" selected={$locale == "sv" && true}>{$_("general.swedish")}</option>
+						</select>
+					</td>
+				</tr>
+				-->
+				<tr>
+					<td>{$_("general.language")}:</td>
+					<td style="display: flex; flex-direction: row;">
+						{#each $locales as availLocale}
+							<div style:margin-right="20px">
+								<input type="radio" name="language" value={availLocale} id={availLocale} onclick={(_this) => setLang(_this.srcElement.value)} checked={$locale == availLocale && true}>
+								<label for={availLocale}>{$_(`general.${availLocale}`)}</label>
+							</div>
+						{/each}
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<table>
 			<tbody>
 				<tr>
 					<td style:min-width="unset">
-						<input style="padding: 2px 10px;" type="submit" value={$_("general.save")}>
+						<input style="padding: 2px 10px;" type="submit" value={$_("general.save")} disabled={usernameErr || !usernameInputVal.length}>
 					</td>
 				</tr>
 			</tbody>
@@ -129,12 +151,14 @@
 
 <style>
 	input {
-		max-width: 450px;
+		max-width: 350px;
+	}
+	input:disabled {
 	}
 	td {
 		padding-top: 4px;
 		position: relative;
-		min-width: 200px;
+		min-width: 270px;
 	}
 	input[type="checkbox"] {
 		width: auto;
@@ -142,8 +166,7 @@
 	img {
 		border: 1px solid var(--unfocused_border);
 		width: 100%;
-		max-width: 450px;
-		height: 300px;
+		max-width: 350px;
 	}
 	img:hover {
 		outline: 1px solid var(--border);

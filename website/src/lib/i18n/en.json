@@ -52,8 +52,11 @@
 		"save": "save",
 		"public": "public",
 		"public_title": "your profile will be publicly available and listed on the front page",
-		"track_notes_public": "track note public",
+		"track_notes_public": "track notes public",
 		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
+		"language": "language",
+		"en": "english",
+		"sv": "swedish",
 		"WIP": "work in progress"
 	},
 	"error": {
@@ -88,7 +91,8 @@
 		"add_track": "track insertion was successful"
 	},
 	"info": {
-		"no_users": "no users exists"
+		"no_users": "no users exists",
+		"no_change": "no setting was changed"
 	},
 	"about": {
 		"p1": "This site is meant to be a place where you can add your favourite music for every month.",

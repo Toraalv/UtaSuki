@@ -11,8 +11,6 @@
 
 	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 
-	// this replaces the document.getElementById("sway_window_tracks").scrollTop = 0 because
-	// I found out that you could bind properties to custom components, very nice
 	let content;
 	$effect.pre(() => {
 		$page.data.tracks;

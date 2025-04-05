@@ -27,7 +27,7 @@
 		"register_verb": "registrera",
 		"register_noun": "registrering",
 		"user_profiles": "användarprofiler",
-		"user_profiles+": "publika användarprofiler på utasuki",
+		"user_profiles+": "offentliga användarprofiler på utasuki",
 		"years": "år",
 		"year": "år",
 		"month": "månad",
@@ -54,6 +54,9 @@
 		"public_title": "din profil kommer offentlig göras och visas upp på startsidan",
 		"track_notes_public": "offentliga låtanteckningar",
 		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
+		"language": "språk",
+		"en": "engelska",
+		"sv": "svenska",
 		"WIP": "under arbete"
 	},
 	"error": {
@@ -83,12 +86,13 @@
 	},
 	"success": {
 		"user_no_tracks": "användaren har inga låtar",
-		"user_created": "användare är nu skapad",
+		"user_created": "användare registrerad",
 		"updated_settings": "inställningar sparade",
 		"add_track": "låt inläggningen lyckades"
 	},
 	"info": {
-		"no_users": "inga användare existerar"
+		"no_users": "inga användare existerar",
+		"no_change": "ingen inställning ändrades"
 	},
 	"about": {
 		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad.",

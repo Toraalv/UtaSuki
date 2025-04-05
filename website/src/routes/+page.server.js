@@ -14,20 +14,15 @@ export const actions = {
 
 		let res = await api.login(fetch, data);
 
-		if (res.code.split('.')[0] != "error")
+		if (res.code.split('.')[0] == "success")
 			cookies.set("auth_token", res.data.token, { path: '/' });
 
 		return { type: "login", res: res };
 	},
 	register: async ({ fetch, cookies, request }) => {
-		const data = await request.formData();
-
-		let res = await api.register(fetch, data);
-
-		return { type: "register", res: res };
+		return { type: "register", res: await api.register(fetch, await request.formData()) };
 	},
 	logout: ({ fetch, cookies }) => {
-		// do or die
 		api.logout(fetch);
 		cookies.set("auth_token", "", { path: '/' });
 		redirect(303, '/');
