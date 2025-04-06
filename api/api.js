@@ -9,6 +9,7 @@ const fs = require("fs");
 const https = require("https");
 const http = require("http");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
@@ -233,7 +234,7 @@ app.post("/login", upload.none(), async (req, res) => {
 	}
 
 	// is the password correct?
-	if (userInfo[0].password == password) {
+	if (await bcrypt.compare(password, userInfo[0].password)) {
 		let userToken = Token(userInfo[0].uid, email);
 		let setUserTokenRes = await dbQuery("UPDATE users SET auth_token = ? WHERE uid = ?", [userToken, userInfo[0].uid]);
 		sendStatus(req, res, 200, "success.login_success", { token: userToken });
@@ -269,6 +270,8 @@ app.post("/register", upload.single("file"), async (req, res) => {
 
 	let createUser;
 	try  {
+		const salt = await bcrypt.genSalt(10);
+		password = await bcrypt.hash(password, salt);
 		createUser = await dbQuery("INSERT INTO users (email, username, password) VALUES (?, ?, ?)", [email, username, password]);
 	} catch (e) {
 		fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
@@ -297,12 +300,26 @@ app.post("/updateSettings", upload.single("profile_picture"), async (req, res) =
 	let change = false;
 	// update name
 	let username = req.body.userhandle;
-	if ((username != undefined || username != '') && username != req.profile.username) {
+	if (username != undefined && username != '' && username != req.profile.username) {
 		try {
 			await dbQuery("UPDATE users SET username = ? WHERE uid = ?", [username, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_username");
+			return;
+		}
+	}
+
+	// update password
+	let password = req.body.password;
+	if (password != undefined && password != '') {
+		try {
+			const salt = await bcrypt.genSalt(10);
+			password = await bcrypt.hash(password, salt);
+			await dbQuery("UPDATE users SET password = ? WHERE uid = ?", [password, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_password");
 			return;
 		}
 	}
