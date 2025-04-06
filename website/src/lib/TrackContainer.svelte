@@ -22,11 +22,12 @@
 
 <style>
 	img {
-		object-fit: cover;
+		object-fit: contain;
 		height: 150px;
 		width: 100%;
 		max-width: 150px;
 		max-height: 150px;
+		background-color: black;
 	}
 
 	.track {

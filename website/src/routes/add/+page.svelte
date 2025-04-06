@@ -175,7 +175,8 @@
 	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
-		object-fit: cover;
+		object-fit: contain;
+		background-color: black;
 		width: 300px;
 		height: 300px;
 	}
