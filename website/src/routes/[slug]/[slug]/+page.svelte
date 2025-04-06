@@ -11,7 +11,7 @@
 
 	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 
-	let content;
+	let content = $state();
 	$effect.pre(() => {
 		$page.data.tracks;
 		tick().then(() => {

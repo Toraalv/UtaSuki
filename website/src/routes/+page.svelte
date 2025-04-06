@@ -61,7 +61,7 @@
 <!---- PAGE CONTENT ---->
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	{#if $page.data.code.split('.')[0] == "error"}
-		<SwayWindow title={$_("general.login_noun")} mainStyle="width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
+		<SwayWindow title={$_("general.login_noun")} mainStyle="min-width: 300px; max-width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
 		</SwayWindow>
 	{:else}
 		{#if $page.data.auth_info.authed}
@@ -69,7 +69,7 @@
 			<ControlPanel/>
 		{:else}
 			<!---- LOGIN FORM ---->
-			<SwayWindow title={$_("general.login_noun")} mainStyle="width: 300px; flex-grow: 1;">
+			<SwayWindow title={$_("general.login_noun")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;">
 				<form style="display: flex" method="POST" action="?/login" use:enhance>
 					<table style="flex-grow: 1">
 						<tbody>
@@ -102,7 +102,7 @@
 				{/if}
 			</SwayWindow>
 			<!---- REGISTRATION FORM ---->
-			<SwayWindow title={$_("general.register_noun")} mainStyle="width: 300px; flex-grow: 1">
+			<SwayWindow title={$_("general.register_noun")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1">
 				<form onsubmit={() => { showImage = false; redirectTimeout(); }} style="display: flex;" enctype="multipart/form-data" action="?/register" method="POST" use:enhance>
 					<table style="flex-grow: 1">
 						<tbody>

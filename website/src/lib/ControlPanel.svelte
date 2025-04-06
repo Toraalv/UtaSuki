@@ -12,7 +12,7 @@
 </script>
 
 {#snippet authedControlPanel()}
-	<SwayWindow title={$_("general.control_panel")} mainStyle={"width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 1;">
+	<SwayWindow title={$_("general.control_panel")} mainStyle={"min-width: 300px; max-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 1;">
 		<legend>{$page.data.auth_info.profile.username}</legend>
 		<img alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
@@ -26,7 +26,7 @@
 {/snippet}
 
 {#snippet authDewanaiControlPanel()}
-	<SwayWindow title={$_("general.control_panel")} mainStyle={"width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
+	<SwayWindow title={$_("general.control_panel")} mainStyle={"min-width: 300px; max-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 	</SwayWindow>
 {/snippet}

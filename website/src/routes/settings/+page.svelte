@@ -45,6 +45,9 @@
 	// form feedback
 	let usernameInputVal = $state($page.data.auth_info.profile.username);
 	let usernameErr = $derived(encodeURIComponent(usernameInputVal).length > LEN_LIMITS.USERNAME);
+
+	let passwordInputVal = $state("");
+	let passwordErr = $derived(encodeURIComponent(passwordInputVal).length > LEN_LIMITS.PASSWORD);
 </script>
 
 <!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
@@ -88,8 +91,16 @@
 					<td>{$_("general.username")}:</td>
 					<td>
 						<!-- userhandle to avoid autofill -->
-						<input type="text" name="userhandle" autocomplete="off" maxlength="255" bind:value={usernameInputVal}>
+						<input type="text" name="userhandle" autocomplete="off" maxlength={LEN_LIMITS.USERNAME} bind:value={usernameInputVal}>
 						{@render textCounter(usernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
+					</td>
+				</tr>
+				{@render inputWarning(usernameErr, "warning.too_long")}
+				<tr>
+					<td>{$_("general.password")}:</td>
+					<td>
+						<input type="password" name="password" autocomplete="off" maxlength={LEN_LIMITS.PASSWORD} bind:value={passwordInputVal}>
+						{@render textCounter(passwordInputVal, passwordErr, LEN_LIMITS.PASSWORD)}
 					</td>
 				</tr>
 				{@render inputWarning(usernameErr, "warning.too_long")}
@@ -99,25 +110,12 @@
 						<input bind:checked={publicCheckbox} type="checkbox" name="public" autocomplete="off">
 					</td>
 				</tr>
-				<!-- a really nice side effect of not showing this checkbox when the first public setting is turned
-				off is that the value is considered undefined on the api, which then turns off this setting too	-->
 				<tr>
 					<td title={$_("general.track_notes_public_title")}>{$_("general.track_notes_public")}:</td>
 					<td>
 						<input bind:checked={notesPublicCheckbox} disabled={!publicCheckbox} type="checkbox" name="track_notes_public" autocomplete="off">
 					</td>
 				</tr>
-				<!--
-				<tr>
-					<td>{$_("general.language")}:</td>
-					<td>
-						<select onchange={(_this) => setLang(_this.srcElement.value)} name="language">
-							<option value="en" selected={$locale == "en" && true}>{$_("general.english")}</option>
-							<option value="sv" selected={$locale == "sv" && true}>{$_("general.swedish")}</option>
-						</select>
-					</td>
-				</tr>
-				-->
 				<tr>
 					<td>{$_("general.language")}:</td>
 					<td style="display: flex; flex-direction: row;">
