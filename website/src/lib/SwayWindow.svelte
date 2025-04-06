@@ -37,11 +37,16 @@
 
 	.sway_window_title {
 		font-weight: normal;
-		padding-left: 4px;
+		padding: 0 4px;
 		background-color: var(--unfocused_background);
 		color: var(--unfocused_text);
 		height: 20px;
 		line-height: 20px;
+	}
+	.sway_window_title > * {
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		text-wrap: nowrap;
 	}
 	.sway_window:hover .sway_window_title {
 		background-color: var(--accent);

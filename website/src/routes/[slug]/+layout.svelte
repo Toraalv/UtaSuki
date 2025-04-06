@@ -16,7 +16,7 @@
 </script>
 
 {#snippet yearList()}
-	<SwayWindow title={$_("general.years")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+	<SwayWindow title={$_("general.years")} mainStyle="width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 		{#if $page.data.code.split('.')[0] == "info"}
 			<div>
 				<Alert code={$page.data.code}/>
@@ -45,7 +45,7 @@
 
 {#if $page.data.code.split('.')[0] == "error"}
 	{#key $page.params.slug}
-		<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+		<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 			<div>
 				<Alert code={$page.data.code}/>
 			</div>
@@ -55,12 +55,9 @@
 	<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
 		{:else}
-			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-				<fieldset>
-					<legend>{username}</legend>
-					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
-				</fieldset>
-				<h3>stats:</h3>
+			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+				<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
+				<h3 style:margin-top="10px">stats:</h3>
 				<p>total tracks: {$page.data.data.totalTracks}</p>
 			</SwayWindow>
 		{/if}
@@ -72,13 +69,6 @@
 {/if}
 
 <style>
-	fieldset {
-		border-color: var(--unfocused_border);
-		margin: 0 0 5px 0;
-	}
-	legend {
-		font-size: 16pt;
-	}
 	img {
 		width: 100%;
 		max-height: 450px;

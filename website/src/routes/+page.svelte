@@ -53,7 +53,6 @@
 {#snippet inputWarning(err, code)}
 	{#if err}
 		<tr>
-			<td style="padding-top: 0;"></td>
 			<td style="padding-top: 0; color: var(--warning)">{$_(code)}</td>
 		</tr>
 	{/if}
@@ -62,7 +61,7 @@
 <!---- PAGE CONTENT ---->
 <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
 	{#if $page.data.code.split('.')[0] == "error"}
-		<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
+		<SwayWindow title={$_("general.login_noun")} mainStyle="width: 300px; flex: 1;" contentStyle="display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between">
 		</SwayWindow>
 	{:else}
 		{#if $page.data.auth_info.authed}
@@ -70,7 +69,7 @@
 			<ControlPanel/>
 		{:else}
 			<!---- LOGIN FORM ---->
-			<SwayWindow title={$_("general.login_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1;">
+			<SwayWindow title={$_("general.login_noun")} mainStyle="width: 300px; flex-grow: 1;">
 				<form style="display: flex" method="POST" action="?/login" use:enhance>
 					<table style="flex-grow: 1">
 						<tbody>
@@ -103,7 +102,7 @@
 				{/if}
 			</SwayWindow>
 			<!---- REGISTRATION FORM ---->
-			<SwayWindow title={$_("general.register_noun")} mainStyle="max-width: 300px; min-width: 300px; flex-grow: 1">
+			<SwayWindow title={$_("general.register_noun")} mainStyle="width: 300px; flex-grow: 1">
 				<form onsubmit={() => { showImage = false; redirectTimeout(); }} style="display: flex;" enctype="multipart/form-data" action="?/register" method="POST" use:enhance>
 					<table style="flex-grow: 1">
 						<tbody>
@@ -123,7 +122,7 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="email" name="email" autocomplete="off" bind:value={emailInputVal} required>
+									<input type="email" name="email" autocomplete="off" bind:value={emailInputVal} maxlength={LEN_LIMITS.EMAIL} required>
 									{@render textCounter(emailInputVal, emailErr, LEN_LIMITS.EMAIL)}
 								</td>
 							</tr>
@@ -133,7 +132,7 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="text" name="username" autocomplete="off" bind:value={usernameInputVal} required>
+									<input type="text" name="username" autocomplete="off" bind:value={usernameInputVal} maxlength={LEN_LIMITS.USERNAME} required>
 									{@render textCounter(usernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
 								</td>
 							</tr>
@@ -143,7 +142,7 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="password" name="password" autocomplete="off" bind:value={passwordInputVal} required>
+									<input type="password" name="password" autocomplete="off" bind:value={passwordInputVal} maxlength={LEN_LIMITS.PASSWORD} required>
 									{@render textCounter(passwordInputVal, passwordErr, LEN_LIMITS.PASSWORD)}
 								</td>
 							</tr>
