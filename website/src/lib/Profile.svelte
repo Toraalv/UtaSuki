@@ -1,4 +1,5 @@
 <script>
+	import { possessiveForm } from "$lib/i18n/names.js";
 	import { CDN_ADDR } from "$lib/globals.js";
 
 	import { _ } from "svelte-i18n";
@@ -19,7 +20,7 @@
 <div class="profile">
 	<img src={CDN_ADDR + image + `?${imageVer}`} alt="profile">
 	<div class="profileInfo">
-		<h1>{username}</h1>
+		<h1 title={$_("general.profile", { values: { username: possessiveForm(username) }})}>{username}</h1>
 		<!-- {#if bio}
 			<p>{bio}</p>
 		{/if} -->
@@ -45,6 +46,7 @@
 		object-fit: cover;
 		height: 100px;
 		width: 100%;
+		flex-shrink: 0;
 		max-width: 100px;
 		max-height: 100px;
 	}
@@ -64,6 +66,7 @@
 		margin: 10px;
 	}
 	.profileInfo h1 {
+		word-break: break-all;
 		margin: 0;
 		font-weight: bold;
 		overflow: hidden;

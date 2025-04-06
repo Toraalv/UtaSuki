@@ -12,11 +12,9 @@
 </script>
 
 {#snippet authedControlPanel()}
-	<SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 1;">
-		<fieldset>
-			<legend>{$page.data.auth_info.profile.username}</legend>
-			<img alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
-		</fieldset>
+	<SwayWindow title={$_("general.control_panel")} mainStyle={"width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 1;">
+		<legend>{$page.data.auth_info.profile.username}</legend>
+		<img alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 		<LinkButton active={$page.url.pathname == "/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</LinkButton>
 		<LinkButton active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</LinkButton>
@@ -28,10 +26,7 @@
 {/snippet}
 
 {#snippet authDewanaiControlPanel()}
-	<SwayWindow title={$_("general.control_panel")} mainStyle={"max-width: 300px; min-width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
-		<!-- {#if $page.data.code.split('.')[0] == "error"}
-			<Alert mainStyle="margin-bottom: 5px;" code={$page.data.code}/>
-		{/if} -->
+	<SwayWindow title={$_("general.control_panel")} mainStyle={"width: 300px; flex: 1;" + mainStyle} contentStyle="display: flex; flex-direction: column; flex-grow: 0;">
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
 	</SwayWindow>
 {/snippet}
@@ -51,15 +46,12 @@
 {/if}
 
 <style>
-	fieldset {
-		border-color: var(--unfocused_border);
-		margin: 0 0 5px 0;
-	}
 	legend {
 		font-size: 16pt;
 	}
 	img {
 		width: 100%;
 		max-height: 450px;
+		margin-bottom: 10px;
 	}
 </style>

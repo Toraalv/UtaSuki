@@ -35,11 +35,11 @@
 		padding: 8px;
 	}
 	.trackInfo {
-		/* font-family: "DejaVuSans"; */
 		margin-left: 18px;
 	}
 	.trackInfo h1 {
 		position: relative;
+		word-break: break-all;
 		margin: 0;
 		font-weight: bold;
 		overflow: hidden;
@@ -53,10 +53,15 @@
 		display: inherit;
 	}
 	.trackInfo h3 {
+		word-break: break-all;
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-line-clamp: 1;
 				line-clamp: 1; 
 		-webkit-box-orient: vertical;
+	}
+	.trackInfo h3:hover {
+		overflow-y: auto;
+		display: inherit;
 	}
 </style>
