@@ -8,6 +8,7 @@ Current features:
 - [x] Password encryption
 
 Current plans include:
+- [ ] Editing, removing tracks
 - [ ] Improving UX
 - [ ] CI/CD
 - [ ] Unit testing
