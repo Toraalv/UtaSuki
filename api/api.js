@@ -219,7 +219,7 @@ app.post("/login", upload.none(), async (req, res) => {
 	}
 
 	// check login attempts
-	let checkAttempts = await dbQuery("SELECT ip FROM logins WHERE ip = ?", [req.ip]);
+	let checkAttempts = await dbQuery("SELECT ip FROM logins WHERE ip = ?", [req.body.requestOrigin]);
 	if (checkAttempts.length > 4) {
 		sendStatus(req, res, 429, "warning.too_many_login_attempts");
 		return;
@@ -228,7 +228,7 @@ app.post("/login", upload.none(), async (req, res) => {
 	// does the user exist?
 	let userInfo = await dbQuery("SELECT uid, password FROM users WHERE email = ?", [email]);
 	if (!userInfo.length) {
-		let setLoginAttempt = await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.ip]);
+		let setLoginAttempt = await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.body.requestOrigin]);
 		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}
