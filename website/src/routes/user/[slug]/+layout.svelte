@@ -24,7 +24,7 @@
 		{:else}
 			<div style="display: flex; flex-direction: column;">
 				{#each $page.data.data.years as year}
-					<LinkButton href="/{$page.url.pathname.split("/")[1]}/{year}" active={$page.params.slug == year}>{year}</LinkButton>
+					<LinkButton href="/user/{$page.url.pathname.split("/")[2]}/year/{year}" active={$page.params.slug == year}>{year}</LinkButton>
 				{/each}
 			</div>
 		{/if}

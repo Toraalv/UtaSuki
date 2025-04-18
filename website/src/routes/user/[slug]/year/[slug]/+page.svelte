@@ -21,7 +21,7 @@
 </script>
 
 <SwayWindow bind:content={content} title={$_("general.tracks", { values: { username: possessiveForm(username) }})}>
-	{#if $page.data.tracks.code.split('.')[0] == "error"}
+	{#if $page.data.tracks.code.split('.')[0] != "success"}
 		<Alert code={$page.data.tracks.code}/>
 	{:else}
 		{#each $page.data.tracks.data as month, i}

@@ -173,7 +173,7 @@
 		<Alert code={$page.data.code}/>
 	{:else}
 		{#each $page.data.data as user}
-			<a href="/{user.uid}">
+			<a href="/user/{user.uid}">
 				<Profile username={user.username} image={user.image} imageVer={user.image_ver} created={new Date(user.created)} activity={new Date(user.last_activity)}/>
 			</a>
 		{/each}
