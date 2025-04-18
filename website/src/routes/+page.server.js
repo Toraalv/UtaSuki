@@ -12,7 +12,7 @@ export const actions = {
 	login: async ({ fetch, cookies, request }) => {
 		let data = await request.formData();
 
-		data.set("requestOrigin", request.headers.get("x-forwarded-for").split(",")[0]);
+		data.set("requestOrigin", request.headers.get("x-forwarded-for")?.split(",")[0]);
 
 		let res = await api.login(fetch, data);
 
