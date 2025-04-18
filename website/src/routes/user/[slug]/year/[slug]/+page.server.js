@@ -3,5 +3,5 @@ import { page } from "$app/stores";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, params, url }) {
-	return { tracks: await new UtaSuki_API().fetchTracks(fetch, url.pathname.split("/")[1], params.slug) };
+	return { tracks: await new UtaSuki_API().fetchTracks(fetch, url.pathname.split("/")[2], params.slug) };
 }

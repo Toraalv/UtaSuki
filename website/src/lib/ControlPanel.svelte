@@ -16,7 +16,7 @@
 		<legend>{$page.data.auth_info.profile.username}</legend>
 		<img alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
 		<LinkButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</LinkButton>
-		<LinkButton active={$page.url.pathname == "/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</LinkButton>
+		<LinkButton active={$page.url.pathname == "/user/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</LinkButton>
 		<LinkButton active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</LinkButton>
 		<LinkButton active={$page.url.pathname == "/settings"} href="/settings">{$_("general.settings")}</LinkButton>
 		<form style="margin-top: auto" action="/?/logout" method="POST" use:enhance>
