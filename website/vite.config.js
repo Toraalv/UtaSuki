@@ -29,8 +29,8 @@ export default defineConfig(() => {
 			server: {
 				port: PORT,
 				https: {
-					key:  fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/privkey.pem"),
-					cert: fs.readFileSync("/etc/letsencrypt/live/utasuki.toralv.dev/cert.pem")
+					key:  fs.readFileSync("/etc/letsencrypt/live/utasuki.com/privkey.pem"),
+					cert: fs.readFileSync("/etc/letsencrypt/live/utasuki.com/cert.pem")
 				},
 
 			},

@@ -1,12 +1,12 @@
 {
   "name": "utasuki-api",
-  "version": "0.1.1-beta",
+  "version": "0.1.2-beta",
   "description": "REST API for UtaSuki",
   "main": "api.js",
   "scripts": {
-    "dev": "APP_ENV=dev nodemon api.js",
-    "test:dev": "APP_ENV=dev npx jest",
-    "deploy:prod": "APP_ENV=prod node api.js"
+    "dev": "./start_dev.sh",
+    "test:dev": "npx jest",
+    "deploy:prod": "./start_prod.sh"
   },
   "author": "Toralv",
   "license": "ISC",

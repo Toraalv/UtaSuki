@@ -1,6 +1,15 @@
 node_modules
-start_*.sh
-public
 .temp/*
+!.temp/.gitkeep
+.env
+.env.*
+!.env.example
+start_prod.sh
 tmux_start_prod.sh
 cert/*
+!cert/.gitkeep
+
+public/images/profile_pictures/*
+public/images/album_covers/*
+!public/images/profile_pictures/default.webp
+!public/images/album_covers/default.webp

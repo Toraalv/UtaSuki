@@ -85,12 +85,12 @@
 		"not_logged_in": "you're not currently logged in!"
 	},
 	"success": {
-		"user_no_tracks": "user does not have any tracks",
 		"user_created": "user created successfully",
 		"updated_settings": "settings successfully updated",
 		"add_track": "track insertion was successful"
 	},
 	"info": {
+		"user_no_tracks": "user does not have any tracks",
 		"no_users": "no users exists",
 		"no_change": "no setting was changed"
 	},
