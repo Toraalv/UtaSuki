@@ -1,12 +1,12 @@
 #### Setup:
 
 ```bash
-cd website
-npm install
-cd cert
-mkcert --install
-mkcert localhost
-cp * ../../api/cert/ # api also needs the certificate
+$ cd website
+$ npm install
+$ cd cert
+$ mkcert --install
+$ mkcert localhost
+$ cp * ../../api/cert/ # api also needs the certificate
 ```
 
 #### Running:
