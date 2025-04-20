@@ -10,3 +10,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 tmux_start_prod.sh
 cert/*
+!cert/.gitkeep

@@ -11,30 +11,22 @@ const http = require("http");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const APP_ENV = process.env.APP_ENV;
 const VERSION = process.env.npm_package_version;
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
-const PORT = APP_ENV == "dev" ? 5900 : 8800; // ごく　ぱちぱち
-let privateKey, certificate;
-if (APP_ENV != "dev") {
-	privateKey = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/privkey.pem", "utf8");
-	certificate = fs.readFileSync("/etc/letsencrypt/live/cdn.utasuki.toralv.dev/cert.pem", "utf8");
-} else {
-	privateKey = fs.readFileSync("cert/localhost-key.pem", "utf8");
-	certificate = fs.readFileSync("cert/localhost.pem", "utf8");
-}
+const PORT = process.env.PORT;
+
 const credentials = {
-	key: privateKey,
-	cert: certificate,
+	key: fs.readFileSync(process.env.PRIVATE_KEY, "utf8"),
+	cert: fs.readFileSync(process.env.CERTIFICATE, "utf8"),
 };
 
 // db connection
 const mariadb = require("mariadb");
 const pool = mariadb.createPool({
 	socketPath: "/run/mysqld/mysqld.sock",
-	user: process.env.UTASUKI_DB_USER,
-	password: process.env.UTASUKI_DB_PASS,
-	database: process.env.UTASUKI_DB_DATABASE,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB_NAME,
 	connectionLimit: 5
 });
 

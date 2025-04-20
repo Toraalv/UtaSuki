@@ -85,12 +85,12 @@
 		"not_logged_in": "du är inte inloggad just nu!"
 	},
 	"success": {
-		"user_no_tracks": "användaren har inga låtar",
 		"user_created": "användare registrerad",
 		"updated_settings": "inställningar sparade",
 		"add_track": "låt inläggningen lyckades"
 	},
 	"info": {
+		"user_no_tracks": "användaren har inga låtar",
 		"no_users": "inga användare existerar",
 		"no_change": "ingen inställning ändrades"
 	},
