@@ -1,3 +1,5 @@
+[![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+
 # 歌好き (UtaSuki)
 The site is available at [utasuki.com](https://utasuki.com).
 
@@ -33,3 +35,7 @@ UtaSuki is divided into two parts, a [Svelte](https://svelte.dev/) web server an
 [Svelte web server](/website/README.md)
 
 [API](/api/README.md)
+
+## LICENSE
+
+This project is licensed under the terms of the [GNU GPLv3](http://www.gnu.org/licenses/gpl-3.0) license.
