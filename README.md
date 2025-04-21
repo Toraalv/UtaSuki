@@ -11,6 +11,7 @@ Current features:
 
 Current plans includes:
 - [ ] Editing, removing tracks
+- [ ] Per track publicity setting?
 - [ ] More user settings, delete account
 - [ ] Improving UX
 - [ ] CI/CD
