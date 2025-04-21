@@ -15,6 +15,7 @@ Current plans includes:
 - [ ] Some sort of common music library
 - [ ] User interaction, such as adding each other as friends
 - [ ] User statistics
+- [ ] Mobile phone support
 
 ## Development
 
