@@ -7,6 +7,8 @@ node_modules
 tmux_start_prod.sh
 cert/*
 !cert/.gitkeep
+backup_db.sh
+.db_backups
 
 public/images/profile_pictures/*
 public/images/album_covers/*
