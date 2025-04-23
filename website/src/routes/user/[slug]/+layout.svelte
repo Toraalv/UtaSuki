@@ -19,7 +19,7 @@
 	<SwayWindow title={$_("general.years")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 		{#if $page.data.code.split('.')[0] == "info"}
 			<div>
-				<Alert code={$page.data.code}/>
+				<Alert code={$page.data.code}/> <!-- logged in users should get a different message -->
 			</div>
 		{:else}
 			<div style="display: flex; flex-direction: column;">
