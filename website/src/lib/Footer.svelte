@@ -5,17 +5,17 @@
 </script>
 
 <SwayWindow title={$_("general.links")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0; overflow: unset" contentStyle="display: flex; flex-direction: column">
-	<a class="links" href="/about">{$_("general.about")}</a>
-	<a class="links" href="https://github.com/Toraalv/UtaSuki">github</a>
+	<a href="/about">{$_("general.about")}</a>
+	<a href="https://github.com/Toraalv/UtaSuki">github</a>
 </SwayWindow>
 
 <style>
-	.links {
+	a {
 		width: 100%;
 		text-decoration-line: underline;
 		color: var(--link);
 	}
-	.links + .links {
+	a + a {
 		margin-top: 10px;
 	}
 </style>

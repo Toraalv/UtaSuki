@@ -32,7 +32,8 @@
 										album={track.album}
 										title={track.title}
 										image={track.image}
-										notes={track.notes}/>
+										notes={track.notes}
+										isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}/>
 					{/each}
 				</MonthContainer>
 			{/if}

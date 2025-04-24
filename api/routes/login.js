@@ -13,7 +13,7 @@ const bcrypt = require("bcryptjs");
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 module.exports = app.post('/', upload.none(), async (req, res) => {
-	const Token = (uid, email) => { return jwt.sign({ uid, email }, TOKEN_SECRET, { expiresIn: '1h' }); }
+	const Token = (uid, email) => { return jwt.sign({ uid, email }, TOKEN_SECRET, { expiresIn: '36h' }); }
 
 	let email = req.body.email;
 	let password = req.body.password;
