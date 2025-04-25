@@ -50,6 +50,9 @@
 		"unknown": "unknown",
 		"settings": "settings",
 		"save": "save",
+		"edit": "edit",
+		"remove": "remove",
+		"cancel": "cancel",
 		"public": "public",
 		"public_title": "your profile will be publicly available and listed on the front page",
 		"track_notes_public": "track notes public",
@@ -93,6 +96,11 @@
 		"user_no_tracks": "user does not have any tracks",
 		"no_users": "no users exists",
 		"no_change": "no setting was changed"
+	},
+	"dialog": {
+		"delete": "are you sure you want to delete:<br>{thing}?",
+		"yes": "yes",
+		"no": "no"
 	},
 	"about": {
 		"p1": "This site is meant to be a place where you can add your favourite music for every month.",

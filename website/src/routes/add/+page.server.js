@@ -23,3 +23,4 @@ export const actions = {
 		return await api.postTrack(fetch, data);
 	}
 };
+

@@ -28,7 +28,9 @@
 			{#if month.length}
 				<MonthContainer date={$_(`months.${i}`)}>
 					{#each month as track}
-						<TrackContainer artist={track.artist}
+						<TrackContainer id={track.id}
+										date={track.date}
+										artist={track.artist}
 										album={track.album}
 										title={track.title}
 										image={track.image}

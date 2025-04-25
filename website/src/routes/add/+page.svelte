@@ -116,7 +116,7 @@
 						<td>
 							<!-- these maxlength are just to limit the user somewhat. the server will never accept the values either way -->
 							<input type="text" name="title" autocomplete="off" maxlength="255" bind:value={trackInputVal} required>
-							{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.GENERAL)}
+							{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.TRACK)}
 						</td>
 					</tr>
 					{@render inputWarning(trackNameErr, "warning.too_long")}
@@ -124,7 +124,7 @@
 						<td>{$_("general.artist_name")}:</td>
 						<td>
 							<input type="text" name="artist" autocomplete="off" maxlength="255" bind:value={artistInputVal} required>
-							{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.GENERAL)}
+							{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.ARTIST)}
 						</td>
 					</tr>
 					{@render inputWarning(artistNameErr, "warning.too_long")}

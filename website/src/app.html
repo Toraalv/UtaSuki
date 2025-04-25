@@ -50,6 +50,7 @@
 				--warning: #865800;
 				--success: #128000;
 				--info: #3366CC;
+				--dialog: var(--accent);
 				
 				--focused_indicator: #9D66FF;
 				--focused_inactive-indicator: #484e50;
@@ -105,8 +106,9 @@
 			input:disabled {
 				color: var(--d2_text);
 			}
-			input[type="submit"]:hover {
+			input[type="submit"]:hover, input[type="button"]:hover {
 				background-color: var(--unfocused_background);
+				cursor: pointer;
 			}
 			input:disabled:hover {
 				background-color: var(--input_bg)

@@ -14,3 +14,4 @@
 	contentStyle="text-align: center">
 	<p>{$_(code)}</p>
 </SwayWindow>
+
