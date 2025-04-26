@@ -8,7 +8,6 @@
 
 	let {
 		id = null,
-		date = null, // why do we need this hmmm? to be able to delete the track
 		artist = "artist of track",
 		album = "album of track",
 		title = "title of track",
@@ -16,6 +15,10 @@
 		notes = "",
 		isOwner = false
 	} = $props();
+
+	function focus(node) {
+		node.focus();
+	}
 
 	let isEdit = $state(false);
 	function resetEdit() {
@@ -74,10 +77,9 @@
 	<form class="track" onkeydown={(e) => isEdit = e.key != "Escape"} onsubmit={() => popupTimer()} method="POST" enctype="multipart/form-data" action="?/updateTrack" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }}>
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
 		<div class="trackInfo">
-			<!-- a11y: avoid using autofocus. I would, if I could use lambda functions after "use:"! -->
 			<div>
 				<div style:position="relative">
-					<input id="trackInfoTitleInput" type="text" name="title" bind:value={trackInputVal} autocomplete="off" autofocus maxlength={LEN_LIMITS.TRACK} required>
+					<input id="trackInfoTitleInput" type="text" name="title" bind:value={trackInputVal} autocomplete="off" use:focus maxlength={LEN_LIMITS.TRACK} required>
 					{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.TRACK)}
 				</div>
 				<div id="trackActions" style:display="flex">
@@ -100,9 +102,10 @@
 
 <!-- todo: add cancel when clicking outside the dialog -->
 {#if showDialog}
-	<div class="overlay" style:cursor="unset">
-		<Dialog title="dialog.delete" toDelete={title} action="deleteTrack" data={{id: id, date: date}} onclick={(_this) => handleDialog(_this)}/>
-	</div>
+	<form use:focus class="overlay" style:cursor="unset" onkeydown={(e) => e.key == "Escape" && handleDialog(false)} method="POST" enctype="multipart/form-data" action="?/deleteTrack" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }} tabindex="0">
+		<Dialog title="dialog.delete" victim={title} onclick={(_this) => handleDialog(_this)}/>
+		<input type="hidden" name="id" value={id}> <!-- enhance? -->
+	</form>
 {/if}
 
 {#if isEdit}

@@ -103,15 +103,16 @@
 				width: 100%;
 				resize: none;
 			}
-			input:disabled {
+			input:disabled, textarea:disabled, select:disabled {
 				color: var(--d2_text);
 			}
-			input[type="submit"]:hover, input[type="button"]:hover {
+			input[type="submit"]:hover, input[type="button"]:hover, input[type="file"]:hover {
 				background-color: var(--unfocused_background);
 				cursor: pointer;
 			}
 			input:disabled:hover {
-				background-color: var(--input_bg)
+				background-color: var(--input_bg);
+				cursor: unset;
 			}
 			input[type="text"], input[type="email"], input[type="password"], textarea {
 				padding-right: 70px;

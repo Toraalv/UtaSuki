@@ -3,6 +3,7 @@
 	import ControlPanel from "$lib/ControlPanel.svelte";
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
@@ -34,7 +35,13 @@
 	let popup = $state();
 	let hidePopup = () => {
 		if (popup != null) {
-			image.setAttribute("src", "/add_image_placeholder.webp");
+			if (form.code.split('.')[0] != "error") { // form fail and success might be a good idea at this point
+				trackInputVal = "";
+				artistInputVal = "";
+				albumInputVal = "";
+				noteInputVal = "";
+				image.setAttribute("src", "/add_image_placeholder.webp");
+			}
 			popup.style.display = "none";
 			clearTimeout(popupTimerID);
 		}
@@ -53,6 +60,8 @@
 
 	let noteInputVal = $state("");
 	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
+
+	let inFlight = $state(false);
 </script>
 
 <!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
@@ -75,18 +84,43 @@
 </div>
 
 <SwayWindow contentStyle="padding: 20px;" title={$_("general.add_track")}>
-	<form onsubmit={() => popupTimer()} method="POST" enctype="multipart/form-data" action="?/addTrack" use:enhance>
+	<form
+		method="POST"
+		enctype="multipart/form-data"
+		action="?/addTrack"
+		use:enhance={() => {
+			inFlight = true;
+
+			return async ({ update }) => {
+				await update({ reset: false });
+				inFlight = false;
+			}; 
+		}}
+	>
 		<div>
 			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
-				<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} onchange={imageChange} required> <!-- show user they have to attach image -->
+				<input
+					type="file"
+					name="file"
+					accept="image/*"
+					id="imageSelect"
+					bind:this={imageInput}
+					onchange={imageChange}
+					disabled={inFlight}
+					required
+				/>
 			</label>
 			<table>
 				<tbody>
 					<tr>
 						<td>{$_("general.year")}:</td>
 						<td>
-							<select name="year" required>
+							<select
+								name="year"
+								disabled={inFlight}
+								required
+							>
 								{#each years as year}
 									{#if year == new Date().getFullYear()}
 										<option value="{year}" selected>{year}</option>
@@ -100,7 +134,11 @@
 					<tr>
 						<td>{$_("general.month")}:</td>
 						<td>
-							<select name="month" required>
+							<select
+								name="month"
+								disabled={inFlight}
+								required
+							>
 								{#each months as month}
 									{#if month + 1 == new Date().getMonth()} <!-- based on my use I only add tracks at the start of the next month -->
 										<option value="{month + 1}" selected>{$_(`months.${month}`)}</option>
@@ -114,8 +152,15 @@
 					<tr>
 						<td>{$_("general.track_name")}:</td>
 						<td>
-							<!-- these maxlength are just to limit the user somewhat. the server will never accept the values either way -->
-							<input type="text" name="title" autocomplete="off" maxlength="255" bind:value={trackInputVal} required>
+							<input
+								type="text"
+								name="title"
+								autocomplete="off"
+								maxlength="255"
+								bind:value={trackInputVal}
+								disabled={inFlight}
+								required
+							/>
 							{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.TRACK)}
 						</td>
 					</tr>
@@ -123,7 +168,15 @@
 					<tr>
 						<td>{$_("general.artist_name")}:</td>
 						<td>
-							<input type="text" name="artist" autocomplete="off" maxlength="255" bind:value={artistInputVal} required>
+							<input
+								type="text"
+								name="artist"
+								autocomplete="off"
+								maxlength="255"
+								bind:value={artistInputVal}
+								disabled={inFlight}
+								required
+							/>
 							{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.ARTIST)}
 						</td>
 					</tr>
@@ -131,7 +184,15 @@
 					<tr>
 						<td>{$_("general.album_name")}:</td>
 						<td style="position: relative;">
-							<input type="text" name="album" autocomplete="off" maxlength="250" bind:value={albumInputVal} required>
+							<input
+								type="text"
+								name="album"
+								autocomplete="off"
+								maxlength="250"
+								bind:value={albumInputVal}
+								disabled={inFlight}
+								required
+							/>
 							{@render textCounter(albumInputVal, albumNameErr, LEN_LIMITS.ALBUM)}
 						</td>
 					</tr>
@@ -139,7 +200,13 @@
 					<tr style="height: 100%;">
 						<td style="padding-bottom: 0;">{$_("general.notes")}:</td>
 						<td style="padding-bottom: 0; height: 100%;">
-							<textarea name="notes" autocomplete="off" maxlength="1024" bind:value={noteInputVal}></textarea>
+							<textarea
+								name="notes"
+								autocomplete="off"
+								maxlength="1024"
+								disabled={inFlight}
+								bind:value={noteInputVal}
+							></textarea>
 							{@render textCounter(noteInputVal, noteErr, LEN_LIMITS.NOTE)}
 						</td>
 					</tr>
@@ -148,11 +215,24 @@
 			</table>
 		</div>
 		<div style="display: flex;">
-			<input style="padding: 2px 1px; margin-top: 10px;" type="submit" value={$_("general.add")}>
+			<input
+				type="submit"
+				disabled={inFlight}
+				style="padding: 2px 1px; margin-top: 10px;"
+				value={$_("general.add")}
+			/>
 		</div>
 	</form>
+
+	{#if inFlight}
+		<div class="overlay" style:cursor="unset">
+			<Alert code="info.adding" mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2" contentStyle="margin: 0 2em;">
+				<p>{$_("info.adding")}</p><AnimatedDots/>
+			</Alert>
+		</div>
+	{/if}
 	{#if form}
-		<a bind:this={popup} class="overlay" onclick={() => hidePopup()} href="/add">
+		<a bind:this={popup} use:popupTimer class="overlay" onclick={() => hidePopup()} href="/add">
 			<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 		</a>
 	{/if}

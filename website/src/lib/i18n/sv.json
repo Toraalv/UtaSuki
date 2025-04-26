@@ -95,6 +95,10 @@
 	"info": {
 		"user_no_tracks": "användaren har inga låtar",
 		"no_users": "inga användare existerar",
+		"saving": "sparar",
+		"adding": "lägger till",
+		"logging_in": "loggar in",
+		"registering": "registrerar",
 		"no_change": "ingen inställning ändrades"
 	},
 	"dialog": {

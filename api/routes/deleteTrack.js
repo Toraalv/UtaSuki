@@ -8,12 +8,13 @@ const express = require("express");
 const app = express();
 
 module.exports = app.post('/', upload.none(), async (req, res) => {
-	let parsedData = JSON.parse(req.body.data);
-	let trackID = parsedData.id;
-	let rawTrackDate = new Date(parsedData.date);
-	let trackDate = `${rawTrackDate.getFullYear()}-${rawTrackDate.getMonth() + 1}-15`; // ####-##-15 feels wrong but is 100% acceptable
+	let trackOwnership = (await dbQuery("SELECT 1 FROM user_tracks JOIN users ON user_tracks.uid = users.uid WHERE users.uid = 2 AND id = ?", [req.body.id])).length;
+	if (!trackOwnership) {
+		sendStatus(req, res, 404, "error.no_track_ownership");
+		return;
+	}
 
-	let db_res = await dbQuery("DELETE FROM user_tracks WHERE track_id = ? AND uid = ? AND date = ?", [trackID, req.profile.uid, trackDate]); // stupid ass primary key with three columns
+	let db_res = await dbQuery("DELETE FROM user_tracks WHERE id = ?", [req.body.id]);
 	// todo: remove from tracks too, and image, if there is no one else who uses that track
 	console.log(db_res);
 

@@ -95,6 +95,10 @@
 	"info": {
 		"user_no_tracks": "user does not have any tracks",
 		"no_users": "no users exists",
+		"saving": "saving",
+		"adding": "adding",
+		"logging_in": "logging in",
+		"registering": "registering",
 		"no_change": "no setting was changed"
 	},
 	"dialog": {
