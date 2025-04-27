@@ -1,6 +1,7 @@
 <script>
 	import { UtaSuki_API } from "$lib/api.js";
 	import Dialog from "$lib/Dialog.svelte";
+	import TextCounter from "$lib/TextCounter.svelte";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
 	import { _ } from "svelte-i18n";
@@ -47,11 +48,6 @@
 	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
 </script>
 
-<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
-{#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
-{/snippet}
-
 {#snippet normal()}
 	<div class="track">
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
@@ -80,7 +76,7 @@
 			<div>
 				<div style:position="relative">
 					<input id="trackInfoTitleInput" type="text" name="title" bind:value={trackInputVal} autocomplete="off" use:focus maxlength={LEN_LIMITS.TRACK} required>
-					{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.TRACK)}
+					<TextCounter inputVal={trackInputVal} error={trackNameErr} maxLength={LEN_LIMITS.TRACK}/>
 				</div>
 				<div id="trackActions" style:display="flex">
 					<input style:background-color="#10360D" type="submit" value={$_("general.save")}>
@@ -89,12 +85,12 @@
 			</div>
 			<div style="position: relative; width: fit-content;">
 				<input id="trackInfoArtistInput" type="text" name="artist" bind:value={artistInputVal} autocomplete="off" maxlength={LEN_LIMITS.ARTIST} required>
-				{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.ARTIST)}
+				<TextCounter inputVal={artistInputVal} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
 			</div>
 			<div style:height="1em"></div>
 			<div style="position: relative; width: 60%;">
 				<textarea id="trackInfoNotesInput" name="notes" bind:value={noteInputVal} autocomplete="off" maxlength={LEN_LIMITS.NOTES} rows=3></textarea>
-				{@render textCounter(noteInputVal, noteErr, LEN_LIMITS.NOTE)}
+				<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
 			</div>
 		</div>
 	</form>

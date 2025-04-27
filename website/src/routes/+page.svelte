@@ -6,6 +6,7 @@
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
+	import TextCounter from "$lib/TextCounter.svelte";
 	import { LEN_LIMITS } from "$lib/globals.js";
 
 	import { goto } from "$app/navigation";
@@ -32,7 +33,7 @@
 		}
 	}
 
-	// for login
+	// login form feedback
 	let loginPopup = $state();
 	let hideLoginPopup = () => {
 		if (loginPopup != null) {
@@ -40,31 +41,33 @@
 		}
 	};
 
-	// for register
-	let registerPopup = $state();
-	let registerPopupTimerID = $state();
-	let hideRegisterPopup = () => {
-		if (registerPopup != null) {
-			if (form.res.code.split('.')[0] != "error") {
-				registerEmailInputVal = "";
-				registerUsernameInputVal = "";
-				registerPasswordInputVal = "";
-				showImage = false;
-				imageInput.files[0] = "";
-				goto('/');
-			}
-			registerPopup.style.display = "none";
-		}
-	};
-	let registerPopupTimer = () => registerPopupTimerID = setTimeout(() => hideRegisterPopup(), 3500);
-
-	// login form feedback
 	let loginEmailInputVal = $state("");
 	let loginPasswordInputVal = $state("");
 
 	let loginFlight = $state(false);
 
 	// register form feedback
+	let registerForm = $state();
+	let resetRegisterForm = () => {
+		if (form.res.code.split('.')[0] == "success") {
+			registerForm.reset();
+		}
+	};
+	let registerPopup = $state();
+	let registerPopupTimerID = $state();
+	let hideRegisterPopup = (force) => {
+		if (registerPopup != null) {
+			if (force)
+				registerPopup.style.display = "none";
+			if (form.res.code.split('.')[0] == "success")
+				registerPopup.style.display = "none";
+		}
+	};
+	let registerPopupTimer = () => {
+		if (form.res.code.split('.')[0] != "error")
+			registerPopupTimerID = setTimeout(() => hideRegisterPopup(), 3500)
+	};
+
 	let registerEmailInputVal = $state("");
 	let emailErr = $derived(encodeURIComponent(registerEmailInputVal).length > LEN_LIMITS.EMAIL);
 
@@ -76,11 +79,6 @@
 
 	let registerFlight = $state(false);
 </script>
-
-<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
-{#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
-{/snippet}
 
 {#snippet inputWarning(err, code)}
 	{#if err}
@@ -106,7 +104,7 @@
 					style="display: flex"
 					method="POST"
 					action="?/login"
-					onsubmit={() => hideLoginPopup()}
+					onsubmit={() => { registerForm.reset(); showImage = false; hideLoginPopup() }}
 					use:enhance={() => {
 						loginFlight = true;
 
@@ -180,7 +178,9 @@
 					enctype="multipart/form-data"
 					action="?/register"
 					method="POST"
-					onsubmit={() => hideRegisterPopup()}
+					bind:this={registerForm}
+					onsubmit={() => hideRegisterPopup(true)}
+					onreset={() => showImage = false}
 					use:enhance={() => {
 						registerFlight = true;
 
@@ -227,7 +227,7 @@
 										maxlength={LEN_LIMITS.EMAIL}
 										required
 									/>
-									{@render textCounter(registerEmailInputVal, emailErr, LEN_LIMITS.EMAIL)}
+									<TextCounter style="padding-top: 4px;" inputVal={registerEmailInputVal} error={emailErr} maxLength={LEN_LIMITS.EMAIL}/>
 								</td>
 							</tr>
 							{@render inputWarning(emailErr, "warning.too_long")}
@@ -245,7 +245,7 @@
 										maxlength={LEN_LIMITS.USERNAME}
 										required
 									/>
-									{@render textCounter(registerUsernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
+									<TextCounter style="padding-top: 4px;" inputVal={registerUsernameInputVal} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
 								</td>
 							</tr>
 							{@render inputWarning(usernameErr, "warning.too_long")}
@@ -263,7 +263,7 @@
 										maxlength={LEN_LIMITS.PASSWORD}
 										required
 									/>
-									{@render textCounter(registerPasswordInputVal, passwordErr, LEN_LIMITS.PASSWORD)}
+									<TextCounter style="padding-top: 4px;" inputVal={registerPasswordInputVal} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
 								</td>
 							</tr>
 							{@render inputWarning(passwordErr, "warning.too_long")}
@@ -272,7 +272,16 @@
 									<input
 										type="submit"
 										value={$_("general.register_verb")}
-										disabled={registerFlight || !registerEmailInputVal.length || !registerUsernameInputVal.length || !registerPasswordInputVal.length || !showImage}
+										disabled={
+											registerFlight ||
+											!registerEmailInputVal.length ||
+											!registerUsernameInputVal.length ||
+											!registerPasswordInputVal.length ||
+											!showImage ||
+											emailErr ||
+											usernameErr ||
+											passwordErr
+										}
 									/>
 								</td>
 							</tr>
@@ -286,8 +295,8 @@
 					</Alert>
 				{/if}
 				{#if form?.type == "register" && form?.res}
-					<div bind:this={registerPopup} use:registerPopupTimer onclick={() => hideRegisterPopup()}>
-						<Alert code={form.res.code} mainStyle="margin-top: 10px;"/> <!-- margin matches sway_content's padding -->
+					<div bind:this={registerPopup} use:resetRegisterForm use:registerPopupTimer>
+						<Alert code={form.res.code} mainStyle="margin-top: 10px;"/>
 					</div>
 				{/if}
 			</SwayWindow>

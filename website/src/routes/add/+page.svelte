@@ -4,6 +4,7 @@
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
+	import TextCounter from "$lib/TextCounter.svelte";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
@@ -16,15 +17,17 @@
 	let years = Array.from({ length: year - 2017 + 1 }, (_, i) => year - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
 
-	let imageInput = $state();
+	let imageInputFiles = $state();
 	let image = $state();
+	let imageHasChanged = $state(false);
 	function imageChange() {
-		const file = imageInput.files[0];
+		const file = imageInputFiles[0];
 
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", function () {
 				image.setAttribute("src", reader.result);
+				imageHasChanged = true;
 			});
 			reader.readAsDataURL(file);
 			return;
@@ -35,7 +38,7 @@
 	let popup = $state();
 	let hidePopup = () => {
 		if (popup != null) {
-			if (form.code.split('.')[0] != "error") { // form fail and success might be a good idea at this point
+			if (form.code.split('.')[0] != "error") {
 				trackInputVal = "";
 				artistInputVal = "";
 				albumInputVal = "";
@@ -63,11 +66,6 @@
 
 	let inFlight = $state(false);
 </script>
-
-<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
-{#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
-{/snippet}
 
 {#snippet inputWarning(err, code)}
 	{#if err}
@@ -105,7 +103,7 @@
 					name="file"
 					accept="image/*"
 					id="imageSelect"
-					bind:this={imageInput}
+					bind:files={imageInputFiles}
 					onchange={imageChange}
 					disabled={inFlight}
 					required
@@ -161,7 +159,7 @@
 								disabled={inFlight}
 								required
 							/>
-							{@render textCounter(trackInputVal, trackNameErr, LEN_LIMITS.TRACK)}
+							<TextCounter style="padding-top: 4px;" inputVal={trackInputVal} error={trackNameErr} maxLength={LEN_LIMITS.TRACK}/>
 						</td>
 					</tr>
 					{@render inputWarning(trackNameErr, "warning.too_long")}
@@ -177,7 +175,7 @@
 								disabled={inFlight}
 								required
 							/>
-							{@render textCounter(artistInputVal, artistNameErr, LEN_LIMITS.ARTIST)}
+							<TextCounter style="padding-top: 4px;" inputVal={artistInputVal} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
 						</td>
 					</tr>
 					{@render inputWarning(artistNameErr, "warning.too_long")}
@@ -193,7 +191,7 @@
 								disabled={inFlight}
 								required
 							/>
-							{@render textCounter(albumInputVal, albumNameErr, LEN_LIMITS.ALBUM)}
+							<TextCounter style="padding-top: 4px;" inputVal={albumInputVal} error={albumNameErr} maxLength={LEN_LIMITS.ALBUM}/>
 						</td>
 					</tr>
 					{@render inputWarning(albumNameErr, "warning.too_long")}
@@ -207,7 +205,7 @@
 								disabled={inFlight}
 								bind:value={noteInputVal}
 							></textarea>
-							{@render textCounter(noteInputVal, noteErr, LEN_LIMITS.NOTE)}
+							<TextCounter style="padding-top: 4px;" inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
 						</td>
 					</tr>
 					{@render inputWarning(noteErr, "warning.too_long")}
@@ -217,9 +215,19 @@
 		<div style="display: flex;">
 			<input
 				type="submit"
-				disabled={inFlight}
 				style="padding: 2px 1px; margin-top: 10px;"
 				value={$_("general.add")}
+				disabled={
+					inFlight ||
+					!artistInputVal.length ||
+					!albumInputVal.length ||
+					!trackInputVal.length ||
+					!imageHasChanged ||
+					trackNameErr ||
+					albumNameErr ||
+					noteErr ||
+					artistNameErr
+				}
 			/>
 		</div>
 	</form>

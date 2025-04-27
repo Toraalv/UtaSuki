@@ -18,8 +18,8 @@ export async function load({ fetch, params, cookies }) {
 
 export const actions = {
 	updateSettings: async ({ fetch, cookies, request }) => {
-		const data = await request.formData();
+		const form = await request.formData();
 
-		return await api.updateSettings(fetch, data);
+		return await api.updateSettings(fetch, form);
 	}
 };

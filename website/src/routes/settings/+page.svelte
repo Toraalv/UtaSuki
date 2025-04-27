@@ -4,6 +4,7 @@
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
+	import TextCounter from "$lib/TextCounter.svelte";
 	import { setLang } from "$lib/helpers.js";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
@@ -52,11 +53,6 @@
 
 	let inFlight = $state(false);
 </script>
-
-<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
-{#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
-{/snippet}
 
 {#snippet inputWarning(err, code)}
 	{#if err}
@@ -123,7 +119,7 @@
 							bind:value={usernameInputVal}
 							disabled={inFlight}
 						/>
-						{@render textCounter(usernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
+						<TextCounter style="padding-top: 4px;" inputVal={usernameInputVal} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
 					</td>
 				</tr>
 				{@render inputWarning(usernameErr, "warning.too_long")}
@@ -138,10 +134,10 @@
 							bind:value={passwordInputVal}
 							disabled={inFlight}
 						/>
-						{@render textCounter(passwordInputVal, passwordErr, LEN_LIMITS.PASSWORD)}
+						<TextCounter style="padding-top: 4px;" inputVal={passwordInputVal} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
 					</td>
 				</tr>
-				{@render inputWarning(usernameErr, "warning.too_long")}
+				{@render inputWarning(passwordErr, "warning.too_long")}
 				<tr>
 					<td title={$_("general.public_title")}>{$_("general.public")}:</td>
 					<td>
