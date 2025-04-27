@@ -24,21 +24,26 @@
 	{#if $page.data.tracks.code.split('.')[0] != "success"}
 		<Alert code={$page.data.tracks.code}/>
 	{:else}
-		{#each $page.data.tracks.data as month, i}
-			{#if month.length}
-				<MonthContainer date={$_(`months.${i}`)}>
-					{#each month as track}
-						<TrackContainer id={track.id}
-										date={track.date}
-										artist={track.artist}
-										album={track.album}
-										title={track.title}
-										image={track.image}
-										notes={track.notes}
-										isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}/>
-					{/each}
-				</MonthContainer>
-			{/if}
-		{/each}
+		{#key $page.data.tracks}
+			{#each $page.data.tracks.data as month, i}
+				{#if month.length}
+					<MonthContainer date={$_(`months.${i}`)}>
+						{#each month as track, j}
+							<TrackContainer
+								id={track.id}
+								date={track.date}
+								artist={track.artist}
+								album={track.album}
+								title={track.title}
+								image={track.image}
+								notes={track.notes}
+								isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}
+								tabindex={`${i}${j}`}
+							/>
+						{/each}
+					</MonthContainer>
+				{/if}
+			{/each}
+		{/key}
 	{/if}
 </SwayWindow>

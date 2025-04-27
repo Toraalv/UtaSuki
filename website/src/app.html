@@ -91,8 +91,11 @@
 			form * {
 				box-sizing: border-box;
 			}
-			input:focus, textarea:focus {
-				outline: 0;
+			label:focus {
+				outline: 2px var(--accent) solid;
+			}
+			input:focus, textarea:focus, select:focus, a:focus {
+				outline: 1px var(--accent) solid;
 			}
 			input, select, textarea {
 				margin: 0;

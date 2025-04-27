@@ -96,7 +96,7 @@
 		}}
 	>
 		<div>
-			<label for="imageSelect">
+			<label for="imageSelect" tabindex="0">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
 				<input
 					type="file"

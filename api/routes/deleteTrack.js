@@ -8,7 +8,7 @@ const express = require("express");
 const app = express();
 
 module.exports = app.post('/', upload.none(), async (req, res) => {
-	let trackOwnership = (await dbQuery("SELECT 1 FROM user_tracks JOIN users ON user_tracks.uid = users.uid WHERE users.uid = 2 AND id = ?", [req.body.id])).length;
+	let trackOwnership = (await dbQuery("SELECT 1 FROM user_tracks JOIN users ON user_tracks.uid = users.uid WHERE users.uid = ? AND id = ?", [req.profile.uid, req.body.id])).length;
 	if (!trackOwnership) {
 		sendStatus(req, res, 404, "error.no_track_ownership");
 		return;

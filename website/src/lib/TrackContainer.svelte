@@ -9,12 +9,14 @@
 
 	let {
 		id = null,
+		date = "",
 		artist = "artist of track",
 		album = "album of track",
 		title = "title of track",
 		image = "/test_album.png",
 		notes = "",
-		isOwner = false
+		isOwner = false,
+		tabindex = "0"
 	} = $props();
 
 	function focus(node) {
@@ -47,17 +49,26 @@
 	let noteInputVal = $state(notes);
 	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
 </script>
-
+{tabindex}
 {#snippet normal()}
-	<div class="track">
+	<div class="track" tabindex={tabindex}>
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
 		<div class="trackInfo">
 			<div>
 				<h1>{title}</h1>
 				{#if isOwner}
 					<div id="trackActions">
-						<input type="button" onclick={() => { resetEdit(); isEdit = true }} value={$_("general.edit")}>
-						<input style:background-color="#561111" type="button" onclick={() => deleteDialog()} value={$_("general.remove")}>
+						<input
+							type="button"
+							onclick={() => { resetEdit(); isEdit = true }}
+							value={$_("general.edit")}
+						/>
+						<input
+							style:background-color="#561111"
+							type="button"
+							onclick={() => deleteDialog()}
+							value={$_("general.remove")}
+						/>
 					</div>
 				{/if}
 			</div>
@@ -70,21 +81,59 @@
 {/snippet}
 
 {#snippet edit()}
-	<form class="track" onkeydown={(e) => isEdit = e.key != "Escape"} onsubmit={() => popupTimer()} method="POST" enctype="multipart/form-data" action="?/updateTrack" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }}>
+	<form
+		class="track"
+		onkeydown={(e) => isEdit = e.key != "Escape"}
+		tabindex={tabindex}
+		onsubmit={() => popupTimer()}
+		method="POST"
+		enctype="multipart/form-data"
+		action="?/updateTrack"
+		use:enhance={() => {
+			return async ({ update }) => {
+				update({ reset: false });
+			};
+		}}
+	>
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
 		<div class="trackInfo">
 			<div>
 				<div style:position="relative">
-					<input id="trackInfoTitleInput" type="text" name="title" bind:value={trackInputVal} autocomplete="off" use:focus maxlength={LEN_LIMITS.TRACK} required>
+					<input
+						id="trackInfoTitleInput"
+						type="text" name="title"
+						bind:value={trackInputVal}
+						autocomplete="off"
+						use:focus
+						maxlength={LEN_LIMITS.TRACK}
+						required
+					/>
 					<TextCounter inputVal={trackInputVal} error={trackNameErr} maxLength={LEN_LIMITS.TRACK}/>
 				</div>
 				<div id="trackActions" style:display="flex">
-					<input style:background-color="#10360D" type="submit" value={$_("general.save")}>
-					<input style:background-color="#561111" type="button" value={$_("general.cancel")} onclick={() => isEdit = false}>
+					<input
+						style:background-color="#10360D"
+						type="submit"
+						value={$_("general.save")}
+					/>
+					<input
+						style:background-color="#561111"
+						type="button"
+						value={$_("general.cancel")}
+						onclick={() => isEdit = false}
+					/>
 				</div>
 			</div>
 			<div style="position: relative; width: fit-content;">
-				<input id="trackInfoArtistInput" type="text" name="artist" bind:value={artistInputVal} autocomplete="off" maxlength={LEN_LIMITS.ARTIST} required>
+				<input
+					id="trackInfoArtistInput"
+					type="text"
+					name="artist"
+					bind:value={artistInputVal}
+					autocomplete="off"
+					maxlength={LEN_LIMITS.ARTIST}
+					required
+				/>
 				<TextCounter inputVal={artistInputVal} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
 			</div>
 			<div style:height="1em"></div>
@@ -98,9 +147,19 @@
 
 <!-- todo: add cancel when clicking outside the dialog -->
 {#if showDialog}
-	<form use:focus class="overlay" style:cursor="unset" onkeydown={(e) => e.key == "Escape" && handleDialog(false)} method="POST" enctype="multipart/form-data" action="?/deleteTrack" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }} tabindex="0">
+	<form
+		use:focus
+		class="overlay"
+		style:cursor="unset"
+		tabindex="0"
+		onkeydown={(e) => e.key == "Escape" && handleDialog(false)}
+		method="POST"
+		enctype="multipart/form-data"
+		action="?/deleteTrack"
+		use:enhance
+	>
 		<Dialog title="dialog.delete" victim={title} onclick={(_this) => handleDialog(_this)}/>
-		<input type="hidden" name="id" value={id}> <!-- enhance? -->
+		<input type="hidden" name="id" value={id}>
 	</form>
 {/if}
 
@@ -154,6 +213,9 @@
 		flex-direction: row;
 		padding: 8px;
 	}
+	.track:focus {
+		outline: 1px var(--accent) solid;
+	}
 	#trackActions {
 		flex-direction: row;
 		display: none;
@@ -162,7 +224,7 @@
 		height: fit-content;
 		padding: 5px 10px;
 	}
-	.track:hover #trackActions {
+	.track:hover #trackActions, .track:focus #trackActions {
 		/*box-shadow: inset 0 0 0 1px var(--accent);*/
 		display: flex;
 	}
