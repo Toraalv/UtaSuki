@@ -102,7 +102,7 @@
 		"no_change": "no setting was changed"
 	},
 	"dialog": {
-		"delete": "are you sure you want to delete:<br>{thing}?",
+		"delete": "are you sure you want to delete:<br><span style=\"color: white\">{thing}</span>?",
 		"yes": "yes",
 		"no": "no"
 	},

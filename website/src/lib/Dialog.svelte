@@ -3,6 +3,10 @@
 
 	import { _ } from "svelte-i18n";
 
+	function focus(node) {
+		node.focus();
+	}
+
 	let {
 		mainStyle = null,
 		title = null,
@@ -21,7 +25,7 @@
 	contentStyle="text-align: center">
 	<p>{@html $_(title, { values: { thing: victim } })}</p>
 	<div style="display: flex; flex-direction: row;">
-		<input type="submit" value={$_("dialog.yes")} onclick={() => onclick(true)}>
+		<input type="submit" value={$_("dialog.yes")} onclick={() => onclick(true)} use:focus>
 		<input type="button" value={$_("dialog.no")} onclick={() => onclick(false)}>
 	</div>
 </SwayWindow>

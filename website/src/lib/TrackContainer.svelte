@@ -49,9 +49,15 @@
 	let noteInputVal = $state(notes);
 	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
 </script>
-{tabindex}
+
 {#snippet normal()}
-	<div class="track" tabindex={tabindex}>
+	<div class="track" tabindex={tabindex} onmousedown={(_this) => { // this makes the focus toggable, worth?
+		let lastActiveElement = document.activeElement;
+		_this.currentTarget.addEventListener("click", (_this) => {
+			lastActiveElement == _this.currentTarget && _this.currentTarget.blur();
+			lastActiveElement = null;
+			});
+		}}>
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
 		<div class="trackInfo">
 			<div>
@@ -59,11 +65,13 @@
 				{#if isOwner}
 					<div id="trackActions">
 						<input
+							tabindex={tabindex}
 							type="button"
 							onclick={() => { resetEdit(); isEdit = true }}
 							value={$_("general.edit")}
 						/>
 						<input
+							tabindex={tabindex}
 							style:background-color="#561111"
 							type="button"
 							onclick={() => deleteDialog()}
@@ -101,8 +109,10 @@
 				<div style:position="relative">
 					<input
 						id="trackInfoTitleInput"
-						type="text" name="title"
+						type="text"
+						name="title"
 						bind:value={trackInputVal}
+						tabindex={Number(tabindex) + 1}
 						autocomplete="off"
 						use:focus
 						maxlength={LEN_LIMITS.TRACK}
@@ -115,12 +125,14 @@
 						style:background-color="#10360D"
 						type="submit"
 						value={$_("general.save")}
+						tabindex={Number(tabindex) + 4}
 					/>
 					<input
 						style:background-color="#561111"
 						type="button"
 						value={$_("general.cancel")}
 						onclick={() => isEdit = false}
+						tabindex={Number(tabindex) + 5}
 					/>
 				</div>
 			</div>
@@ -130,6 +142,7 @@
 					type="text"
 					name="artist"
 					bind:value={artistInputVal}
+					tabindex={Number(tabindex) + 2}
 					autocomplete="off"
 					maxlength={LEN_LIMITS.ARTIST}
 					required
@@ -138,7 +151,15 @@
 			</div>
 			<div style:height="1em"></div>
 			<div style="position: relative; width: 60%;">
-				<textarea id="trackInfoNotesInput" name="notes" bind:value={noteInputVal} autocomplete="off" maxlength={LEN_LIMITS.NOTES} rows=3></textarea>
+				<textarea
+					id="trackInfoNotesInput"
+					name="notes"
+					bind:value={noteInputVal}
+					tabindex={Number(tabindex) + 3}
+					autocomplete="off"
+					maxlength={LEN_LIMITS.NOTES}
+					rows=3
+				></textarea>
 				<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
 			</div>
 		</div>
@@ -148,7 +169,6 @@
 <!-- todo: add cancel when clicking outside the dialog -->
 {#if showDialog}
 	<form
-		use:focus
 		class="overlay"
 		style:cursor="unset"
 		tabindex="0"
@@ -177,10 +197,13 @@
 		border: none;
 		box-sizing: border-box;
 		display: block;
-		background-color: #161616;
+		background-color: var(--input_bg);
 		box-shadow: inset 0 0 0 1px var(--unfocused_border);
 		padding-right: 50px;
 		cursor: text; /* part that is padded uses default pointer? */
+	}
+	input:focus, textarea:focus {
+		outline: 1px var(--accent) solid;
 	}
 	#trackInfoTitleInput {
 		font-size: 2em;
@@ -213,8 +236,9 @@
 		flex-direction: row;
 		padding: 8px;
 	}
-	.track:focus {
+	.track:focus, .track:focus-within {
 		outline: 1px var(--accent) solid;
+		background-color: var(--unfocused_background)
 	}
 	#trackActions {
 		flex-direction: row;
@@ -224,7 +248,7 @@
 		height: fit-content;
 		padding: 5px 10px;
 	}
-	.track:hover #trackActions, .track:focus #trackActions {
+	.track:hover #trackActions, .track:focus #trackActions, .track:focus-within #trackActions {
 		/*box-shadow: inset 0 0 0 1px var(--accent);*/
 		display: flex;
 	}

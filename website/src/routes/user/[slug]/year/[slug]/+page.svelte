@@ -11,11 +11,16 @@
 
 	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 
+	// this fixes scrolling to top when deleting a track
+	let slug = $state($page.params.slug);
+	let slugChange = $derived(slug != $page.params.slug);
 	let content = $state();
 	$effect.pre(() => {
-		$page.data.tracks;
+		slugChange;
 		tick().then(() => {
 			content.scrollTop = 0;
+			slug = $page.params.slug;
+			slugChange = false;
 		});
 	});
 </script>
@@ -38,7 +43,7 @@
 								image={track.image}
 								notes={track.notes}
 								isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}
-								tabindex={`${i}${j}`}
+								tabindex={`${i * 10000 + ((j + 1) * 100)}`}
 							/>
 						{/each}
 					</MonthContainer>

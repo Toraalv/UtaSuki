@@ -102,7 +102,7 @@
 		"no_change": "ingen inställning ändrades"
 	},
 	"dialog": {
-		"delete": "är du säker på att du vill radera:<br>{thing}?",
+		"delete": "är du säker på att du vill radera:<br><span style=\"color: white\">{thing}</span>?",
 		"yes": "ja",
 		"no": "nej"
 	},
