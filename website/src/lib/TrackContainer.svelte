@@ -51,7 +51,8 @@
 </script>
 
 {#snippet normal()}
-	<div class="track" tabindex={tabindex} onmousedown={(_this) => { // this makes the focus toggable, worth?
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_static_element_interactions (makes focus toggable) -->
+	<div class="track" tabindex={tabindex} onmousedown={(_this) => {
 		let lastActiveElement = document.activeElement;
 		_this.currentTarget.addEventListener("click", (_this) => {
 			lastActiveElement == _this.currentTarget && _this.currentTarget.blur();
@@ -89,6 +90,7 @@
 {/snippet}
 
 {#snippet edit()}
+	<!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (makes form escapable) -->
 	<form
 		class="track"
 		onkeydown={(e) => isEdit = e.key != "Escape"}
@@ -168,6 +170,7 @@
 
 <!-- todo: add cancel when clicking outside the dialog -->
 {#if showDialog}
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (makes form escapable)-->
 	<form
 		class="overlay"
 		style:cursor="unset"

@@ -53,16 +53,14 @@
 	{/key}
 {:else}
 	<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
-		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
-		{:else}
+		{#if !$page.data.auth_info.authed || $page.data.auth_info.profile.username != username}
 			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 				<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
 				<h3 style:margin-top="10px">stats:</h3>
 				<p>total tracks: {$page.data.data.totalTracks}</p>
 			</SwayWindow>
 		{/if}
-		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
-		{:else}
+		{#if !$page.data.auth_info.authed || $page.data.auth_info.profile.username != username}
 			{@render yearList()}
 		{/if}
 	</div>

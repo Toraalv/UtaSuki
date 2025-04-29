@@ -96,7 +96,8 @@
 		}}
 	>
 		<div>
-			<label for="imageSelect" tabindex="0">
+			<!-- tabindex here does not really work, but then again, this whole "image input" thingy already violates a11y guidelines -->
+			<label tabindex="0" for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
 				<input
 					type="file"
