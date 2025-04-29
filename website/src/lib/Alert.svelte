@@ -20,7 +20,7 @@
 	{#if children}
 		{@render children()}
 	{:else}
-		<p>{$_(code)}</p>
+		<p>{@html $_(code)}</p>
 	{/if}
 </SwayWindow>
 

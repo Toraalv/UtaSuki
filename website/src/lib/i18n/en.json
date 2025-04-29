@@ -70,7 +70,7 @@
 		"user_activity": "updating user activity failed",
 		"add_track_fields_not_specified": "the required fields for adding a track were not specified correctly",
 		"add_track": "track insertion failed",
-		"forbidden": "you do not have permission to do that",
+		"forbidden": "you do not have permission to do that<br><br>are you logged in?",
 		"wrong_password": "wrong password",
 		"login_general": "one or both fields are incorrect",
 		"404": "not found",

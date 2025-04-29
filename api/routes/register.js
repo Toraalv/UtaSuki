@@ -3,6 +3,7 @@
 const sendStatus = require("../helpers.js").sendStatus;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
+const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
 
 const express = require("express");
 const app = express();
@@ -27,7 +28,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 
 	let userExist = await dbQuery("SELECT 1 FROM users WHERE email = ?", [email]);
 	if (userExist.length) {
-		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return } });
+		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 		sendStatus(req, res, 418, "error.user_email_exists");
 		return;
 	}
@@ -38,16 +39,16 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		password = await bcrypt.hash(password, salt);
 		createUser = await dbQuery("INSERT INTO users (email, username, password) VALUES (?, ?, ?)", [email, username, password]);
 	} catch (e) {
-		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return } });
+		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 		sendStatus(req, res, 500, "error.create_user");
 		return;
 	}
 
 	// add image after user creation so we can link uid instead
 	const filename = createUser.insertId + path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, "../public/images/profile_pictures/" + filename);
+	const targetPath = path.join(__dirname, IMAGE_PATH + "profile_pictures/" + filename);
 	// bug or appropriate behaviour? even though picture may fail, user still gets created
-	fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return } });
+	fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
 	let userPicture = await dbQuery("UPDATE users SET image = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, createUser.insertId]);
 

@@ -49,7 +49,7 @@
 			clearTimeout(popupTimerID);
 		}
 	};
-	let popupTimer = () => popupTimerID = setTimeout(() => hidePopup(), 2000);
+	let popupTimer = () => popupTimerID = setTimeout(() => hidePopup(), 3500);
 
 	// form feedback
 	let trackInputVal = $state("");

@@ -95,7 +95,6 @@
 		class="track"
 		onkeydown={(e) => isEdit = e.key != "Escape"}
 		tabindex={tabindex}
-		onsubmit={() => popupTimer()}
 		method="POST"
 		enctype="multipart/form-data"
 		action="?/updateTrack"
@@ -165,6 +164,7 @@
 				<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
 			</div>
 		</div>
+		<input type="hidden" name="id" value={id}>
 	</form>
 {/snippet}
 

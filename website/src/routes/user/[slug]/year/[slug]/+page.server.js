@@ -9,6 +9,11 @@ export async function load({ fetch, params, url }) {
 }
 
 export const actions = {
+	updateTrack: async ({ fetch, cookies, request }) => {
+		const form = await request.formData();
+
+		return await api.updateTrack(fetch, form);
+	},
 	deleteTrack: async ({ fetch, cookies, request }) => {
 		const form = await request.formData();
 

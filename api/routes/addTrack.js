@@ -3,6 +3,7 @@
 const sendStatus = require("../helpers.js").sendStatus;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
+const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
 
 const express = require("express");
 const app = express();
@@ -20,7 +21,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		if (trackInsert)
 			dbQuery("DELETE FROM tracks WHERE id = ?;", [trackInsert.insertId]);
 
-		fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 		sendStatus(req, res, status, code);
 	}
 
@@ -53,7 +54,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 	}
 
 	const filename = encodeURIComponent(album) + path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, "../public/images/album_covers/" + filename);
+	const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
 	
 	let trackExist = await dbQuery("SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?", [artist, album, title]);
 	
@@ -101,7 +102,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+	fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
 	sendStatus(req, res, 200, "success.add_track");
 });

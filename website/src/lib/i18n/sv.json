@@ -70,7 +70,7 @@
 		"user_activity": "uppdatering av användarens senaste aktivitet misslyckades",
 		"add_track_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade",
 		"add_track": "tilläggningen av låten gick ej igenom",
-		"forbidden": "du har inte tillåtelse att göra detta",
+		"forbidden": "du har inte tillåtelse att göra detta<br><br>är du inloggad?",
 		"wrong_password": "fel lösenord",
 		"login_general": "ett eller båda fält är inkorrekta",
 		"404": "hittades inte",

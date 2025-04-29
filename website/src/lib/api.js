@@ -24,6 +24,10 @@ class UtaSuki_API {
 		try			{ return await this.request(fetch, "POST", "updateSettings", undefined, formData); }
 		catch (e)	{ return e; }
 	}
+	async updateTrack(fetch, formData) {
+		try			{ return await this.request(fetch, "POST", "updateTrack", undefined, formData); }
+		catch (e)	{ return e; }
+	}
 	async deleteTrack(fetch, formData) { // calling it formData may be a stretch? when it's only an ID
 		try			{ return await this.request(fetch, "POST", "deleteTrack", undefined, formData); }
 		catch (e)	{ return e; }
