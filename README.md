@@ -33,9 +33,9 @@ Current plans includes:
 
 UtaSuki is divided into two parts, a [Svelte](https://svelte.dev/) web server and a [Node.js](https://nodejs.org/) REST API. Their respective setup can be found here:
 
-[Svelte web server](/website/README.md)
+[Svelte web server](/website/)
 
-[API](/api/README.md)
+[API](/api/)
 
 ## LICENSE
 
