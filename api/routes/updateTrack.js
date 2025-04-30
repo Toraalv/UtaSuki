@@ -16,11 +16,15 @@ module.exports = app.post('/', upload.single("album_cover"), async (req, res) =>
 	// 2. copy that row
 	// 3. take the id of that row, change old id in user_tracks
 	// 4. continue to update track
-	
 	let trackToUpdate = await dbQuery("SELECT id, track_id FROM user_tracks JOIN users ON user_tracks.uid = users.uid WHERE users.uid = ? AND id = ?", [req.profile.uid, req.body.id]);
 	if (!trackToUpdate.length) {
 		sendStatus(req, res, 404, "error.no_track_ownership");
 		return;
+	}
+
+	let trackPopulation = (await dbQuery("SELECT * FROM user_tracks WHERE track_id = ?", [trackToUpdate[0].track_id])).length;
+	if (trackPopulation > 1) {
+
 	}
 
 	await dbQuery("UPDATE tracks SET artist = ?, title = ? WHERE id = ?", [req.body.artist, req.body.title, trackToUpdate[0].track_id]);

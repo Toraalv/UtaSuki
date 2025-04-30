@@ -4,7 +4,7 @@ export const API_PORT = dev ? 5900 : 8800;
 export const CDN_ADDR = dev ? "https://localhost:5900" : "https://cdn.utasuki.com";
 export const LEN_LIMITS = {
 	GENERAL: 255,
-	ALBUM: 255 - 5, // album name is used for the album cover's image. ext4 maximum filename length minus possible file extensions (including '.')
+	ALBUM: 255,
 	TRACK: 255,
 	ARTIST: 255,
 	EMAIL: 255,

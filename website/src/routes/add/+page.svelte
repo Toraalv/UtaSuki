@@ -34,16 +34,15 @@
 		}
 	}
 
+	let addForm = $state();
 	let popupTimerID = $state();
 	let popup = $state();
 	let hidePopup = () => {
 		if (popup != null) {
 			if (form.code.split('.')[0] != "error") {
-				trackInputVal = "";
-				artistInputVal = "";
-				albumInputVal = "";
-				noteInputVal = "";
 				image.setAttribute("src", "/add_image_placeholder.webp");
+				imageHasChanged = false;
+				addForm.reset();
 			}
 			popup.style.display = "none";
 			clearTimeout(popupTimerID);
@@ -53,10 +52,10 @@
 
 	// form feedback
 	let trackInputVal = $state("");
-	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.GENERAL);
+	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.TRACK);
 
 	let artistInputVal = $state("");
-	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.GENERAL);
+	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.ARTIST);
 
 	let albumInputVal = $state("");
 	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > LEN_LIMITS.ALBUM);
@@ -86,6 +85,7 @@
 		method="POST"
 		enctype="multipart/form-data"
 		action="?/addTrack"
+		bind:this={addForm}
 		use:enhance={() => {
 			inFlight = true;
 

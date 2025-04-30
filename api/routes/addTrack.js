@@ -10,6 +10,21 @@ const app = express();
 const path = require("path");
 const fs = require("fs");
 
+// credit goes to bryc (github.com/bryc)
+const cyrb53 = function(str, seed = 0) {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+
 module.exports = app.post('/', upload.single("file"), async (req, res) => {
 	if (req.file == undefined) {
 		sendStatus(req, res, 400, "error.no_image");
@@ -53,7 +68,8 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	const filename = encodeURIComponent(album) + path.extname(req.file.originalname).toLowerCase();
+	//const filename = encodeURIComponent(album) + path.extname(req.file.originalname).toLowerCase();
+	const filename = cyrb53(title + album + artist) + path.extname(req.file.originalname).toLowerCase();
 	const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
 	
 	let trackExist = await dbQuery("SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?", [artist, album, title]);
