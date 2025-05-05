@@ -41,10 +41,13 @@
 
 	// form feedback
 	let trackInputVal = $state(title);
-	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.GENERAL);
+	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.TRACK);
+
+	let albumInputVal = $state(album);
+	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > LEN_LIMITS.ALBUM);
 
 	let artistInputVal = $state(artist);
-	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.GENERAL);
+	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.ARTIST);
 
 	let noteInputVal = $state(notes);
 	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
@@ -59,10 +62,10 @@
 			lastActiveElement = null;
 			});
 		}}>
-		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
-		<div class="trackInfo">
-			<div>
-				<h1>{title}</h1>
+		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover" title={album}>
+		<div class="trackInfo" style="position: relative;">
+			<div style="display: flex; flex-direction: row; justify-content: space-between;">
+				<h1 title={$_("general.track_name")}>{title}</h1>
 				{#if isOwner}
 					<div id="trackActions">
 						<input
@@ -81,16 +84,18 @@
 					</div>
 				{/if}
 			</div>
-			<h3>{artist}</h3>
+			<h3 title={$_("general.album_name")} style="color: var(--d2_text);">{album}</h3>
+			<h2 title={$_("general.artist_name")}>{artist}</h2>
 			{#if notes}
-				<p>{notes}</p>
+				<div style="position: absolute; right: 0; bottom: 0; width: 20px; height: 20px; border: solid 1px var(--unfocused_border); text-align: center; ">V</div>
+				<!-- <p title={$_("general.notes")}>{notes}</p> -->
 			{/if}
 		</div>
 	</div>
 {/snippet}
 
 {#snippet edit()}
-	<!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (makes form escapable) -->
+<!-- svelte-ignore a11y_no_static_element_interactions, a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (makes form escapable) -->
 	<form
 		class="track"
 		onkeydown={(e) => isEdit = e.key != "Escape"}
@@ -106,7 +111,7 @@
 	>
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
 		<div class="trackInfo">
-			<div>
+			<div style="display: flex; flex-direction: row; justify-content: space-between;">
 				<div style:position="relative">
 					<input
 						id="trackInfoTitleInput"
@@ -126,16 +131,29 @@
 						style:background-color="#10360D"
 						type="submit"
 						value={$_("general.save")}
-						tabindex={Number(tabindex) + 4}
+						tabindex={Number(tabindex) + 5}
 					/>
 					<input
 						style:background-color="#561111"
 						type="button"
 						value={$_("general.cancel")}
 						onclick={() => isEdit = false}
-						tabindex={Number(tabindex) + 5}
+						tabindex={Number(tabindex) + 6}
 					/>
 				</div>
+			</div>
+			<div style="position: relative; width: fit-content;">
+				<input
+					id="trackInfoAlbumInput"
+					type="text"
+					name="album"
+					bind:value={albumInputVal}
+					tabindex={Number(tabindex) + 2}
+					autocomplete="off"
+					maxlength={LEN_LIMITS.ALBUM}
+					required
+				/>
+				<TextCounter inputVal={albumInputVal} error={albumNameErr} maxLength={LEN_LIMITS.ALBUM}/>
 			</div>
 			<div style="position: relative; width: fit-content;">
 				<input
@@ -143,26 +161,28 @@
 					type="text"
 					name="artist"
 					bind:value={artistInputVal}
-					tabindex={Number(tabindex) + 2}
+					tabindex={Number(tabindex) + 3}
 					autocomplete="off"
 					maxlength={LEN_LIMITS.ARTIST}
 					required
 				/>
 				<TextCounter inputVal={artistInputVal} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
 			</div>
-			<div style:height="1em"></div>
-			<div style="position: relative; width: 60%;">
-				<textarea
-					id="trackInfoNotesInput"
-					name="notes"
-					bind:value={noteInputVal}
-					tabindex={Number(tabindex) + 3}
-					autocomplete="off"
-					maxlength={LEN_LIMITS.NOTES}
-					rows=3
-				></textarea>
-				<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
-			</div>
+			<!--
+				<div style:height="1em"></div>
+				<div style="position: relative; width: 60%;">
+					<textarea
+						id="trackInfoNotesInput"
+						name="notes"
+						bind:value={noteInputVal}
+						tabindex={Number(tabindex) + 4}
+						autocomplete="off"
+						maxlength={LEN_LIMITS.NOTES}
+						rows=3
+					></textarea>
+					<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
+				</div>
+			-->
 		</div>
 		<input type="hidden" name="id" value={id}>
 	</form>
@@ -212,8 +232,13 @@
 		font-size: 2em;
 		font-weight: bold;
 	}
-	#trackInfoArtistInput {
+	#trackInfoAlbumInput {
 		font-size: 1.17em;
+		font-weight: bold;
+		width: fit-content;
+	}
+	#trackInfoArtistInput {
+		font-size: 1.5em;
 		font-weight: bold;
 		width: fit-content;
 	}
@@ -261,12 +286,8 @@
 		flex-grow: 1;
 		margin-left: 18px;
 	}
-	/* あっ、ん？えええ？そうなの。全く理解できなかったわ*/
-	.trackInfo > *:first-child {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		margin-bottom: 4px;
+	.trackInfo > *:nth-child(2) {
+		margin: 1px 0 6px;
 	}
 	.trackInfo h1 {
 		position: relative;
@@ -283,7 +304,7 @@
 		overflow-y: auto;
 		display: inherit;
 	}
-	.trackInfo h3 {
+	.trackInfo h2 {
 		word-break: break-all;
 		overflow: hidden;
 		display: -webkit-box;
@@ -291,7 +312,7 @@
 				line-clamp: 1; 
 		-webkit-box-orient: vertical;
 	}
-	.trackInfo h3:hover {
+	.trackInfo h2:hover {
 		overflow-y: auto;
 		display: inherit;
 	}

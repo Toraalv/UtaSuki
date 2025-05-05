@@ -11,7 +11,7 @@ const fs = require("fs");
 const bcrypt = require("bcryptjs");
 
 module.exports = app.post('/', upload.single("profile_picture"), async (req, res) => {
-	// only time this happens is when an user's cookie expires, as they try to change their settings
+	// only time this happens is when an user's auth token expires, as they try to change their settings
 	if (!req.authed) {
 		sendStatus(req, res, 401, "error.forbidden");
 		return;

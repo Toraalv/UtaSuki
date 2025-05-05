@@ -24,7 +24,7 @@ module.exports = app.post('/', upload.single("album_cover"), async (req, res) =>
 
 	let trackPopulation = (await dbQuery("SELECT * FROM user_tracks WHERE track_id = ?", [trackToUpdate[0].track_id])).length;
 	if (trackPopulation > 1) {
-
+		let copyTrack = await dbQuery("INSERT INTO tracks (artist, title, album, released, image) SELECT ?, ?, ?, released, ? FROM tracks WHERE id = ?", [])
 	}
 
 	await dbQuery("UPDATE tracks SET artist = ?, title = ? WHERE id = ?", [req.body.artist, req.body.title, trackToUpdate[0].track_id]);
