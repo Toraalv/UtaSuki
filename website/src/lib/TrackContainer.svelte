@@ -23,11 +23,29 @@
 		node.focus();
 	}
 
+	let showNotes = $state(false);
+
 	let isEdit = $state(false);
 	function resetEdit() {
 		trackInputVal = title;
+		albumInputVal = album;
 		artistInputVal = artist;
 		noteInputVal = notes;
+	}
+
+	let imageInput = $state();
+	let imageInputFiles = $state();
+	function imageChange() {
+		const file = imageInputFiles[0];
+
+		if (file) {
+			const reader = new FileReader();
+			reader.addEventListener("load", function () {
+				imageInput.setAttribute("src", reader.result);
+			});
+			reader.readAsDataURL(file);
+			return;
+		}
 	}
 
 	let showDialog = $derived(false);
@@ -63,7 +81,7 @@
 			});
 		}}>
 		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover" title={album}>
-		<div class="trackInfo" style="position: relative;">
+		<div class="trackInfo">
 			<div style="display: flex; flex-direction: row; justify-content: space-between;">
 				<h1 title={$_("general.track_name")}>{title}</h1>
 				{#if isOwner}
@@ -87,8 +105,22 @@
 			<h3 title={$_("general.album_name")} style="color: var(--d2_text);">{album}</h3>
 			<h2 title={$_("general.artist_name")}>{artist}</h2>
 			{#if notes}
-				<div style="position: absolute; right: 0; bottom: 0; width: 20px; height: 20px; border: solid 1px var(--unfocused_border); text-align: center; ">V</div>
-				<!-- <p title={$_("general.notes")}>{notes}</p> -->
+				<input
+					value={showNotes ? "-" : "+"}
+					type="button"
+					style="
+						width: 20px;
+						height: 20px;
+						padding-right: unset;
+						outline: unset;
+						border: solid 1px var(--unfocused_border);
+						text-align: center;
+					"
+					onclick={() => showNotes = !showNotes}
+				/>
+			{/if}
+			{#if showNotes}
+				<p title={$_("general.notes")}>{notes}</p>
 			{/if}
 		</div>
 	</div>
@@ -109,7 +141,17 @@
 			};
 		}}
 	>
-		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover">
+		<label for="imageSelect">
+			<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt={album} bind:this={imageInput}>
+			<input
+				type="file"
+				name="file"
+				accept="image/*"
+				id="imageSelect"
+				bind:files={imageInputFiles}
+				onchange={() => imageChange()}
+			/>
+		</label>
 		<div class="trackInfo">
 			<div style="display: flex; flex-direction: row; justify-content: space-between;">
 				<div style:position="relative">
@@ -151,7 +193,6 @@
 					tabindex={Number(tabindex) + 2}
 					autocomplete="off"
 					maxlength={LEN_LIMITS.ALBUM}
-					required
 				/>
 				<TextCounter inputVal={albumInputVal} error={albumNameErr} maxLength={LEN_LIMITS.ALBUM}/>
 			</div>
@@ -168,21 +209,19 @@
 				/>
 				<TextCounter inputVal={artistInputVal} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
 			</div>
-			<!--
-				<div style:height="1em"></div>
-				<div style="position: relative; width: 60%;">
-					<textarea
-						id="trackInfoNotesInput"
-						name="notes"
-						bind:value={noteInputVal}
-						tabindex={Number(tabindex) + 4}
-						autocomplete="off"
-						maxlength={LEN_LIMITS.NOTES}
-						rows=3
-					></textarea>
-					<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
-				</div>
-			-->
+			<div style:height="1em"></div>
+			<div style="position: relative; width: 60%;">
+				<textarea
+					id="trackInfoNotesInput"
+					name="notes"
+					bind:value={noteInputVal}
+					tabindex={Number(tabindex) + 4}
+					autocomplete="off"
+					maxlength={LEN_LIMITS.NOTES}
+					rows=3
+				></textarea>
+				<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
+			</div>
 		</div>
 		<input type="hidden" name="id" value={id}>
 	</form>
@@ -213,6 +252,12 @@
 {/if}
 
 <style>
+	input[type="file"] {
+		display: none;
+	}
+	label > img:hover {
+		outline: 1px solid var(--border);
+	}
 	input, textarea {
 		/* why, why do we need an "unset everything" just to fix weird element size?? */
 		/* and the best part is that it doesn't look the same on chrome... */
@@ -254,9 +299,7 @@
 	img {
 		object-fit: contain;
 		height: 150px;
-		width: 100%;
-		max-width: 150px;
-		max-height: 150px;
+		width: 150px;
 		background-color: black;
 	}
 	.track {
@@ -287,7 +330,10 @@
 		margin-left: 18px;
 	}
 	.trackInfo > *:nth-child(2) {
-		margin: 1px 0 6px;
+		margin-top: 1px;
+	}
+	.trackInfo > *:nth-child(3) {
+		margin: 6px 0;
 	}
 	.trackInfo h1 {
 		position: relative;

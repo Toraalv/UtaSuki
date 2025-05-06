@@ -17,8 +17,8 @@
 	let years = Array.from({ length: year - 2017 + 1 }, (_, i) => year - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
 
-	let imageInputFiles = $state();
 	let image = $state();
+	let imageInputFiles = $state();
 	let imageHasChanged = $state(false);
 	function imageChange() {
 		const file = imageInputFiles[0];

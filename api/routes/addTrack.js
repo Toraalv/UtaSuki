@@ -1,6 +1,7 @@
 "use strict"
 
 const sendStatus = require("../helpers.js").sendStatus;
+const cyrb53 = require("../helpers.js").cyrb53;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
 const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
@@ -9,21 +10,6 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const fs = require("fs");
-
-// credit goes to bryc (github.com/bryc)
-const cyrb53 = function(str, seed = 0) {
-  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
-  for(let i = 0, ch; i < str.length; i++) {
-    ch = str.charCodeAt(i);
-    h1 = Math.imul(h1 ^ ch, 2654435761);
-    h2 = Math.imul(h2 ^ ch, 1597334677);
-  }
-  h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
-  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-  h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
-  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
-};
 
 module.exports = app.post('/', upload.single("file"), async (req, res) => {
 	if (req.file == undefined) {
@@ -68,7 +54,6 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	//const filename = encodeURIComponent(album) + path.extname(req.file.originalname).toLowerCase();
 	const filename = cyrb53(title + album + artist) + path.extname(req.file.originalname).toLowerCase();
 	const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
 	
