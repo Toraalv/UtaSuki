@@ -5,6 +5,8 @@
 	import Profile from "$lib/Profile.svelte";
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import AnimatedDots from "$lib/AnimatedDots.svelte";
+	import TextCounter from "$lib/TextCounter.svelte";
 	import { LEN_LIMITS } from "$lib/globals.js";
 
 	import { goto } from "$app/navigation";
@@ -31,24 +33,52 @@
 		}
 	}
 
-	let redirectTimeoutID = $state();
-	let redirectTimeout = () => redirectTimeoutID = setTimeout(() => goto('/'), 3500);
+	// login form feedback
+	let loginPopup = $state();
+	let hideLoginPopup = () => {
+		if (loginPopup != null) {
+			loginPopup.style.display = "none";
+		}
+	};
 
-	// form feedback
-	let emailInputVal = $state("");
-	let emailErr = $derived(encodeURIComponent(emailInputVal).length > LEN_LIMITS.EMAIL);
+	let loginEmailInputVal = $state("");
+	let loginPasswordInputVal = $state("");
 
-	let usernameInputVal = $state("");
-	let usernameErr = $derived(encodeURIComponent(usernameInputVal).length > LEN_LIMITS.USERNAME);
+	let loginFlight = $state(false);
 
-	let passwordInputVal = $state("");
-	let passwordErr = $derived(encodeURIComponent(passwordInputVal).length > LEN_LIMITS.PASSWORD);
+	// register form feedback
+	let registerForm = $state();
+	let resetRegisterForm = () => {
+		if (form.res.code.split('.')[0] == "success") {
+			registerForm.reset();
+		}
+	};
+	let registerPopup = $state();
+	let registerPopupTimerID = $state();
+	let hideRegisterPopup = (force) => {
+		if (registerPopup != null) {
+			if (force)
+				registerPopup.style.display = "none";
+			if (form.res.code.split('.')[0] == "success")
+				registerPopup.style.display = "none";
+		}
+	};
+	let registerPopupTimer = () => {
+		if (form.res.code.split('.')[0] != "error")
+			registerPopupTimerID = setTimeout(() => hideRegisterPopup(), 3500)
+	};
+
+	let registerEmailInputVal = $state("");
+	let emailErr = $derived(encodeURIComponent(registerEmailInputVal).length > LEN_LIMITS.EMAIL);
+
+	let registerUsernameInputVal = $state("");
+	let usernameErr = $derived(encodeURIComponent(registerUsernameInputVal).length > LEN_LIMITS.USERNAME);
+
+	let registerPasswordInputVal = $state("");
+	let passwordErr = $derived(encodeURIComponent(registerPasswordInputVal).length > LEN_LIMITS.PASSWORD);
+
+	let registerFlight = $state(false);
 </script>
-
-<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
-{#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
-{/snippet}
 
 {#snippet inputWarning(err, code)}
 	{#if err}
@@ -70,7 +100,20 @@
 		{:else}
 			<!---- LOGIN FORM ---->
 			<SwayWindow title={$_("general.login_noun")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;">
-				<form style="display: flex" method="POST" action="?/login" use:enhance>
+				<form
+					style="display: flex"
+					method="POST"
+					action="?/login"
+					onsubmit={() => { registerForm.reset(); showImage = false; hideLoginPopup() }}
+					use:enhance={() => {
+						loginFlight = true;
+
+						return async ({ update }) => {
+							await update({ reset: false });
+							loginFlight = false;
+						};
+					}}
+				>
 					<table style="flex-grow: 1">
 						<tbody>
 							<tr>
@@ -78,7 +121,15 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="email" name="email" autocomplete="off" required>
+									<input
+										type="email"
+										name="email"
+										bind:value={loginEmailInputVal}
+										disabled={loginFlight}
+										maxlength={LEN_LIMITS.EMAIL}
+										autocomplete="off"
+										required
+									/>
 								</td>
 							</tr>
 							<tr>
@@ -86,24 +137,59 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="password" name="password" autocomplete="off" required>
+									<input
+										type="password"
+										name="password"
+										bind:value={loginPasswordInputVal}
+										disabled={loginFlight}
+										maxlength={LEN_LIMITS.PASSWORD}
+										autocomplete="off"
+										required
+									/>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<input type="submit" value={$_("general.login_verb")}>
+									<input
+										type="submit"
+										disabled={loginFlight || !loginEmailInputVal.length || !loginPasswordInputVal.length}
+										value={$_("general.login_verb")}
+									/>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</form>
+				{#if loginFlight}
+					<Alert code="info.logging_in" mainStyle="margin-top: 10px;">
+						<p>{$_("info.logging_in")}</p><AnimatedDots/>
+					</Alert>
+				{/if}
 				{#if form?.type == "login" && form?.res.code.split('.')[0] != "success"}
-					<Alert code={form.res.code} mainStyle="margin-top: 10px;"/> <!-- margin matches sway_content's padding -->
+					<div bind:this={loginPopup} onclick={() => hideLoginPopup()}>
+						<Alert code={form.res.code} mainStyle="margin-top: 10px;"/> <!-- margin matches sway_content's padding -->
+					</div>
 				{/if}
 			</SwayWindow>
 			<!---- REGISTRATION FORM ---->
 			<SwayWindow title={$_("general.register_noun")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1">
-				<form onsubmit={() => { showImage = false; redirectTimeout(); }} style="display: flex;" enctype="multipart/form-data" action="?/register" method="POST" use:enhance>
+				<form
+					style="display: flex;"
+					enctype="multipart/form-data"
+					action="?/register"
+					method="POST"
+					bind:this={registerForm}
+					onsubmit={() => hideRegisterPopup(true)}
+					onreset={() => showImage = false}
+					use:enhance={() => {
+						registerFlight = true;
+
+						return async ({ update }) => {
+							await update({ reset: false });
+							registerFlight = false;
+						};
+					}}
+				>
 					<table style="flex-grow: 1">
 						<tbody>
 							<tr>
@@ -113,7 +199,17 @@
 								<td>
 									<label for="imageSelect">
 										<img style={`display: ${showImage ? "block" : "none"}`} src="" alt="input profile" bind:this={image}>
-										<input type="file" name="file" accept="image/*" id="imageSelect" bind:this={imageInput} onchange={imageChange} autocomplete="off" required>
+										<input
+											type="file"
+											name="file"
+											accept="image/*"
+											id="imageSelect"
+											bind:this={imageInput}
+											disabled={registerFlight}
+											onchange={imageChange}
+											autocomplete="off"
+											required
+										/>
 									</label>
 								</td>
 							</tr>
@@ -122,8 +218,16 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="email" name="email" autocomplete="off" bind:value={emailInputVal} maxlength={LEN_LIMITS.EMAIL} required>
-									{@render textCounter(emailInputVal, emailErr, LEN_LIMITS.EMAIL)}
+									<input
+										type="email"
+										name="email"
+										autocomplete="off"
+										bind:value={registerEmailInputVal}
+										disabled={registerFlight}
+										maxlength={LEN_LIMITS.EMAIL}
+										required
+									/>
+									<TextCounter style="padding-top: 4px;" inputVal={registerEmailInputVal} error={emailErr} maxLength={LEN_LIMITS.EMAIL}/>
 								</td>
 							</tr>
 							{@render inputWarning(emailErr, "warning.too_long")}
@@ -132,8 +236,16 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="text" name="username" autocomplete="off" bind:value={usernameInputVal} maxlength={LEN_LIMITS.USERNAME} required>
-									{@render textCounter(usernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
+									<input
+										type="text"
+										name="username"
+										autocomplete="off"
+										bind:value={registerUsernameInputVal}
+										disabled={registerFlight}
+										maxlength={LEN_LIMITS.USERNAME}
+										required
+									/>
+									<TextCounter style="padding-top: 4px;" inputVal={registerUsernameInputVal} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
 								</td>
 							</tr>
 							{@render inputWarning(usernameErr, "warning.too_long")}
@@ -142,24 +254,50 @@
 							</tr>
 							<tr>
 								<td>
-									<input type="password" name="password" autocomplete="off" bind:value={passwordInputVal} maxlength={LEN_LIMITS.PASSWORD} required>
-									{@render textCounter(passwordInputVal, passwordErr, LEN_LIMITS.PASSWORD)}
+									<input
+										type="password"
+										name="password"
+										autocomplete="off"
+										bind:value={registerPasswordInputVal}
+										disabled={registerFlight}
+										maxlength={LEN_LIMITS.PASSWORD}
+										required
+									/>
+									<TextCounter style="padding-top: 4px;" inputVal={registerPasswordInputVal} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
 								</td>
 							</tr>
 							{@render inputWarning(passwordErr, "warning.too_long")}
 							<tr>
 								<td>
-									<input type="submit" value={$_("general.register_verb")} >
+									<input
+										type="submit"
+										value={$_("general.register_verb")}
+										disabled={
+											registerFlight ||
+											!registerEmailInputVal.length ||
+											!registerUsernameInputVal.length ||
+											!registerPasswordInputVal.length ||
+											!showImage ||
+											emailErr ||
+											usernameErr ||
+											passwordErr
+										}
+									/>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</form>
 				<!-- popups when registering -->
+				{#if registerFlight}
+					<Alert code="info.registering" mainStyle="margin-top: 10px;">
+						<p>{$_("info.registering")}</p><AnimatedDots/>
+					</Alert>
+				{/if}
 				{#if form?.type == "register" && form?.res}
-					<a onclick={() => clearTimeout(redirectTimeoutID)} href="/">
-						<Alert code={form.res.code} mainStyle="margin-top: 10px;"/> <!-- margin matches sway_content's padding -->
-					</a>
+					<div bind:this={registerPopup} use:resetRegisterForm use:registerPopupTimer>
+						<Alert code={form.res.code} mainStyle="margin-top: 10px;"/>
+					</div>
 				{/if}
 			</SwayWindow>
 		{/if}

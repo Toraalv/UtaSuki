@@ -55,6 +55,8 @@ const register = require("./routes/register.js");
 const updateSettings = require("./routes/updateSettings.js");
 const logout = require("./routes/logout.js");
 const addTrack = require("./routes/addTrack.js");
+const updateTrack = require("./routes/updateTrack.js");
+const deleteTrack = require("./routes/deleteTrack.js");
 
 app.use("/status", status);
 app.use("/users", users);
@@ -65,6 +67,8 @@ app.use("/register", register);
 app.use("/updateSettings", updateSettings);
 app.use("/logout", logout);
 app.use("/addTrack", addTrack);
+app.use("/updateTrack", updateTrack);
+app.use("/deleteTrack", deleteTrack);
 
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () => console.log("Running on port " + PORT));

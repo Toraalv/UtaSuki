@@ -11,7 +11,7 @@ const fs = require("fs");
 const bcrypt = require("bcryptjs");
 
 module.exports = app.post('/', upload.single("profile_picture"), async (req, res) => {
-	// only time this happens is when an user's cookie expires, as they try to change their settings
+	// only time this happens is when an user's auth token expires, as they try to change their settings
 	if (!req.authed) {
 		sendStatus(req, res, 401, "error.forbidden");
 		return;
@@ -49,12 +49,12 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		try {
 			const filename = req.profile.uid + path.extname(req.file.originalname).toLowerCase();
 			const targetPath = path.join(__dirname, "../public/images/profile_pictures/" + filename);
-			fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+			fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
 			await dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.image_ver + 1, req.profile.uid]);
 			change = true;
 		} catch (e) {
-			fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+			fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 			sendStatus(req, res, 500, "error.update_profile_picture");
 			return;
 		}

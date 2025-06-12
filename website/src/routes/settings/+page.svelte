@@ -3,6 +3,8 @@
 	import ControlPanel from "$lib/ControlPanel.svelte";
 	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import AnimatedDots from "$lib/AnimatedDots.svelte";
+	import TextCounter from "$lib/TextCounter.svelte";
 	import { setLang } from "$lib/helpers.js";
 	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
 
@@ -48,12 +50,9 @@
 
 	let passwordInputVal = $state("");
 	let passwordErr = $derived(encodeURIComponent(passwordInputVal).length > LEN_LIMITS.PASSWORD);
-</script>
 
-<!-- it would be nice to put these in a seperate file and export multiple snippets but due to bug or limitation of svelte, exporting a snippet that begins with a table element does not work -->
-{#snippet textCounter(inputVal, err, MAX_LEN)}
-	<p style="position: absolute; top: 0; right: 0; margin: 0 10px; padding-top: 4px; height: 100%; align-content: center; {`color: var(--${err ? "warning" : "d2_text"});`}">{MAX_LEN - encodeURIComponent(inputVal).length}</p>
-{/snippet}
+	let inFlight = $state(false);
+</script>
 
 {#snippet inputWarning(err, code)}
 	{#if err}
@@ -70,7 +69,19 @@
 </div>
 
 <SwayWindow contentStyle="padding: 20px;" title={$_("general.settings")}>
-	<form onsubmit={() => popupTimer()} method="POST" enctype="multipart/form-data" action="?/updateSettings" use:enhance={() => { return async ({ update }) => { update({ reset: false }); }; }}>
+	<form
+		method="POST"
+		enctype="multipart/form-data"
+		action="?/updateSettings"
+		use:enhance={() => {
+			inFlight = true;
+
+			return async ({ update }) => {
+				await update({ reset: false });
+				inFlight = false;
+			};
+		}}
+	>
 		<table>
 			<tbody>
 				<tr>
@@ -84,36 +95,71 @@
 				<tr>
 					<td>{$_("general.profile_picture")}:</td>
 					<td>
-						<input type="file" name="profile_picture" accept="image/*" id="imageSelect" bind:this={imageInput} onchange={imageChange} autocomplete="off">
+						<input
+							type="file"
+							name="profile_picture"
+							accept="image/*"
+							id="imageSelect"
+							bind:this={imageInput}
+							onchange={imageChange}
+							autocomplete="off"
+							disabled={inFlight}
+						/>
 					</td>
 				</tr>
 				<tr>
 					<td>{$_("general.username")}:</td>
 					<td>
 						<!-- userhandle to avoid autofill -->
-						<input type="text" name="userhandle" autocomplete="off" maxlength={LEN_LIMITS.USERNAME} bind:value={usernameInputVal}>
-						{@render textCounter(usernameInputVal, usernameErr, LEN_LIMITS.USERNAME)}
+						<input
+							type="text"
+							name="userhandle"
+							autocomplete="off"
+							maxlength={LEN_LIMITS.USERNAME}
+							bind:value={usernameInputVal}
+							disabled={inFlight}
+						/>
+						<TextCounter style="padding-top: 4px;" inputVal={usernameInputVal} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
 					</td>
 				</tr>
 				{@render inputWarning(usernameErr, "warning.too_long")}
 				<tr>
 					<td>{$_("general.password")}:</td>
 					<td>
-						<input type="password" name="password" autocomplete="off" maxlength={LEN_LIMITS.PASSWORD} bind:value={passwordInputVal}>
-						{@render textCounter(passwordInputVal, passwordErr, LEN_LIMITS.PASSWORD)}
+						<input
+							type="password"
+							name="password"
+							autocomplete="off"
+							maxlength={LEN_LIMITS.PASSWORD}
+							bind:value={passwordInputVal}
+							disabled={inFlight}
+						/>
+						<TextCounter style="padding-top: 4px;" inputVal={passwordInputVal} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
 					</td>
 				</tr>
-				{@render inputWarning(usernameErr, "warning.too_long")}
+				{@render inputWarning(passwordErr, "warning.too_long")}
 				<tr>
 					<td title={$_("general.public_title")}>{$_("general.public")}:</td>
 					<td>
-						<input bind:checked={publicCheckbox} type="checkbox" name="public" autocomplete="off">
+						<input
+							type="checkbox"
+							name="public"
+							bind:checked={publicCheckbox}
+							autocomplete="off"
+							disabled={inFlight}
+						/>
 					</td>
 				</tr>
 				<tr>
 					<td title={$_("general.track_notes_public_title")}>{$_("general.track_notes_public")}:</td>
 					<td>
-						<input bind:checked={notesPublicCheckbox} disabled={!publicCheckbox} type="checkbox" name="track_notes_public" autocomplete="off">
+						<input
+							type="checkbox"
+							name="track_notes_public"
+							bind:checked={notesPublicCheckbox}
+							disabled={!publicCheckbox || inFlight}
+							autocomplete="off"
+						/>
 					</td>
 				</tr>
 				<tr>
@@ -121,7 +167,14 @@
 					<td style="display: flex; flex-direction: row;">
 						{#each $locales as availLocale}
 							<div style:margin-right="20px">
-								<input type="radio" name="language" value={availLocale} id={availLocale} onclick={(_this) => setLang(_this.srcElement.value)} checked={$locale == availLocale && true}>
+								<input
+									type="radio"
+									name="language"
+									value={availLocale}
+									id={availLocale}
+									disabled={inFlight}
+									onclick={(_this) => setLang(_this.srcElement.value)} checked={$locale == availLocale && true}
+								/>
 								<label for={availLocale}>{$_(`general.${availLocale}`)}</label>
 							</div>
 						{/each}
@@ -133,15 +186,27 @@
 			<tbody>
 				<tr>
 					<td style:min-width="unset">
-						<input style="padding: 2px 10px;" type="submit" value={$_("general.save")} disabled={usernameErr || !usernameInputVal.length}>
+						<input
+							type="submit"
+							style="padding: 2px 10px;"
+							value={$_("general.save")}
+							disabled={usernameErr || !usernameInputVal.length || inFlight}
+						/>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</form>
 
+	{#if inFlight}
+		<div class="overlay" style:cursor="unset">
+			<Alert code="info.saving" mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2" contentStyle="margin: 0 2em;">
+				<p>{$_("info.saving")}</p><AnimatedDots/>
+			</Alert>
+		</div>
+	{/if}
 	{#if form}
-		<a bind:this={popup} class="overlay" onclick={() => hidePopup()} href="/settings">
+		<a bind:this={popup} use:popupTimer class="overlay" onclick={() => hidePopup()} href="/settings">
 			<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2"/>
 		</a>
 	{/if}

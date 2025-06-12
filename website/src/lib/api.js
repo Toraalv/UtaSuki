@@ -8,24 +8,28 @@ class UtaSuki_API {
 		try			{ return await this.request(fetch, "POST", "login", undefined, formData); }
 		catch (e)	{ return e; }
 	}
-
 	async register(fetch, formData) {
 		try			{ return await this.request(fetch, "POST", "register", undefined, formData); }
 		catch (e)	{ return e; }
 	}
-
 	async logout(fetch, authToken) {
 		try			{ return await this.request(fetch, "POST", "logout", undefined); }
 		catch (e)	{ return e; }
 	}
-
 	async postTrack(fetch, formData) {
 		try			{ return await this.request(fetch, "POST", "addTrack", undefined, formData); }
 		catch (e)	{ return e; }
 	}
-
 	async updateSettings(fetch, formData) {
 		try			{ return await this.request(fetch, "POST", "updateSettings", undefined, formData); }
+		catch (e)	{ return e; }
+	}
+	async updateTrack(fetch, formData) {
+		try			{ return await this.request(fetch, "POST", "updateTrack", undefined, formData); }
+		catch (e)	{ return e; }
+	}
+	async deleteTrack(fetch, formData) { // calling it formData may be a stretch? when it's only an ID
+		try			{ return await this.request(fetch, "POST", "deleteTrack", undefined, formData); }
 		catch (e)	{ return e; }
 	}
 
@@ -34,17 +38,14 @@ class UtaSuki_API {
 		try			{ return await this.request(fetch, "GET", "users"); }
 		catch (e)	{ return e; }
 	}
-
 	async fetchYears(fetch, uid) {
 		try			{ return (await this.request(fetch, "GET", "years", { uid: uid })); }
 		catch (e)	{ return e; }
 	}
-
 	async fetchTracks(fetch, uid, year) {
 		try			{ return (await this.request(fetch, "GET", "tracks", { uid: uid, year: year })); }
 		catch (e)	{ return e; }
 	}
-
 	async auth(fetch) {
 		try			{ return await this.request(fetch, "GET", "status"); } //use status endpoint just to authenticate
 		catch (e)	{ return e; }

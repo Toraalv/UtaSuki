@@ -10,11 +10,9 @@ export async function load({ fetch, params, cookies }) {
 
 export const actions = {
 	login: async ({ fetch, cookies, request }) => {
-		let data = await request.formData();
+		let form = await request.formData();
 
-		data.set("requestOrigin", request.headers.get("x-forwarded-for")?.split(",")[0]);
-
-		let res = await api.login(fetch, data);
+		let res = await api.login(fetch, form);
 
 		if (res.code.split('.')[0] == "success")
 			cookies.set("auth_token", res.data.token, { path: '/' });

@@ -30,12 +30,14 @@ module.exports = app.get('/', async (req, res) => {
 	
 	let data = await dbQuery(`
 							SELECT
+								user_tracks.id,
 								date,
 								artist,
 								album,
 								title,
 								released,
 								tracks.image,
+								tracks.image_ver,
 								notes,
 								last_edit,
 								track_notes_public
@@ -70,11 +72,13 @@ module.exports = app.get('/', async (req, res) => {
 
 	for (let i = 0; i < data.length; i++) {
 		monthTracks[data[i].date.getMonth()].push({
+			id: data[i].id,
 			artist: data[i].artist,
 			album: data[i].album,
 			title: data[i].title,
 			released: data[i].released,
 			image: data[i].image,
+			image_ver: data[i].image_ver,
 			notes: uid == req.profile?.uid ? data[i].notes : data[i].track_notes_public && data[i].notes,
 			last_edit: data[i].track_notes_public && data[i].last_edit,
 		});

@@ -1,8 +1,10 @@
 "use strict"
 
 const sendStatus = require("../helpers.js").sendStatus;
+const cyrb53 = require("../helpers.js").cyrb53;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
+const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
 
 const express = require("express");
 const app = express();
@@ -20,7 +22,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		if (trackInsert)
 			dbQuery("DELETE FROM tracks WHERE id = ?;", [trackInsert.insertId]);
 
-		fs.rm(req.file.path, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
+		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 		sendStatus(req, res, status, code);
 	}
 
@@ -52,15 +54,13 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	const filename = encodeURIComponent(album) + path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, "../public/images/album_covers/" + filename);
-	
 	let trackExist = await dbQuery("SELECT id FROM tracks WHERE artist = ? AND album = ? AND title = ?", [artist, album, title]);
 	
 	let userTrackInsert, trackInsert;
 	if (trackExist.length) { // if track already exists, only add to user_tracks, otherwise both tracks and user_tracks
 		try {
 			userTrackInsert = await dbQuery("INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)", [uid, trackExist[0].id, date, notes]);
+			fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 		} catch (e) {
 			handleError(418, "error.track_already_added");
 			return;
@@ -73,18 +73,21 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 					artist,
 					album,
 					title,
-					released,
-					image
+					released
 				)
-				VALUES (?, ?, ?, ?, ?)`,
+				VALUES (?, ?, ?, ?)`,
 				[
 					artist,
 					album,
 					title,
-					released,
-					filename
+					released
 				]
 			);
+			const filename = cyrb53(title + album + artist + trackInsert.insertId) + path.extname(req.file.originalname).toLowerCase();
+			const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
+			fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
+			await dbQuery("UPDATE tracks SET image = ? WHERE id = ?", [filename, trackInsert.insertId]);
+
 			userTrackInsert = await dbQuery("INSERT INTO user_tracks (uid, track_id, date, notes) VALUES(?, ?, ?, ?)", [uid, trackInsert.insertId, date, notes]);
 		} catch (e) {
 			console.log(e);
@@ -100,8 +103,6 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		handleError(500, "error.user_activity", trackInsert, userTrackInsert);
 		return;
 	}
-
-	fs.rename(req.file.path, targetPath, e => { if (e) return sendStatus(req, res, 500, "error.file_upload") });
 
 	sendStatus(req, res, 200, "success.add_track");
 });

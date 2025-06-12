@@ -3,7 +3,12 @@
 
 	import { _ } from "svelte-i18n";
 
-	let { mainStyle = null, code = null } = $props();
+	let {
+		mainStyle = null,
+		contentStyle = null,
+		code = null,
+		children
+	} = $props();
 	let severity = code.split('.')[0];
 </script>
 
@@ -11,6 +16,11 @@
 	title={code}
 	mainStyle="border-color: var(--{severity}); margin: auto; margin-top: 0rem; max-width: 30rem; {mainStyle}"
 	titleStyle="background-color: var(--{severity}); color: var(--text)"
-	contentStyle="text-align: center">
-	<p>{$_(code)}</p>
+	contentStyle="display: flex; flex-direction: row; justify-content: center; text-align: center; {contentStyle}">
+	{#if children}
+		{@render children()}
+	{:else}
+		<p>{@html $_(code)}</p>
+	{/if}
 </SwayWindow>
+

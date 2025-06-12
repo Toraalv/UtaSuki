@@ -11,11 +11,16 @@
 
 	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 
+	// this fixes scrolling to top when deleting a track
+	let slug = $state($page.params.slug);
+	let slugChange = $derived(slug != $page.params.slug);
 	let content = $state();
 	$effect.pre(() => {
-		$page.data.tracks;
+		slugChange;
 		tick().then(() => {
 			content.scrollTop = 0;
+			slug = $page.params.slug;
+			slugChange = false;
 		});
 	});
 </script>
@@ -24,19 +29,27 @@
 	{#if $page.data.tracks.code.split('.')[0] != "success"}
 		<Alert code={$page.data.tracks.code}/>
 	{:else}
-		{#each $page.data.tracks.data as month, i}
-			{#if month.length}
-				<MonthContainer date={$_(`months.${i}`)}>
-					{#each month as track}
-						<TrackContainer artist={track.artist}
-										album={track.album}
-										title={track.title}
-										image={track.image}
-										notes={track.notes}
-										isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}/>
-					{/each}
-				</MonthContainer>
-			{/if}
-		{/each}
+		{#key $page.data.tracks}
+			{#each $page.data.tracks.data as month, i}
+				{#if month.length}
+					<MonthContainer date={$_(`months.${i}`)}>
+						{#each month as track, j}
+							<TrackContainer
+								id={track.id}
+								date={track.date}
+								artist={track.artist}
+								album={track.album}
+								title={track.title}
+								image={track.image}
+								imageVer={track.image_ver}
+								notes={track.notes}
+								isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}
+								tabindex={`${i * 10000 + ((j + 1) * 100)}`}
+							/>
+						{/each}
+					</MonthContainer>
+				{/if}
+			{/each}
+		{/key}
 	{/if}
 </SwayWindow>

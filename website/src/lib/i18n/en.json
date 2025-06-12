@@ -50,6 +50,9 @@
 		"unknown": "unknown",
 		"settings": "settings",
 		"save": "save",
+		"edit": "edit",
+		"remove": "remove",
+		"cancel": "cancel",
 		"public": "public",
 		"public_title": "your profile will be publicly available and listed on the front page",
 		"track_notes_public": "track notes public",
@@ -67,7 +70,7 @@
 		"user_activity": "updating user activity failed",
 		"add_track_fields_not_specified": "the required fields for adding a track were not specified correctly",
 		"add_track": "track insertion failed",
-		"forbidden": "you do not have permission to do that",
+		"forbidden": "you do not have permission to do that<br><br>are you logged in?",
 		"wrong_password": "wrong password",
 		"login_general": "one or both fields are incorrect",
 		"404": "not found",
@@ -92,7 +95,16 @@
 	"info": {
 		"user_no_tracks": "user does not have any tracks",
 		"no_users": "no users exists",
+		"saving": "saving",
+		"adding": "adding",
+		"logging_in": "logging in",
+		"registering": "registering",
 		"no_change": "no setting was changed"
+	},
+	"dialog": {
+		"delete": "are you sure you want to delete:<br><span style=\"color: white\">{thing}</span>?",
+		"yes": "yes",
+		"no": "no"
 	},
 	"about": {
 		"p1": "This site is meant to be a place where you can add your favourite music for every month.",

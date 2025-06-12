@@ -50,6 +50,9 @@
 		"unknown": "okänd",
 		"settings": "inställningar",
 		"save": "spara",
+		"edit": "ändra",
+		"remove": "radera",
+		"cancel": "avbryt",
 		"public": "offentlig",
 		"public_title": "din profil kommer offentlig göras och visas upp på startsidan",
 		"track_notes_public": "offentliga låtanteckningar",
@@ -67,7 +70,7 @@
 		"user_activity": "uppdatering av användarens senaste aktivitet misslyckades",
 		"add_track_fields_not_specified": "värdena som krävs för att lägga till en låt var ej korrekt formaterade",
 		"add_track": "tilläggningen av låten gick ej igenom",
-		"forbidden": "du har inte tillåtelse att göra detta",
+		"forbidden": "du har inte tillåtelse att göra detta<br><br>är du inloggad?",
 		"wrong_password": "fel lösenord",
 		"login_general": "ett eller båda fält är inkorrekta",
 		"404": "hittades inte",
@@ -92,7 +95,16 @@
 	"info": {
 		"user_no_tracks": "användaren har inga låtar",
 		"no_users": "inga användare existerar",
+		"saving": "sparar",
+		"adding": "lägger till",
+		"logging_in": "loggar in",
+		"registering": "registrerar",
 		"no_change": "ingen inställning ändrades"
+	},
+	"dialog": {
+		"delete": "är du säker på att du vill radera:<br><span style=\"color: white\">{thing}</span>?",
+		"yes": "ja",
+		"no": "nej"
 	},
 	"about": {
 		"p1": "Denna sida är tänkt att fungera som en plats där man kan lägga till sina favoritlåtar för varje månad.",
