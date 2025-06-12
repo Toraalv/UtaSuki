@@ -14,6 +14,7 @@
 		album = "album of track",
 		title = "title of track",
 		image = "/test_album.png",
+		imageVer = 0,
 		notes = "",
 		isOwner = false,
 		tabindex = "0"
@@ -80,7 +81,7 @@
 			lastActiveElement = null;
 			});
 		}}>
-		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt="{album} cover" title={album}>
+		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}?${imageVer}`} alt="{album} cover" title={album}>
 		<div class="trackInfo">
 			<div style="display: flex; flex-direction: row; justify-content: space-between;">
 				<h1 title={$_("general.track_name")}>{title}</h1>
@@ -142,7 +143,7 @@
 		}}
 	>
 		<label for="imageSelect">
-			<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}`} alt={album} bind:this={imageInput}>
+			<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}?${imageVer}`} alt={album} bind:this={imageInput}>
 			<input
 				type="file"
 				name="file"

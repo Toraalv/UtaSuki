@@ -37,6 +37,7 @@ module.exports = app.get('/', async (req, res) => {
 								title,
 								released,
 								tracks.image,
+								tracks.image_ver,
 								notes,
 								last_edit,
 								track_notes_public
@@ -77,6 +78,7 @@ module.exports = app.get('/', async (req, res) => {
 			title: data[i].title,
 			released: data[i].released,
 			image: data[i].image,
+			image_ver: data[i].image_ver,
 			notes: uid == req.profile?.uid ? data[i].notes : data[i].track_notes_public && data[i].notes,
 			last_edit: data[i].track_notes_public && data[i].last_edit,
 		});

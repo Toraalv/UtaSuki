@@ -41,6 +41,7 @@
 								album={track.album}
 								title={track.title}
 								image={track.image}
+								imageVer={track.image_ver}
 								notes={track.notes}
 								isOwner={$page.data.auth_info.authed && $page.data.data.profile.uid == $page.data.auth_info.profile.uid}
 								tabindex={`${i * 10000 + ((j + 1) * 100)}`}
