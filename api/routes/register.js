@@ -12,6 +12,13 @@ const fs = require("fs");
 const bcrypt = require("bcryptjs");
 
 module.exports = app.post('/', upload.single("file"), async (req, res) => {
+	// check login/register attempts
+	let checkAttempts = await dbQuery("SELECT ip FROM logins WHERE ip = ?", [req.body.requestOrigin]);
+	if (checkAttempts.length > 4) {
+		sendStatus(req, res, 429, "warning.too_many_registrations");
+		return;
+	}
+
 	if (req.file == undefined) {
 		sendStatus(req, res, 400, "error.no_image");
 		return
@@ -29,6 +36,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 	let userExist = await dbQuery("SELECT 1 FROM users WHERE email = ?", [email]);
 	if (userExist.length) {
 		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
+		await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.body.requestOrigin]);
 		sendStatus(req, res, 418, "error.user_email_exists");
 		return;
 	}
@@ -38,6 +46,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		password = await bcrypt.hash(password, salt);
 		createUser = await dbQuery("INSERT INTO users (email, username, password) VALUES (?, ?, ?)", [email, username, password]);
+		await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.body.requestOrigin]); // prevents creating too many accounts in a short time span
 	} catch (e) {
 		fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 		sendStatus(req, res, 500, "error.create_user");

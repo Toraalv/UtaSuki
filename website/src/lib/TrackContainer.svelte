@@ -92,6 +92,7 @@
 							type="button"
 							onclick={() => { resetEdit(); isEdit = true }}
 							value={$_("general.edit")}
+							title={$_("general.edit_title")}
 						/>
 						<input
 							tabindex={tabindex}
@@ -99,6 +100,7 @@
 							type="button"
 							onclick={() => deleteDialog()}
 							value={$_("general.remove")}
+							title={$_("general.remove_title")}
 						/>
 					</div>
 				{/if}

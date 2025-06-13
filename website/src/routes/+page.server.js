@@ -10,9 +10,14 @@ export async function load({ fetch, params, cookies }) {
 
 export const actions = {
 	login: async ({ fetch, cookies, request }) => {
-		let form = await request.formData();
+		let data = await request.formData();
 
-		let res = await api.login(fetch, form);
+		if (process.env.APP_ENV == "dev")
+			data.set("requestOrigin", "localhost")
+		else
+			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
+
+		let res = await api.login(fetch, data);
 
 		if (res.code.split('.')[0] == "success")
 			cookies.set("auth_token", res.data.token, { path: '/' });
@@ -20,7 +25,16 @@ export const actions = {
 		return { type: "login", res: res };
 	},
 	register: async ({ fetch, cookies, request }) => {
-		return { type: "register", res: await api.register(fetch, await request.formData()) };
+		let data = await request.formData();
+
+		if (process.env.APP_ENV == "dev")
+			data.set("requestOrigin", "localhost")
+		else
+			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
+
+		let res = await api.register(fetch, data);
+
+		return { type: "register", res: res };
 	},
 	logout: ({ fetch, cookies }) => {
 		api.logout(fetch);
