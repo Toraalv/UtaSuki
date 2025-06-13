@@ -96,14 +96,9 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		}
 	}
 
-	// update last_activity
-	try {
-		let userUpdateActivity = await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [uid]);
-	} catch (e) {
-		handleError(500, "error.user_activity", trackInsert, userTrackInsert);
-		return;
-	}
-
 	sendStatus(req, res, 200, "success.add_track");
+
+	// update last_activity
+	await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [uid]);
 });
 

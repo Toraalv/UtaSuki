@@ -7,7 +7,7 @@
 </script>
 
 <SwayWindow title={$_("general.about_site")} contentStyle="display: flex; flex-direction: column; flex-grow: 1; align-items: center; justify-content: space-between">
-	<div style="display: flex; flex-direction: column; align-items: center">
+	<div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">
 		<div style="display: flex;">
 			<a href="https://github.com/Toraalv">
 				<img src={CDN_ADDR + "/static/images/profile_pictures/1.png"} alt="author">
@@ -24,10 +24,9 @@
 		<p>{$_("about.p4")}</p>
 		<p>{@html $_("about.p5")}</p>
 	</div>
-		<p style="color: var(--unfocused_indicator)">(〜￣△￣)〜</p>
-	<div>
-		<p style="color: var(--unfocused_indicator)">{@html $_("about.pfp")}</p>
-	</div>
+	<p id="kaomoji" style="color: var(--unfocused_indicator)"></p>
+	<div></div>
+	<!-- <p style="color: var(--unfocused_indicator)">{@html $_("about.pfp")}</p> -->
 </SwayWindow>
 
 <style>
@@ -44,7 +43,9 @@
 	}
 	p {
 		margin-bottom: 0;
-		max-width: 30vw;
+		max-width: 40em;
 		text-align: center;
 	}
+	#kaomoji:before { content: "(〜￣△￣)〜" }
+	#kaomoji:hover:before { content: "(╮°-°)╮┳━━┳ ( ╯°□°)╯ ┻━━┻" }
 </style>

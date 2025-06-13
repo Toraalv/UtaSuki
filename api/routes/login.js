@@ -24,7 +24,7 @@ module.exports = app.post('/', upload.none(), async (req, res) => {
 		return;
 	}
 
-	// check login attempts
+	// check login/register attempts
 	let checkAttempts = await dbQuery("SELECT ip FROM logins WHERE ip = ?", [req.body.requestOrigin]);
 	if (checkAttempts.length > 4) {
 		sendStatus(req, res, 429, "warning.too_many_login_attempts");
@@ -34,7 +34,7 @@ module.exports = app.post('/', upload.none(), async (req, res) => {
 	// does the user exist?
 	let userInfo = await dbQuery("SELECT uid, password FROM users WHERE email = ?", [email]);
 	if (!userInfo.length) {
-		let setLoginAttempt = await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.body.requestOrigin]);
+		await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.body.requestOrigin]);
 		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}
@@ -42,11 +42,11 @@ module.exports = app.post('/', upload.none(), async (req, res) => {
 	// is the password correct?
 	if (await bcrypt.compare(password, userInfo[0].password)) {
 		let userToken = Token(userInfo[0].uid, email);
-		let setUserTokenRes = await dbQuery("UPDATE users SET auth_token = ? WHERE uid = ?", [userToken, userInfo[0].uid]);
+		await dbQuery("UPDATE users SET auth_token = ? WHERE uid = ?", [userToken, userInfo[0].uid]);
 		sendStatus(req, res, 200, "success.login_success", { token: userToken });
 		return;
 	} else {
-		let setLoginAttempt = await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.ip]);
+		await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.ip]);
 		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}

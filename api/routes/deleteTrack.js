@@ -20,6 +20,9 @@ module.exports = app.post('/', upload.none(), async (req, res) => {
 
 	sendStatus(req, res, 200, "success.deletion_ok");
 
+	// update last_activity
+	await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [req.profile.uid]);
+
 	let isTrackPopulated = (await dbQuery("SELECT 1 FROM user_tracks WHERE track_id = ?", [userTrackToDelete[0].track_id])).length;
 	// delete track (and image) if no else uses it
 	if (!isTrackPopulated) {

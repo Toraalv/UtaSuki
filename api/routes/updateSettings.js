@@ -94,9 +94,11 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		}
 	}
 
-	if (change)
+	if (change) {
 		sendStatus(req, res, 200, "success.updated_settings");
-	else
+		// update last_activity
+		await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [req.profile.uid]);
+	} else
 		sendStatus(req, res, 200, "info.no_change");
 });
 

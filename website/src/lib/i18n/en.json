@@ -51,7 +51,9 @@
 		"settings": "settings",
 		"save": "save",
 		"edit": "edit",
+		"edit_title": "edit this track's content",
 		"remove": "remove",
+		"remove_title": "remove this track (doesn't remove every instance of this track)",
 		"cancel": "cancel",
 		"public": "public",
 		"public_title": "your profile will be publicly available and listed on the front page",
@@ -83,6 +85,7 @@
 	"warning": {
 		"no_tracks_year": "user does not have any tracks for the specified year",
 		"too_many_login_attempts": "too many login attempts have been made, try again later",
+		"too_many_registrations": "too many registrations/login attempts have been made, try again later",
 		"WIP": "not yet implemented!",
 		"too_long": "too long",
 		"not_logged_in": "you're not currently logged in!"

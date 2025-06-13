@@ -12,7 +12,10 @@ export const actions = {
 	login: async ({ fetch, cookies, request }) => {
 		let data = await request.formData();
 
-		data.set("requestOrigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
+		if (process.env.APP_ENV == "dev")
+			data.set("requestOrigin", "localhost")
+		else
+			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
 
 		let res = await api.login(fetch, data);
 
@@ -22,7 +25,16 @@ export const actions = {
 		return { type: "login", res: res };
 	},
 	register: async ({ fetch, cookies, request }) => {
-		return { type: "register", res: await api.register(fetch, await request.formData()) };
+		let data = await request.formData();
+
+		if (process.env.APP_ENV == "dev")
+			data.set("requestOrigin", "localhost")
+		else
+			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
+
+		let res = await api.register(fetch, data);
+
+		return { type: "register", res: res };
 	},
 	logout: ({ fetch, cookies }) => {
 		api.logout(fetch);
