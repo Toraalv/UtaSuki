@@ -1,4 +1,5 @@
 [![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+![version: 1.0.0](https://img.shields.io/badge/version-1.0.0-blue)
 
 # 歌好き (UtaSuki)
 The site is available at [utasuki.com](https://utasuki.com).
@@ -8,9 +9,9 @@ Current features:
 - [x] Adding tracks
 - [x] Changing user settings, such as profile picture, username and publicity.
 - [x] Password encryption (salting + hashing)
+- [x] Editing, removing tracks
 
 Current plans includes:
-- [ ] Editing, removing tracks
 - [ ] Per track publicity setting?
 - [ ] More user settings, delete account
 - [ ] Improving UX
