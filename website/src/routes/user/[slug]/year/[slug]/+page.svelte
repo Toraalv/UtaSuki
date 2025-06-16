@@ -25,7 +25,7 @@
 	});
 </script>
 
-<SwayWindow bind:content={content} title={$_("general.tracks", { values: { username: possessiveForm(username) }})}>
+<SwayWindow contentStyle="flex: 1 0 0;" bind:content={content} title={$_("general.tracks", { values: { username: possessiveForm(username) }})}>
 	{#if $page.data.tracks.code.split('.')[0] != "success"}
 		<Alert code={$page.data.tracks.code}/>
 	{:else}

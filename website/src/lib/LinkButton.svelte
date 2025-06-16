@@ -3,14 +3,13 @@
 		href = null,
 		active = false,
 		style = "",
-		astyle = "",
 		onclick = () => {},
 		children
 	} = $props();
 </script>
 
-<a onclick={() => onclick()} href="{href}" style={astyle}>
-	<h4 style="{active ? "background-color: var(--accent); border-color: var(--accent);" : ""} {style}">
+<a onclick={() => onclick()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent);" : ""} {style}">
+	<h4>
 		{@render children?.()}
 	</h4>
 </a>
@@ -18,14 +17,19 @@
 <style>
 	a {
 		margin: 5px 0;
+		outline: none;
+		background-color: #111111;
+		border-radius: var(--border_radius_small);
+		transition: 0.2s;
 	}
 	h4 {
-		background-color: #111111;
 		text-align: center;
 		padding: 6px 24px;
 		font-size: 14pt;
+		height: inherit;
+		text-align: center;
+		align-content: center;
 	}
-	h4:hover {
-		background-color: var(--unfocused_background);
-	}
+	a:hover { background-color: var(--unfocused_background); }
+	a:focus { background-color: var(--unfocused_border); }
 </style>

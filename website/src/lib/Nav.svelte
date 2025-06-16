@@ -13,9 +13,11 @@
 </script>
 
 <div class="swayWindow" style={mainStyle}>
+	<!--
 	<div class="swayWindowTitle">
-		<!--<h5>asd</h5>-->
+		<h5>asd</h5>
 	</div>
+	-->
 	<div bind:this={content} class="swayWindowContent" style={contentStyle}>
 		<div style="display: flex;">
 			<img id="logo" src="/favicon.png"/>
@@ -91,10 +93,12 @@
 		flex-grow: 1;
 
 		/* new and improved™ */
-		border-radius: 0 0 var(--border_radius) var(--border_radius);
+		border-radius: var(--border_radius) var(--border_radius);
+		border-top: 2px solid var(--unfocused_background);
 		border-right: 2px solid var(--unfocused_background);
 		border-bottom: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
+		background-color: #070707; /* ここだ！ */
 
 		transition: 0.2s;
 	}

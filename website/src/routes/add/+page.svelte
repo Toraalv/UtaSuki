@@ -75,12 +75,7 @@
 	{/if}
 {/snippet}
 
-<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
-	<ControlPanel/>
-	<Footer/>
-</div>
-
-<SwayWindow contentStyle="padding: 20px;" title={$_("general.add_track")}>
+<SwayWindow contentStyle="padding: 20px; display: flex; justify-content: center;" title={$_("general.add_track")}>
 	<form
 		method="POST"
 		enctype="multipart/form-data"
