@@ -3,12 +3,13 @@
 		href = null,
 		active = false,
 		style = "",
+		astyle = "",
 		onclick = () => {},
 		children
 	} = $props();
 </script>
 
-<a onclick={() => onclick()} href="{href}">
+<a onclick={() => onclick()} href="{href}" style={astyle}>
 	<h4 style="{active ? "background-color: var(--accent); border-color: var(--accent);" : ""} {style}">
 		{@render children?.()}
 	</h4>
@@ -21,7 +22,7 @@
 	h4 {
 		background-color: #111111;
 		text-align: center;
-		padding: 6px;
+		padding: 6px 24px;
 		font-size: 14pt;
 	}
 	h4:hover {

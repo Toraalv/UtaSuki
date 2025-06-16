@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="background-color: #000">
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<title>UtaSuki (歌好き)</title>
@@ -61,10 +61,14 @@
 				--unfocused_indicator: #292d2e;
 
 				--input_bg: #111111;
+
+				/* experimental */
+				--border_radius: 8px;
+				--border_radius_small: calc(var(--border_radius) / 2);
 			}
 
 			html {
-				background-color: var(--bkg);
+				background-color: var(--bg);
 				color: var(--text);
 				font-family: 'swaywm_monospace', monospace, sans-serif;
 				font-weight: bold;
