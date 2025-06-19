@@ -30,6 +30,8 @@
 		text-align: center;
 		align-content: center;
 	}
+	a:first-child { margin: 0 0 5px; }
+	a:last-child { margin: 5px 0 0; }
 	a:hover { background-color: var(--unfocused_background); }
 	a:focus { background-color: var(--unfocused_border); }
 </style>

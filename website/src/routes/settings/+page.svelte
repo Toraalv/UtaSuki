@@ -223,8 +223,11 @@
 	}
 	img {
 		border: 1px solid var(--unfocused_border);
+		outline: 1px solid #00000000;
 		width: 100%;
 		max-width: 350px;
+		border-radius: var(--border_radius);
+		transition: outline 0.2s;
 	}
 	img:hover {
 		outline: 1px solid var(--border);

@@ -44,11 +44,13 @@
 	}
 	img {
 		object-fit: cover;
-		height: 100px;
+		height: 80px;
 		width: 100%;
 		flex-shrink: 0;
-		max-width: 100px;
-		max-height: 100px;
+		max-width: 80px;
+		max-height: 80px;
+		border-radius: var(--border_radius);
+		margin: 10px;
 	}
 
 	.profile {
@@ -57,13 +59,14 @@
 		background-color: #111111;
 		border: 1px solid var(--unfocused_border);
 		margin-bottom: 10px;
+		border-radius: var(--border_radius);
 	}
 	.profileInfo {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		/* font-family: "DejaVuSans"; */
-		margin: 10px;
+		margin: 18px 1px;
 	}
 	.profileInfo h1 {
 		word-break: break-all;

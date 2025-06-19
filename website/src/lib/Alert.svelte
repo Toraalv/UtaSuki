@@ -14,9 +14,9 @@
 
 <SwayWindow
 	title={code}
-	mainStyle="border-color: var(--{severity}); margin: auto; margin-top: 0rem; max-width: 30rem; {mainStyle}"
-	titleStyle="background-color: var(--{severity}); color: var(--text)"
-	contentStyle="display: flex; flex-direction: row; justify-content: center; text-align: center; {contentStyle}">
+	mainStyle="margin: auto; margin-top: 0rem; max-width: 30rem; {mainStyle}"
+	titleStyle="background-color: var(--{severity}); color: var(--text); border-color: var(--{severity})"
+	contentStyle="display: flex; flex-direction: row; justify-content: center; text-align: center; {contentStyle}; border-color: var(--{severity})">
 	{#if children}
 		{@render children()}
 	{:else}

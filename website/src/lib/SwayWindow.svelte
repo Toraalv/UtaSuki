@@ -22,7 +22,6 @@
 <style>
 	.swayWindow {
 		position: relative;
-		background-color: var(--bg);
 		margin: 10px;
 		display: flex;
 		flex-grow: 1;
@@ -33,8 +32,12 @@
 		/*border-radius: var(--border_radius);*/
 		/*border: 2px solid var(--unfocused_background);*/
 	}
-	.swayWindow:hover .swayWindowTitle, .swayWindow:hover .swayWindowContent {
+	.swayWindow:hover .swayWindowTitle, .swayWindow:hover .swayWindowContent, .swayWindow:focus .swayWindowTitle, .swayWindow:focus .swayWindowContent {
 		border-color: var(--accent);
+	}
+	.swayWindow:hover .swayWindowTitle, .swayWindow:focus .swayWindowTitle {
+		background-color: var(--accent);
+		color: var(--text);
 	}
 	.swayWindowTitle {
 		font-weight: normal;
@@ -60,14 +63,11 @@
 		text-overflow: ellipsis;
 		text-wrap: nowrap;
 	}
-	.swayWindow:hover .swayWindowTitle {
-		background-color: var(--accent);
-		color: var(--text);
-	}
 	.swayWindowContent {
 		padding: 10px;
 		overflow-x: hidden;
 	  	overflow-y: auto;
+		background-color: var(--bg);
 
 		/* new and improved™ */
 		height: 100%;
@@ -79,3 +79,4 @@
 		transition: 0.2s;
 	}
 </style>
+

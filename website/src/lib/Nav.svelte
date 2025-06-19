@@ -1,47 +1,183 @@
 <script>
 	import { CDN_ADDR } from "$lib/globals.js";
+	import { LEN_LIMITS } from "$lib/globals.js";
 	import NavButton from "$lib/NavButton.svelte";
+	import SwayWindow from "$lib/SwayWindow.svelte"; // https://tenor.com/view/k-on-yui-hirasawa-laughing-anime-gif-16038492
+	import Alert from "$lib/Alert.svelte";
+	import AnimatedDots from "$lib/AnimatedDots.svelte";
 
 	import { page } from "$app/stores";
 	import { _ } from "svelte-i18n";
+	import { enhance } from "$app/forms";
 
-	let {
-		mainStyle = null,
-		contentStyle = null,
-		content = $bindable()
-	} = $props();
+	function focus(node) {
+		node.focus();
+	}
+
+	let { form } = $props();
+
+	// login form feedback
+	let showLogin = $state(false);
+	let showLoginError = $state(false);
+
+	let loginEmailInputVal = $state("");
+	let loginPasswordInputVal = $state("");
+
+	let loginFlight = $state(false);
 </script>
 
-<div class="swayWindow" style={mainStyle}>
-	<!--
-	<div class="swayWindowTitle">
-		<h5>asd</h5>
+{#snippet login()}
+	<div class="overlay" style:cursor="unset">
+		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2">
+			<SwayWindow
+				title={$_("general.login_verb")}
+				mainStyle="margin: 0; display: {loginFlight && "none"}"
+				titleStyle="background-color: var(--accent); color: var(--text); border-color: var(--accent)"
+				contentStyle="border-color: var(--accent)"
+			>
+				<form
+					style="display: flex"
+					method="POST"
+					action="/?/login"
+					onsubmit={() => showLoginError = false}
+					use:enhance={() => {
+						loginFlight = true;
+
+						return async ({ update, result }) => {
+							await update({ reset: false });
+							loginFlight = false;
+							if (result.status == 200)
+								showLogin = false;
+							else
+								showLoginError = true;
+						};
+					}}
+				>
+					<table style="flex-grow: 1">
+						<tbody>
+							<tr>
+								<td>{$_("general.email")}:</td>
+							</tr>
+							<tr>
+								<td>
+									<input
+										type="email"
+										name="email"
+										bind:value={loginEmailInputVal}
+										disabled={loginFlight}
+										maxlength={LEN_LIMITS.EMAIL}
+										autocomplete="off"
+										use:focus
+										required
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td>{$_("general.password")}:</td>
+							</tr>
+							<tr>
+								<td>
+									<input
+										type="password"
+										name="password"
+										bind:value={loginPasswordInputVal}
+										disabled={loginFlight}
+										maxlength={LEN_LIMITS.PASSWORD}
+										autocomplete="off"
+										required
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<input
+										type="submit"
+										disabled={loginFlight || !loginEmailInputVal.length || !loginPasswordInputVal.length}
+										value={$_("general.login_verb")}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</SwayWindow>
+		</div>
+		{#if loginFlight}
+			<div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -100%); z-index: 2">
+				<Alert code="info.logging_in" mainStyle="min-width: 15vw;">
+					<p>{$_("info.logging_in")}</p><AnimatedDots/>
+				</Alert>
+			</div>
+		{/if}
+		{#if showLoginError}
+			<div style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -100%); z-index: 2">
+				<Alert code={$page.form.code}/> <!-- form funkar inte av oförklarliga anledningar. va i helvete. -->
+			</div>
+		{/if}
 	</div>
-	-->
-	<div bind:this={content} class="swayWindowContent" style={contentStyle}>
-		<div style="display: flex;">
-			<img id="logo" src="/favicon.png"/>
+{/snippet}
+
+<!---- PAGE CONTENT ---->
+<div class="swayWindow">
+	<div class="swayWindowTitle">
+		<!--<h5>nav</h5>-->
+	</div>
+	<div class="swayWindowContent">
+		<div style:align-items="center">
+			<img id="logo" alt="logo" src="/favicon.png"/>
 			<h3 id="logoText">UtaSuki</h3>
 		</div>
-		<div id="places">
-			<NavButton active={$page.url.pathname == "/"} href="/">{$_("general.home")}</NavButton>
-			<NavButton active={$page.url.pathname == "/community"} href="/community">{$_("general.community")}</NavButton>
-			<NavButton active={$page.url.pathname == "/user/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</NavButton>
-			<NavButton active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</NavButton>
-			<NavButton active={$page.url.pathname == "/settings"} href="/settings">{$_("general.settings")}</NavButton>
+		<div style:justify-content="center">
+			<NavButton tabindex=1 active={$page.url.pathname == "/"} href="/">{$_("general.home")}</NavButton>
+			<NavButton tabindex=2 active={$page.url.pathname == "/users"} href="/users">{$_("general.users")}</NavButton>
+			{#if $page.data.auth_info?.authed}
+				<NavButton tabindex=3 active={$page.url.pathname == "/user/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</NavButton>
+				<NavButton tabindex=4 active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</NavButton>
+			{/if}
 		</div>
-		<a href="/settings" id="profile">
-			<h3 id="username">{$page.data.auth_info.profile.username}</h3>
-			<img id="pfp" alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
-		</a>
+		{#if $page.data.auth_info?.authed}
+			<div>
+				<div id="profileDropdown">
+					<div id="profile">
+						<h3 id="username">{$page.data.auth_info.profile.username}</h3>
+						<img id="pfp" alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
+					</div>
+					<div id="profileDropdownContent">
+						<ul>
+							<li>
+								<a href="/settings">{$_("general.settings")}</a>
+							</li>
+							<li>
+								<form action="/?/logout" method="POST" use:enhance>
+									<input
+										type="submit"
+										value="{$_("general.logout")}"
+										style="border: none; text-align: inherit; background-color: inherit;"
+									>
+								</form>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		{:else}
+			<div>
+				<NavButton tabindex=7 onclick={ () => showLogin = !showLogin } active={showLogin}>{$_("general.login_verb")}</NavButton>
+				<NavButton tabindex=8 active={$page.url.pathname == "/register"} href="/reigster">{$_("general.register_noun")}</NavButton>
+			</div>
+		{/if}
 	</div>
 </div>
 
+{#if showLogin}
+	{@render login()}
+{/if}
+
 <style>
-	#places {
-		display: flex;
-		padding: 4px;
-	}
+	a:focus, input[type="submit"] { outline: none; }
 	.swayWindow {
 		position: relative;
 		background-color: var(--bg);
@@ -49,11 +185,7 @@
 		display: flex;
 		flex-grow: 0;
 		flex-direction: column;
-		overflow: auto;
-
-		/* new and improved™ */
-		/*border-radius: var(--border_radius);*/
-		/*border: 2px solid var(--unfocused_background);*/
+		overflow: visible;
 	}
 
 	.swayWindow:hover .swayWindowTitle, .swayWindow:hover .swayWindowContent {
@@ -71,40 +203,36 @@
 		color: var(--unfocused_text);
 		height: 10px;
 		line-height: 20px;
-
-		/* new and improved™ */
 		border-radius: var(--border_radius) var(--border_radius) 0 0;
 		border-top: 2px solid var(--unfocused_background);
 		border-right: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
-
 		transition: 0.2s;
-
-		/* funkar bra med border-radius */
 		text-align: center;
 	}
 	.swayWindowContent {
-		overflow-x: hidden;
-		overflow-y: hidden;
-		height: 40px;
-		padding: 4px;
+		overflow-x: visible;
+		overflow-y: visible;
+		padding: 2px;
 		display: flex;
-		justify-content: space-between;
 		flex-grow: 1;
-
-		/* new and improved™ */
-		border-radius: var(--border_radius) var(--border_radius);
-		border-top: 2px solid var(--unfocused_background);
+		border-radius: 0 0 var(--border_radius) var(--border_radius);
 		border-right: 2px solid var(--unfocused_background);
 		border-bottom: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
-		background-color: #070707; /* ここだ！ */
-
 		transition: 0.2s;
 	}
+	.swayWindowContent > * {
+		display: flex;
+		flex: 1 0 0;
+		padding: 4px;
+	}
+	.swayWindowContent > *:last-child {
+		justify-content: flex-end;
+	}
 	img {
-		height: 100%;
-		width: 40px;
+		height: 30px;
+		width: 30px;
 		object-fit: cover;
 
 	}
@@ -114,26 +242,56 @@
 	#username, #logoText {
 		align-content: center;
 		margin: 0 10px;
-		line-height: 42px;
 	}
 	#profile {
 		display: flex;
 		flex-direction: row;
-		outline: none;
+		justify-content: end;
+		min-width: 150px;
+		align-items: center;
+		margin: 1px;
+	}
+	#profileDropdown {
 		border-radius: var(--border_radius_small) var(--border_radius_small);
 		transition: 0.2s;
+		display: inline-block;
+		position: relative;
+		outline: none;
 	}
-	#profile:hover {
-		background-color: var(--unfocused_background);
+	#profileDropdown:hover {
+		box-shadow: inset 0 1px var(--accent), inset 1px 0 var(--accent), inset -1px 0 var(--accent);
+		border-end-end-radius: 0;
+		border-end-start-radius: 0;
 	}
-	#profile:focus {
-		background-color: var(--unfocused_border);
-		box-shadow: 0 0 0 0px var(--unfocused_border);
+	#profileDropdown:focus, #profileDropdown:focus-within {
+		box-shadow: inset 0 1px var(--accent), inset 1px 0 var(--accent), inset -1px 0 var(--accent);
+		border-end-end-radius: 0;
+		border-end-start-radius: 0;
+	}
+	#profileDropdownContent {
+		background-color: var(--bg);
+		border-radius: 0 0 var(--border_radius_small) var(--border_radius_small);
+		box-shadow: inset 0 -1px var(--accent), inset 1px 0 var(--accent), inset -1px 0 var(--accent);
+		transition: z-index 1ms, opacity 0.2s;
+		opacity: 0;
+		min-width: 100%;
+		z-index: -1;
+		overflow: auto;
+		position: absolute;
+		right: 0px;
+		text-align: right;
+	}
+	#profileDropdown:focus-within #profileDropdownContent {
+	}
+	#profileDropdown:hover #profileDropdownContent, #profileDropdown:focus #profileDropdownContent, #profileDropdownContent:focus-within {
+		opacity: 100;
+		z-index: 1;
 	}
 
-	@media only screen and (max-width: 1068px) {
+	@media only screen and (max-width: 892px) {
 		#username, #logoText {
 			display: none;
 		}
+		#profile { min-width: unset; }
 	}
 </style>

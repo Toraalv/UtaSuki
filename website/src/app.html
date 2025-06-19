@@ -90,6 +90,27 @@
 				text-decoration: none;
 				color: var(--link_color);
 			}
+			ul {
+				list-style: none;
+				padding: 0 ;
+				margin: 1px;
+			}
+			li {
+				padding: 4px 10px;
+			}
+			li:hover {
+				background-color: var(--unfocused_background) !important;
+			}
+			li:focus-within {
+				background-color: var(--unfocused_border) !important;
+			}
+			li:nth-child(odd) {
+				background-color: var(--input_bg);
+			}
+			li:last-child {
+				border-end-end-radius: var(--border_radius_small);
+				border-end-start-radius: var(--border_radius_small);
+			}
 			
 			form * {
 				box-sizing: border-box;
@@ -101,16 +122,27 @@
 				outline: 1px var(--accent) solid;
 			}
 			input, select, textarea {
+				padding-left: 4px;
 				margin: 0;
 				font-size: 18px;
 				background-color: var(--input_bg);
 				border: 1px solid var(--unfocused_border);
+				outline: 1px solid #00000000;
 				color: var(--text);
 				width: 100%;
 				resize: none;
+				border-radius: var(--border_radius_small);
+				transition: background-color 0.2s, outline 0.2s, border-color 0.2s;
 			}
 			input:disabled, textarea:disabled, select:disabled {
 				color: var(--d2_text);
+			}
+			input[type="submit"] {
+				padding: 0;
+				margin: 0;
+				font-family: inherit;
+				font-size: unset;
+				font-weight: unset;
 			}
 			input[type="submit"]:hover, input[type="button"]:hover, input[type="file"]:hover {
 				background-color: var(--unfocused_background);
@@ -135,6 +167,12 @@
 				background-color: rgba(0, 0, 0, 0.5);
 				z-index: 1;
 				cursor: pointer;
+			}
+
+			@media only screen and (max-width: 1375px) {
+				body {
+					margin: 0;
+				}
 			}
 		</style>
 		%sveltekit.head%

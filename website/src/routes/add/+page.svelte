@@ -256,6 +256,7 @@
 	label {
 		height: 300px;
 		width: 300px;
+		border-radius: var(--border_radius);
 	}
 	label > img {
 		border: 1px solid var(--unfocused_border);
@@ -263,6 +264,7 @@
 		background-color: black;
 		width: 300px;
 		height: 300px;
+		border-radius: inherit;
 	}
 	
 	label > img:hover {

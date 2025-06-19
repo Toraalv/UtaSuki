@@ -1,5 +1,5 @@
 import { UtaSuki_API } from "$lib/api.js";
-import { redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 
 const api = new UtaSuki_API();
 
@@ -12,6 +12,8 @@ export const actions = {
 	login: async ({ fetch, cookies, request }) => {
 		let data = await request.formData();
 
+		await new Promise((fulfil) => setTimeout(fulfil, 1000));
+
 		if (process.env.APP_ENV == "dev")
 			data.set("requestOrigin", "localhost")
 		else
@@ -21,8 +23,10 @@ export const actions = {
 
 		if (res.code.split('.')[0] == "success")
 			cookies.set("auth_token", res.data.token, { path: '/' });
+		else
+			return fail(400, res);
 
-		return { type: "login", res: res };
+		return res;
 	},
 	register: async ({ fetch, cookies, request }) => {
 		let data = await request.formData();
