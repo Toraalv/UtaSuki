@@ -99,6 +99,7 @@
 	},
 	"info": {
 		"user_no_tracks": "user does not have any tracks",
+		"self_no_tracks": "you have not added any tracks yet",
 		"no_users": "no users exists",
 		"saving": "saving",
 		"adding": "adding",

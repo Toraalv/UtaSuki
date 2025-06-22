@@ -78,22 +78,23 @@
 				display: flex;
 				flex-direction: column;
 				height: 100vh;
-				margin: 0 10vw;
+				margin: 0 10vw; /* very split on this, should there be empty sides? kind of goes against sway's methodology, but then again, this is the web, not your desktop */
 				padding: 0;
 			}
 
 			h1, h2, h3, h4, h5, h6 {
 				margin: 0;
 			}
-			
 			a {
 				text-decoration: none;
 				color: var(--link_color);
+				outline: 1px solid #00000000;
+				transition: 0.2s;
 			}
 			ul {
 				list-style: none;
 				padding: 0 ;
-				margin: 1px;
+				margin: 0;
 			}
 			li {
 				padding: 4px 10px;

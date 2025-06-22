@@ -19,3 +19,9 @@
 	{/if}
 </SwayWindow>
 
+<style>
+	a {
+		display: block;
+		border-radius: var(--border_radius);
+	}
+</style>

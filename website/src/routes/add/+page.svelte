@@ -259,16 +259,17 @@
 		border-radius: var(--border_radius);
 	}
 	label > img {
-		border: 1px solid var(--unfocused_border);
+		outline: 2px solid var(--unfocused_border);
 		object-fit: contain;
 		background-color: black;
 		width: 300px;
 		height: 300px;
 		border-radius: inherit;
+		transition: outline-color 0.2s;
 	}
 	
 	label > img:hover {
-		outline: 1px solid var(--border);
+		outline-color: var(--border);
 	}
 	div {
 		display: flex;

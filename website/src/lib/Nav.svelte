@@ -14,11 +14,16 @@
 		node.focus();
 	}
 
-	let { form } = $props();
+	let overlay = $state();
 
 	// login form feedback
+	let lastError = $state("");
 	let showLogin = $state(false);
 	let showLoginError = $state(false);
+	const hideLogin = () => {
+		showLogin = false;
+		showLoginError = false;
+	}
 
 	let loginEmailInputVal = $state("");
 	let loginPasswordInputVal = $state("");
@@ -26,9 +31,60 @@
 	let loginFlight = $state(false);
 </script>
 
-{#snippet login()}
-	<div class="overlay" style:cursor="unset">
-		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2">
+<div class="swayWindow">
+	<div class="swayWindowTitle">
+		<!--<h5>nav</h5>-->
+	</div>
+	<div class="swayWindowContent">
+		<div style:align-items="center">
+			<img id="logo" alt="logo" src="/favicon.png"/>
+			<h3 id="logoText">UtaSuki</h3>
+		</div>
+		<div style:justify-content="center">
+			<NavButton tabindex=1 active={$page.url.pathname == "/"} href="/">{$_("general.home")}</NavButton>
+			<NavButton tabindex=2 active={$page.url.pathname == "/users"} href="/users">{$_("general.users")}</NavButton>
+			{#if $page.data.auth_info?.authed}
+				<NavButton tabindex=3 active={$page.url.pathname.match("/user/" + $page.data.auth_info.profile.uid)} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</NavButton>
+				<NavButton tabindex=4 active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</NavButton>
+			{/if}
+		</div>
+		{#if $page.data.auth_info?.authed}
+			<div>
+				<div id="profileDropdown">
+					<div id="profile">
+						<h3 title={$page.data.auth_info.profile.username} id="username">{$page.data.auth_info.profile.username}</h3>
+						<img id="pfp" alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
+					</div>
+					<div id="profileDropdownContent">
+						<ul>
+							<li>
+								<a style="display: block; width: 100%;" href="/settings">{$_("general.settings")}</a>
+							</li>
+							<li>
+								<form action="/?/logout" method="POST" use:enhance>
+									<input
+										type="submit"
+										value="{$_("general.logout")}"
+										style="border: none; text-align: inherit; background-color: inherit;"
+									>
+								</form>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		{:else}
+			<div>
+				<NavButton tabindex=7 onclick={ () => showLogin = !showLogin } active={showLogin}>{$_("general.login_verb")}</NavButton>
+				<NavButton tabindex=8 active={$page.url.pathname == "/register"} href="/register">{$_("general.register_noun")}</NavButton>
+			</div>
+		{/if}
+	</div>
+</div>
+
+{#if showLogin}
+	<div bind:this={overlay} onclick={(_this) => _this.target === overlay && hideLogin()} class="overlay">
+		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2; cursor: auto;">
 			<SwayWindow
 				title={$_("general.login_verb")}
 				mainStyle="margin: 0; display: {loginFlight && "none"}"
@@ -36,7 +92,7 @@
 				contentStyle="border-color: var(--accent)"
 			>
 				<form
-					style="display: flex"
+					style="display: flex;"
 					method="POST"
 					action="/?/login"
 					onsubmit={() => showLoginError = false}
@@ -48,12 +104,14 @@
 							loginFlight = false;
 							if (result.status == 200)
 								showLogin = false;
-							else
+							else {
+								lastError = result.data.code;
 								showLoginError = true;
+							}
 						};
 					}}
 				>
-					<table style="flex-grow: 1">
+					<table style="flex-grow: 1;">
 						<tbody>
 							<tr>
 								<td>{$_("general.email")}:</td>
@@ -106,78 +164,22 @@
 			</SwayWindow>
 		</div>
 		{#if loginFlight}
-			<div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -100%); z-index: 2">
+			<div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -100%); z-index: 2;">
 				<Alert code="info.logging_in" mainStyle="min-width: 15vw;">
 					<p>{$_("info.logging_in")}</p><AnimatedDots/>
 				</Alert>
 			</div>
 		{/if}
 		{#if showLoginError}
-			<div style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -100%); z-index: 2">
-				<Alert code={$page.form.code}/> <!-- form funkar inte av oförklarliga anledningar. va i helvete. -->
+			<div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -100%); z-index: 2;">
+				<Alert code={lastError}/>
 			</div>
 		{/if}
 	</div>
-{/snippet}
-
-<!---- PAGE CONTENT ---->
-<div class="swayWindow">
-	<div class="swayWindowTitle">
-		<!--<h5>nav</h5>-->
-	</div>
-	<div class="swayWindowContent">
-		<div style:align-items="center">
-			<img id="logo" alt="logo" src="/favicon.png"/>
-			<h3 id="logoText">UtaSuki</h3>
-		</div>
-		<div style:justify-content="center">
-			<NavButton tabindex=1 active={$page.url.pathname == "/"} href="/">{$_("general.home")}</NavButton>
-			<NavButton tabindex=2 active={$page.url.pathname == "/users"} href="/users">{$_("general.users")}</NavButton>
-			{#if $page.data.auth_info?.authed}
-				<NavButton tabindex=3 active={$page.url.pathname == "/user/" + $page.data.auth_info.profile.uid || $page.url.pathname.split('/')[1] == $page.data.auth_info.profile.uid} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</NavButton>
-				<NavButton tabindex=4 active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</NavButton>
-			{/if}
-		</div>
-		{#if $page.data.auth_info?.authed}
-			<div>
-				<div id="profileDropdown">
-					<div id="profile">
-						<h3 id="username">{$page.data.auth_info.profile.username}</h3>
-						<img id="pfp" alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
-					</div>
-					<div id="profileDropdownContent">
-						<ul>
-							<li>
-								<a href="/settings">{$_("general.settings")}</a>
-							</li>
-							<li>
-								<form action="/?/logout" method="POST" use:enhance>
-									<input
-										type="submit"
-										value="{$_("general.logout")}"
-										style="border: none; text-align: inherit; background-color: inherit;"
-									>
-								</form>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		{:else}
-			<div>
-				<NavButton tabindex=7 onclick={ () => showLogin = !showLogin } active={showLogin}>{$_("general.login_verb")}</NavButton>
-				<NavButton tabindex=8 active={$page.url.pathname == "/register"} href="/reigster">{$_("general.register_noun")}</NavButton>
-			</div>
-		{/if}
-	</div>
-</div>
-
-{#if showLogin}
-	{@render login()}
 {/if}
 
 <style>
-	a:focus, input[type="submit"] { outline: none; }
+	a:focus, input[type="submit"] { outline-color: #00000000; }
 	.swayWindow {
 		position: relative;
 		background-color: var(--bg);
@@ -242,36 +244,40 @@
 	#username, #logoText {
 		align-content: center;
 		margin: 0 10px;
+		text-overflow: ellipsis;
+		overflow-x: hidden;
+
 	}
 	#profile {
 		display: flex;
 		flex-direction: row;
 		justify-content: end;
 		min-width: 150px;
+		max-width: 300px;
 		align-items: center;
-		margin: 1px;
 	}
 	#profileDropdown {
 		border-radius: var(--border_radius_small) var(--border_radius_small);
+		box-shadow: 0 -1px #00000000, 1px 0 #00000000, -1px 0 #00000000;
 		transition: 0.2s;
 		display: inline-block;
 		position: relative;
 		outline: none;
 	}
 	#profileDropdown:hover {
-		box-shadow: inset 0 1px var(--accent), inset 1px 0 var(--accent), inset -1px 0 var(--accent);
+		box-shadow: 0 -1px var(--accent), 1px 0 var(--accent), -1px 0 var(--accent);
 		border-end-end-radius: 0;
 		border-end-start-radius: 0;
 	}
 	#profileDropdown:focus, #profileDropdown:focus-within {
-		box-shadow: inset 0 1px var(--accent), inset 1px 0 var(--accent), inset -1px 0 var(--accent);
+		box-shadow: 0 -1px var(--accent), 1px 0 var(--accent), -1px 0 var(--accent);
 		border-end-end-radius: 0;
 		border-end-start-radius: 0;
 	}
 	#profileDropdownContent {
 		background-color: var(--bg);
 		border-radius: 0 0 var(--border_radius_small) var(--border_radius_small);
-		box-shadow: inset 0 -1px var(--accent), inset 1px 0 var(--accent), inset -1px 0 var(--accent);
+		box-shadow: 0 1px var(--accent), 1px 0 var(--accent), -1px 0 var(--accent);
 		transition: z-index 1ms, opacity 0.2s;
 		opacity: 0;
 		min-width: 100%;

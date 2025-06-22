@@ -46,7 +46,7 @@ module.exports = app.post('/', upload.none(), async (req, res) => {
 		sendStatus(req, res, 200, "success.login_success", { token: userToken });
 		return;
 	} else {
-		await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.ip]);
+		await dbQuery("INSERT INTO logins (ip) VALUES (?)", [req.body.requestOrigin]);
 		sendStatus(req, res, 418, "error.login_general");
 		return;
 	}

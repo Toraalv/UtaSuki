@@ -1,0 +1,12 @@
+v1.1.0 ui-rework
+
+- profile now always visible when visiting your own tracks
+- added border-radius to almost everything
+- added hover and focus animations to a lot of input/a elements
+- "your tracks" button now always active when visiting any of your years
+- login and registering are now separate
+- logins can be done anywhere on the site
+	- this is especially nice if you wanted to add a track, but your
+	auth_token just expired, so you can just login again and the inputted data
+	will still be there
+- new accounts will now be private by default

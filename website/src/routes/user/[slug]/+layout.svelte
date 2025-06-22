@@ -19,7 +19,7 @@
 	<SwayWindow title={$_("general.years")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex: 1 0 0; flex-direction: column; justify-content: space-between">
 		{#if $page.data.code.split('.')[0] == "info"}
 			<div>
-				<Alert code={$page.data.code}/> <!-- logged in users should get a different message -->
+				<Alert code={($page.data.code === "info.user_no_tracks" && $page.data.data.profile.uid === $page.data.auth_info.profile.uid) ? "info.self_no_tracks" : $page.data.code}/>
 			</div>
 		{:else}
 			<div style="display: flex; flex-direction: column;">
@@ -32,11 +32,6 @@
 {/snippet}
 
 <div style="display: flex; justify-content: space-between; margin: 0; padding: 0; flex-grow: 1;">
-	{#if $page.data.code.split('.')[0] != "error"}
-		{#if $page.data.auth_info.authed && $page.data.auth_info.profile.username == username}
-			{@render yearList()}
-		{/if}
-	{/if}
 	{#if $page.data.code.split('.')[0] == "error"}
 		{#key $page.params.slug}
 			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
@@ -47,16 +42,11 @@
 		{/key}
 	{:else}
 		<div style="display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 0;">
-			{#if !$page.data.auth_info.authed || $page.data.auth_info.profile.username != username}
-				<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
-					<h3 style:margin-top="10px">stats:</h3>
-					<p>total tracks: {$page.data.data.totalTracks}</p>
-				</SwayWindow>
-			{/if}
-			{#if !$page.data.auth_info.authed || $page.data.auth_info.profile.username != username}
-				{@render yearList()}
-			{/if}
+			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+				<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
+				<p>total tracks: {$page.data.data.totalTracks}</p>
+			</SwayWindow>
+			{@render yearList()}
 		</div>
 	{/if}
 	{@render children?.()}
@@ -66,5 +56,6 @@
 	img {
 		width: 100%;
 		max-height: 450px;
+		border-radius: var(--border_radius);
 	}
 </style>

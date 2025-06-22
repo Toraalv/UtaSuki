@@ -99,6 +99,7 @@
 	},
 	"info": {
 		"user_no_tracks": "användaren har inga låtar",
+		"self_no_tracks": "du har inte lagt till några låtar än",
 		"no_users": "inga användare existerar",
 		"saving": "sparar",
 		"adding": "lägger till",
@@ -118,5 +119,9 @@
 		"p4": "Detta projekt är verkligen en lösning till ett icke-problem eftersom man kan strukturera allt detta på de flesta streamingtjänster idag, men det är kul att programmera så varför inte.",
 		"p5": "Sidan är långt från färdig. Du kan följa utvecklingen på <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">GitHub</a>.",
 		"pfp": "(profilbilden är ritad av エメさん, länken till konstverket kan du hitta på <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/109005549\">pixiv</a>)"
+	},
+	"root": {
+		"p1": "Välkommen till UtaSuki (歌好き)!",
+		"p2": "UtaSuki är ett ställe där du kan lägga till dina favoritlåtar för varje månad. Om du är som mig och lyssnar på väldigt mycket musik, har du kanske perioder där du lyssnar lite extra på en eller flera låtar, oftast när man har hittat något nytt eller bara en stabil klassiker. Dessa låtar ville jag dokumentera på något sätt. Först började det med en enkel text-fil på datorn, men en dag fick jag för mig att bygga en webbsida runt den här filen, för att visualisera datan."
 	}
 }

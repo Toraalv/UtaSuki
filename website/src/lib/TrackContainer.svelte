@@ -273,6 +273,8 @@
 		padding-right: 50px;
 		cursor: text; /* part that is padded uses default pointer? */
 		border-radius: var(--border_radius_small);
+		outline: 1px solid #00000000;
+		transition: background-color 0.2s, outline 0.2s, border-color 0.2s;
 	}
 	input:focus, textarea:focus {
 		outline: 1px var(--accent) solid;

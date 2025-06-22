@@ -3,8 +3,18 @@ import { fail, redirect } from "@sveltejs/kit";
 
 const api = new UtaSuki_API();
 
+/** @type {import('./$types').PageServerLoad} */
+export async function load({ fetch, params, cookies }) {
+	let res = await api.auth(fetch);
+
+	if (res.auth_info?.authed)
+		redirect(303, '/');
+
+	return res;
+}
+
 export const actions = {
-	login: async ({ fetch, cookies, request }) => {
+	register: async ({ fetch, cookies, request }) => {
 		let data = await request.formData();
 
 		await new Promise((fulfil) => setTimeout(fulfil, 1000));
@@ -14,17 +24,11 @@ export const actions = {
 		else
 			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
 
-		let res = await api.login(fetch, data);
+		let res = await api.register(fetch, data);
 
-		if (res.code.split('.')[0] == "success")
-			cookies.set("auth_token", res.data.token, { path: '/' });
-		else
-			return fail(500, res);
+		if (res.code.split('.')[0] != "success")
+			return fail(400, res);
 
 		return res;
-	},
-	logout: ({ fetch, cookies }) => {
-		api.logout(fetch);
-		cookies.set("auth_token", "", { path: '/' });
 	}
 };

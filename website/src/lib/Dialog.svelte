@@ -31,7 +31,6 @@
 </SwayWindow>
 
 <style>
-	input + input {
-		margin-left: 40px;
-	}
+	input { font-weight: normal; }
+	input + input {	margin-left: 40px; }
 </style>

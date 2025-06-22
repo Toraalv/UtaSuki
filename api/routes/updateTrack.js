@@ -48,7 +48,6 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 			const filename = cyrb53(title + album + artist + trackToUpdate.track_id) + path.extname(req.file.originalname).toLowerCase();
 			const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
 			fs.rename(req.file.path, targetPath, e => { if (e) { console.log(e); return; } });
-			console.log(trackToUpdate.image_ver);
 			await dbQuery("UPDATE tracks SET image = ?, image_ver = ? WHERE id = ?", [filename, ++trackToUpdate.image_ver, trackToUpdate.track_id]);
 
 			// only delete old cover if no one else uses it

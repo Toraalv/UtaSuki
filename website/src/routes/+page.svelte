@@ -9,8 +9,8 @@
 
 <div style="display: flex; flex-grow: 1;">
 	<SwayWindow title="welcome message">
-		<h1 style:margin-top="24px">Welcome to UtaSuki わあああ凄い</h1>
-		<h2 style:margin-top="24px">very important text that every user should READ before they use the site or maybe even get them to UNDERSTAND what this site is</h2>
+		<h1 style:margin-top="24px">{$_("root.p1")}</h1>
+		<h2 style:margin-top="24px">{$_("root.p2")}</h2>
 	</SwayWindow>
 	<div style="display:flex; flex-direction: column; min-width: 300px; max-width: 300px;">
 		<SwayWindow title="activity" mainStyle="flex: 3 0 0;">
