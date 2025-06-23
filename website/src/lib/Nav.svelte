@@ -209,7 +209,7 @@
 		border-top: 2px solid var(--unfocused_background);
 		border-right: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
-		transition: 0.2s;
+		transition: var(--transition);
 		text-align: center;
 	}
 	.swayWindowContent {
@@ -222,7 +222,7 @@
 		border-right: 2px solid var(--unfocused_background);
 		border-bottom: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
-		transition: 0.2s;
+		transition: var(--transition);
 	}
 	.swayWindowContent > * {
 		display: flex;
@@ -259,7 +259,7 @@
 	#profileDropdown {
 		border-radius: var(--border_radius_small) var(--border_radius_small);
 		box-shadow: 0 -1px #00000000, 1px 0 #00000000, -1px 0 #00000000;
-		transition: 0.2s;
+		transition: var(--transition);
 		display: inline-block;
 		position: relative;
 		outline: none;
@@ -278,7 +278,7 @@
 		background-color: var(--bg);
 		border-radius: 0 0 var(--border_radius_small) var(--border_radius_small);
 		box-shadow: 0 1px var(--accent), 1px 0 var(--accent), -1px 0 var(--accent);
-		transition: z-index 1ms, opacity 0.2s;
+		transition: z-index 1ms, opacity var(--transition);
 		opacity: 0;
 		min-width: 100%;
 		z-index: -1;

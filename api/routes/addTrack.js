@@ -49,7 +49,8 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		handleError(400, "error.add_track_fields_not_specified");
 		return;
 	}
-	if ([artist, encodeURIComponent(album) + ".jpeg", title].map((obj) => obj.length > 255).includes(true) || notes.length > 1024) {
+	// FIXME: this hardcoded 1024 is very bad 
+	if ([artist, encodeURIComponent(album) + ".jpeg", title].map((obj) => obj.length > 1024).includes(true) || notes.length > 1024) {
 		handleError(400, "error.field_too_long");
 		return;
 	}

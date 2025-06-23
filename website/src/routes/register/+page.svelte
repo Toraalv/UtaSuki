@@ -110,7 +110,7 @@
 									type="text"
 									name="username"
 									autocomplete="off"
-									maxlength="255"
+									maxlength={LEN_LIMITS.USERNAME}
 									bind:value={usernameInputVal}
 									disabled={inFlight}
 									required
@@ -128,7 +128,7 @@
 									type="text"
 									name="email"
 									autocomplete="off"
-									maxlength="255"
+									maxlength={LEN_LIMITS.EMAIL}
 									bind:value={emailInputVal}
 									disabled={inFlight}
 									required
@@ -146,7 +146,7 @@
 									type="password"
 									name="password"
 									autocomplete="off"
-									maxlength="250"
+									maxlength={LEN_LIMITS.PASSWORD}
 									bind:value={passwordInputVal}
 									disabled={inFlight}
 									required
@@ -214,7 +214,7 @@
 		width: 300px;
 		height: 300px;
 		border-radius: inherit;
-		transition: outline-color 0.2s;
+		transition: outline-color var(--transition);
 	}
 	
 	label > img:hover {

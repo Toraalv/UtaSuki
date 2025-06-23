@@ -150,7 +150,7 @@
 								type="text"
 								name="title"
 								autocomplete="off"
-								maxlength="255"
+								maxlength={LEN_LIMITS.TRACK}
 								bind:value={trackInputVal}
 								disabled={inFlight}
 								required
@@ -166,7 +166,7 @@
 								type="text"
 								name="artist"
 								autocomplete="off"
-								maxlength="255"
+								maxlength={LEN_LIMITS.ARTIST}
 								bind:value={artistInputVal}
 								disabled={inFlight}
 								required
@@ -182,7 +182,7 @@
 								type="text"
 								name="album"
 								autocomplete="off"
-								maxlength="250"
+								maxlength={LEN_LIMITS.ALBUM}
 								bind:value={albumInputVal}
 								disabled={inFlight}
 								required
@@ -197,7 +197,7 @@
 							<textarea
 								name="notes"
 								autocomplete="off"
-								maxlength="1024"
+								maxlength={LEN_LIMITS.NOTE}
 								disabled={inFlight}
 								bind:value={noteInputVal}
 							></textarea>
@@ -230,7 +230,7 @@
 
 	{#if inFlight}
 		<div class="overlay" style:cursor="unset">
-			<Alert code="info.adding" mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2" contentStyle="margin: 0 2em;">
+			<Alert code="info.adding" mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2; min-width: 15vw;">
 				<p>{$_("info.adding")}</p><AnimatedDots/>
 			</Alert>
 		</div>
@@ -265,7 +265,7 @@
 		width: 300px;
 		height: 300px;
 		border-radius: inherit;
-		transition: outline-color 0.2s;
+		transition: outline-color var(--transition);
 	}
 	
 	label > img:hover {
