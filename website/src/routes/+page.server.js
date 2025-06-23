@@ -1,11 +1,16 @@
 import { UtaSuki_API } from "$lib/api.js";
-import { redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
+import fs from 'fs/promises';
+import path from 'path';
 
 const api = new UtaSuki_API();
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ fetch, params, cookies }) {
-	return await api.fetchUsers(fetch);
+/** @type {import('./$types').PageLoad} */
+export async function load({ params }) {
+	const changelogFile = await fs.readFile(path.resolve("../changelog"), "utf-8");
+	const changelog = changelogFile.split('\n').map(line => line.trim());
+
+	return { changelog };
 }
 
 export const actions = {
@@ -21,24 +26,13 @@ export const actions = {
 
 		if (res.code.split('.')[0] == "success")
 			cookies.set("auth_token", res.data.token, { path: '/' });
-
-		return { type: "login", res: res };
-	},
-	register: async ({ fetch, cookies, request }) => {
-		let data = await request.formData();
-
-		if (process.env.APP_ENV == "dev")
-			data.set("requestOrigin", "localhost")
 		else
-			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
+			return fail(500, res);
 
-		let res = await api.register(fetch, data);
-
-		return { type: "register", res: res };
+		return res;
 	},
 	logout: ({ fetch, cookies }) => {
 		api.logout(fetch);
 		cookies.set("auth_token", "", { path: '/' });
-		redirect(303, '/');
 	}
 };

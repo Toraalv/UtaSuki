@@ -63,12 +63,7 @@
 	{/if}
 {/snippet}
 
-<div style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh; margin: 0; padding: 0;">
-	<ControlPanel/>
-	<Footer/>
-</div>
-
-<SwayWindow contentStyle="padding: 20px;" title={$_("general.settings")}>
+<SwayWindow contentStyle="padding: 20px; display: flex; justify-content: center;" title={$_("general.settings")}>
 	<form
 		method="POST"
 		enctype="multipart/form-data"
@@ -227,11 +222,13 @@
 		width: auto;
 	}
 	img {
-		border: 1px solid var(--unfocused_border);
+		outline: 2px solid var(--unfocused_border);
 		width: 100%;
 		max-width: 350px;
+		border-radius: var(--border_radius);
+		transition: outline 0.2s;
 	}
 	img:hover {
-		outline: 1px solid var(--border);
+		outline-color: var(--border);
 	}
 </style>

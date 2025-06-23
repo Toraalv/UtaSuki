@@ -15,6 +15,8 @@
 	},
 	"general": {
 		"home": "home",
+		"community": "community",
+		"users": "users",
 		"links": "links",
 		"about_site": "about this site",
 		"about": "about",
@@ -46,6 +48,7 @@
 		"control_panel": "control panel",
 		"edit_profile": "edit profile",
 		"profile": "{username} profile",
+		"self_profile": "your profile",
 		"profile_picture": "profile picture",
 		"unknown": "unknown",
 		"settings": "settings",
@@ -62,7 +65,14 @@
 		"language": "language",
 		"en": "english",
 		"sv": "swedish",
-		"WIP": "work in progress"
+		"english_only": "only in english",
+		"WIP": "work in progress",
+		"welcome": "welcome message",
+		"changelog": "changelog",
+		"activity": "activity"
+	},
+	"stats": {
+		"tracks": "total tracks"
 	},
 	"error": {
 		"connection_refused": "connection to the server could not be established",
@@ -97,6 +107,7 @@
 	},
 	"info": {
 		"user_no_tracks": "user does not have any tracks",
+		"self_no_tracks": "you have not added any tracks yet",
 		"no_users": "no users exists",
 		"saving": "saving",
 		"adding": "adding",
@@ -110,11 +121,13 @@
 		"no": "no"
 	},
 	"about": {
-		"p1": "This site is meant to be a place where you can add your favourite music for every month.",
+		"welcome": "Welcome to UtaSuki (歌好き)!",
+		"p1": "This site is meant to be a place where you can document your favourite music for every month.",
 		"p2": "Why?",
 		"p3": "Because if you're like me and listen to A LOT of music, you'll probably have multiple favourite tracks/songs, and I want to store and present that data in a nice way.",
-		"p4": "This project really is just a solution to a non-problem, since you could organise all of this on most streaming platforms today, but hey, programming is fun so why not.",
-		"p5": "This site is far from complete. You can follow the development on <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">GitHub</a>.",
+		"p4": "The site is under development and a lot of features are not yet implemented, but the core features like creating an account, logging in and adding/editing tracks are.",
+		"p5": "You can follow the development on <a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">GitHub</a>.",
+		"contact": "contact information",
 		"pfp": "(profile picture was drawn by エメさん, link to the artwork can be found on <a style=\"color: #1e3b75\" href=\"https://www.pixiv.net/en/artworks/109005549\">pixiv</a>)"
 	}
 }

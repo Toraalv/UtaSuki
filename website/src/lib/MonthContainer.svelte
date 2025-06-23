@@ -10,6 +10,7 @@
 <style>
 	fieldset {
 		border: 1px solid var(--unfocused_border);
+		border-radius: var(--border_radius);
 		margin-bottom: 32px;
 		background-color: #111111;
 	}

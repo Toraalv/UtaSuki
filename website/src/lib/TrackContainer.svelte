@@ -272,6 +272,9 @@
 		box-shadow: inset 0 0 0 1px var(--unfocused_border);
 		padding-right: 50px;
 		cursor: text; /* part that is padded uses default pointer? */
+		border-radius: var(--border_radius_small);
+		outline: 1px solid #00000000;
+		transition: background-color 0.2s, outline 0.2s, border-color 0.2s;
 	}
 	input:focus, textarea:focus {
 		outline: 1px var(--accent) solid;
@@ -304,11 +307,15 @@
 		height: 150px;
 		width: 150px;
 		background-color: black;
+		border-radius: var(--border_radius);
 	}
 	.track {
 		display: flex;
 		flex-direction: row;
 		padding: 8px;
+		outline-color: var(--accent);
+		transition: 0.1s;
+		border-radius: var(--border_radius);
 	}
 	.track:focus, .track:focus-within {
 		outline: 1px var(--accent) solid;

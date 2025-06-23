@@ -1,0 +1,19 @@
+version: v1.1.0 ui-rework
+new front page with welcome message, activity log (WIP) and changelog
+profile now always visible when visiting your own tracks
+added border-radius to almost everything
+added hover and focus animations to a lot of input/a elements
+"your tracks" button now always active when visiting any of your years
+login and registering are now separate
+logins can be done anywhere on the site
+new accounts will now be private by default
+fixed missing translation for statistics
+if logged in, window at /user/x/... now says "your tracks" instead of your name
+removed funny kaomoji guys
+
+version: v1.0.0 release
+added titles for some buttons
+fixed missed translation
+registration logs ip too, preventing bad actors from creating too many accounts
+last activity now updates on various actions
+funny kaomoji guys
