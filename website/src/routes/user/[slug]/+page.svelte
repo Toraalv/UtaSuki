@@ -8,5 +8,5 @@
 	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
 </script>
 
-<SwayWindow title={$_("general.tracks", { values: { username: possessiveForm(username) }})}>
+<SwayWindow title={$page.data.data.profile.uid == $page.data.auth_info.profile.uid ? $_("general.user_tracks") : $_("general.tracks", { values: { username: possessiveForm(username) }})}>
 </SwayWindow>

@@ -5,78 +5,50 @@
 
 	import { page } from "$app/stores";
 	import { _ } from "svelte-i18n";
+	import { version } from "$app/environment";
+
+	let { data } = $props();
 </script>
 
 <div style="display: flex; flex-grow: 1;">
-	<SwayWindow title="welcome message">
-		<h1 style:margin-top="24px">{$_("root.p1")}</h1>
-		<h2 style:margin-top="24px">{$_("root.p2")}</h2>
+	<SwayWindow title={$_("general.welcome")} contentStyle="display: flex; flex-direction: column; justify-content: space-between;">
+		<span>
+			<h1 style:text-decoration="underline">{$_("about.welcome")}</h1>
+			<h3>{$_("about.p1")}</h3>
+			<h3>{$_("about.p2")}</h3>
+			<h3>{$_("about.p3")}</h3>
+			<h3>{$_("about.p4")}</h3>
+			<h3>{@html $_("about.p5")}</h3>
+			<div style:border-top="1px solid var(--unfocused_border)"></div>
+			<h3>{$_("about.contact")}:</h3>
+			<p>{$_("general.name")}: Toralv</p>
+			<p>{$_("general.email")}: <a href="mailto:utasuki.toralv.dev">utasuki@toralv.dev</a></p>
+			<p>{$_("general.homepage")}: <a href="https://toralv.dev">toralv.dev</a></p>
+		</span>
+		<footer style="text-align: center;">
+			<span style="color: var(--d2_text);">version: {version}</span>
+		</footer>
 	</SwayWindow>
 	<div style="display:flex; flex-direction: column; min-width: 300px; max-width: 300px;">
-		<SwayWindow title="activity" mainStyle="flex: 3 0 0;">
-			<div style="display: flex;">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/1.png"}>
-				<div style="margin-left: 10px; align-content: center;">
-					<h2>Toralv</h2>
-					<span>did this</span>
-				</div>
-			</div>
-
-			<div style="display: flex;">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/2"}>
-				<div style="margin-left: 10px; align-content: center;">
-					<h2>user1</h2>
-					<span>did that</span>
-				</div>
-			</div>
-
-			<div style="display: flex;">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/3"}>
-				<div style="margin-left: 10px; align-content: center;">
-					<h2>user3</h2>
-					<span>added this</span>
-				</div>
-			</div>
-
-			<div style="display: flex;">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/4"}>
-				<div style="margin-left: 10px; align-content: center;">
-					<h2>xX_user9_Xx</h2>
-					<span>did this</span>
-				</div>
-			</div>
-
-			<div style="display: flex;">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/5"}>
-				<div style="margin-left: 10px; align-content: center;">
-					<h2>user12</h2>
-					<span>did that</span>
-				</div>
-			</div>
-
-			<div style="display: flex;">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/6"}>
-				<div style="margin-left: 10px; align-content: center;">
-					<h2>user45</h2>
-					<span>added this</span>
-				</div>
-			</div>
+		<SwayWindow title={$_("general.activity")} mainStyle="flex: 3 0 0;">
+			<div style="text-align: center; align-content: center; height: 100%;">{$_("general.WIP")}</div>
 		</SwayWindow>
-		<SwayWindow title="changelog" mainStyle="flex: 2 0 0;">
+		<SwayWindow title={$_("general.changelog")} altTitle={$_("general.english_only")} mainStyle="flex: 2 0 0;" contentStyle="padding: 0">
 			<table>
 				<tbody>
-					<tr>
-						<td>-</td>
-						<td>fixed funny guys not being funny</td>
-					</tr>
-					<tr>
-						<td>-</td>
-						<td>we made sure to make the worst possible decisions for your sake</td>
-					</tr>
-					<tr>
-						<td>-</td>
-						<td>made miku our lord and saviour</td>
-					</tr>
+					{#each data.changelog as line}
+						{#if line.substring(0, 9) === "version: "}
+							<tr>
+								<td></td>
+								<td style="font-weight: revert; font-size: revert;">{line.substring(9)}</td>
+							</tr>
+						{:else if line !== ''}
+							<tr>
+								<td>-</td>
+								<td>{line}</td>
+							</tr>
+						{/if}
+					{/each}
 				</tbody>
 			</table>
 		</SwayWindow>
@@ -84,12 +56,31 @@
 </div>
 
 <style>
-	div + div {
-		margin-top: 10px;
+	table {
+		border-spacing: 0;
+	}
+	td {
+		font-weight: normal;
+		vertical-align: baseline;
+		font-size: 14px;
+		padding: 2px 0 2px 5px;
+	}
+	tr:nth-child(even) {
+		background-color: var(--input_bg);
+	}
+	a {
+		text-decoration: revert;
+		color: var(--link);
+	}
+	p {
+		margin: 4px 0;
 	}
 	img {
 		width: 64px;
 		height: 64px;
 		object-fit: cover;
+	}
+	h3, h1 {
+		margin: 24px 0;
 	}
 </style>

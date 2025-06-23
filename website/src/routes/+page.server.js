@@ -1,7 +1,17 @@
 import { UtaSuki_API } from "$lib/api.js";
 import { fail, redirect } from "@sveltejs/kit";
+import fs from 'fs/promises';
+import path from 'path';
 
 const api = new UtaSuki_API();
+
+/** @type {import('./$types').PageLoad} */
+export async function load({ params }) {
+	const changelogFile = await fs.readFile(path.resolve("../changelog"), "utf-8");
+	const changelog = changelogFile.split('\n').map(line => line.trim());
+
+	return { changelog };
+}
 
 export const actions = {
 	login: async ({ fetch, cookies, request }) => {

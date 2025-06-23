@@ -42,9 +42,9 @@
 		{/key}
 	{:else}
 		<div style="display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 0;">
-			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+			<SwayWindow title={$page.data.data.profile.uid == $page.data.auth_info.profile.uid ? $_("general.self_profile") : $_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 				<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
-				<p>total tracks: {$page.data.data.totalTracks}</p>
+				<p>{$_("stats.tracks")}: {$page.data.data.totalTracks}</p>
 			</SwayWindow>
 			{@render yearList()}
 		</div>
