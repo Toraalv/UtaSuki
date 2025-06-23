@@ -9,7 +9,15 @@
 	import { locale, _ } from "svelte-i18n";
 	import { tick } from "svelte";
 
-	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
+	let username = $_("general.unknown");
+	const windowTitle = () => {
+		if ($page.data.code.split('.')[0] != "error") {
+			username = $page.data.data.profile.username;
+			if ($page.data.data?.profile.uid == $page.data.auth_info.profile?.uid)
+				return $_("general.user_tracks");
+		}
+		return $_("general.tracks", { values: { username: possessiveForm(username) }});
+	}
 
 	// this fixes scrolling to top when deleting a track
 	let slug = $state($page.params.slug);
@@ -25,7 +33,7 @@
 	});
 </script>
 
-<SwayWindow contentStyle="flex: 1 0 0;" bind:content={content} title={$page.data.data.profile.uid == $page.data.auth_info.profile.uid ? $_("general.user_tracks") : $_("general.tracks", { values: { username: possessiveForm(username) }})}>
+<SwayWindow contentStyle="flex: 1 0 0;" bind:content={content} title={windowTitle()}>
 	{#if $page.data.tracks.code.split('.')[0] != "success"}
 		<Alert code={$page.data.tracks.code}/>
 	{:else}

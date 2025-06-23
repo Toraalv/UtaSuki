@@ -42,7 +42,12 @@
 								<td></td>
 								<td style="font-weight: revert; font-size: revert;">{line.substring(9)}</td>
 							</tr>
-						{:else if line !== ''}
+						{:else if line === ''}
+							<tr>
+								<td style:color="#00000000">cheap</td>
+								<td></td>
+							</tr>
+						{:else}
 							<tr>
 								<td>-</td>
 								<td>{line}</td>

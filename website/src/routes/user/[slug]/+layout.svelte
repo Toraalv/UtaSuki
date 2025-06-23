@@ -12,14 +12,22 @@
 
 	let { children } = $props();
 
-	let username = $derived($page.data.code.split('.')[0] != "error" ? $page.data.data.profile.username : $_("general.unknown"));
+	let username = $_("general.unknown");
+	const windowTitle = () => {
+		if ($page.data.code.split('.')[0] != "error") {
+			username = $page.data.data.profile.username;
+			if ($page.data.data?.profile.uid == $page.data.auth_info.profile?.uid)
+				return $_("general.self_profile");
+		}
+		return $_("general.profile", { values: { username: possessiveForm(username) }});
+	}
 </script>
 
 {#snippet yearList()}
 	<SwayWindow title={$_("general.years")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex: 1 0 0; flex-direction: column; justify-content: space-between">
 		{#if $page.data.code.split('.')[0] == "info"}
 			<div>
-				<Alert code={($page.data.code === "info.user_no_tracks" && $page.data.data.profile.uid === $page.data.auth_info.profile.uid) ? "info.self_no_tracks" : $page.data.code}/>
+				<Alert code={($page.data.code === "info.user_no_tracks" && $page.data.data.profile.uid === $page.data.auth_info.profile?.uid) ? "info.self_no_tracks" : $page.data.code}/>
 			</div>
 		{:else}
 			<div style="display: flex; flex-direction: column;">
@@ -33,19 +41,17 @@
 
 <div style="display: flex; justify-content: space-between; margin: 0; padding: 0; flex-grow: 1;">
 	{#if $page.data.code.split('.')[0] == "error"}
-		{#key $page.params.slug}
-			<SwayWindow title={$_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-				<div>
-					<Alert code={$page.data.code}/>
-				</div>
-			</SwayWindow>
-		{/key}
+		<SwayWindow title={windowTitle()} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+			<div>
+				<Alert code={$page.data.code}/>
+			</div>
+		</SwayWindow>
 	{:else}
 		<div style="display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 0;">
-			<SwayWindow title={$page.data.data.profile.uid == $page.data.auth_info.profile.uid ? $_("general.self_profile") : $_("general.profile", { values: { username: possessiveForm(username) }})} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-				<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
-				<p>{$_("stats.tracks")}: {$page.data.data.totalTracks}</p>
-			</SwayWindow>
+				<SwayWindow title={windowTitle()} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
+					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
+					<p>{$_("stats.tracks")}: {$page.data.data.totalTracks}</p>
+				</SwayWindow>
 			{@render yearList()}
 		</div>
 	{/if}

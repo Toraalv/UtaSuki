@@ -1,5 +1,4 @@
 version: v1.1.0 ui-rework
-
 new front page with welcome message, activity log (WIP) and changelog
 profile now always visible when visiting your own tracks
 added border-radius to almost everything
@@ -13,7 +12,6 @@ if logged in, window at /user/x/... now says "your tracks" instead of your name
 removed funny kaomoji guys
 
 version: v1.0.0 release
-
 added titles for some buttons
 fixed missed translation
 registration logs ip too, preventing bad actors from creating too many accounts
