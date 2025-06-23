@@ -20,7 +20,7 @@
 		outline: none;
 		background-color: #111111;
 		border-radius: var(--border_radius_small);
-		transition: 0.2s;
+		transition: var(--transition);
 	}
 	h4 {
 		text-align: center;

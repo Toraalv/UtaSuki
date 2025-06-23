@@ -195,7 +195,7 @@
 
 	{#if inFlight}
 		<div class="overlay" style:cursor="unset">
-			<Alert code="info.saving" mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2" contentStyle="margin: 0 2em;">
+			<Alert code="info.saving" mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2; min-width: 15vw;">
 				<p>{$_("info.saving")}</p><AnimatedDots/>
 			</Alert>
 		</div>
@@ -226,7 +226,7 @@
 		width: 100%;
 		max-width: 350px;
 		border-radius: var(--border_radius);
-		transition: outline 0.2s;
+		transition: outline var(--transition);
 	}
 	img:hover {
 		outline-color: var(--border);

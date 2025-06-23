@@ -65,6 +65,7 @@
 
 				--border_radius: 8px;
 				--border_radius_small: calc(var(--border_radius) / 2);
+				--transition: 100ms;
 			}
 
 			html {
@@ -89,7 +90,7 @@
 				text-decoration: none;
 				color: unset;
 				outline: 1px solid #00000000;
-				transition: 0.2s;
+				transition: var(--transition);
 			}
 			footer > a {
 				text-decoration: revert;
@@ -137,7 +138,7 @@
 				width: 100%;
 				resize: none;
 				border-radius: var(--border_radius_small);
-				transition: background-color 0.2s, outline 0.2s, border-color 0.2s;
+				transition: background-color var(--transition), outline var(--transition), border-color var(--transition);
 			}
 			input:disabled, textarea:disabled, select:disabled {
 				color: var(--d2_text);
