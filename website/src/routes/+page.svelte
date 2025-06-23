@@ -44,7 +44,7 @@
 							</tr>
 						{:else if line === ''}
 							<tr>
-								<td style:color="#00000000">cheap</td>
+								<td style:color="#00000000">-</td>
 								<td></td>
 							</tr>
 						{:else}

@@ -17,8 +17,6 @@ export const actions = {
 	register: async ({ fetch, cookies, request }) => {
 		let data = await request.formData();
 
-		await new Promise((fulfil) => setTimeout(fulfil, 1000));
-
 		if (process.env.APP_ENV == "dev")
 			data.set("requestOrigin", "localhost")
 		else
