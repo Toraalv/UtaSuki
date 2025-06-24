@@ -20,7 +20,7 @@ export const actions = {
 		if (process.env.APP_ENV == "dev")
 			data.set("requestOrigin", "localhost")
 		else
-			data.set("requestorigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
+			data.set("requestOrigin", `${request.headers.get("x-real-ip")}, ${request.headers.get("x-forwarded-for")}`);
 
 		let res = await api.register(fetch, data);
 
