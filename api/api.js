@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
 				// chuck the whole profile with auth_info, why not
-				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public, language FROM users WHERE auth_token = ?;", [token]);
+				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public, language, border_radius FROM users WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
 			}
 		}

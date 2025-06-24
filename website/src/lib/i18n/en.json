@@ -62,6 +62,8 @@
 		"public_title": "your profile will be publicly available and listed on the front page",
 		"track_notes_public": "track notes public",
 		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
+		"border_radius": "rounded corners",
+		"border_radius_title": "enable/disable the rounded corners on windows, buttons, images e.t.c.",
 		"language": "language",
 		"en": "english",
 		"sv": "swedish",

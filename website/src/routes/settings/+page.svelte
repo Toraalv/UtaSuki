@@ -16,6 +16,7 @@
 
 	let publicCheckbox = $state($page.data.auth_info.profile.public);
 	let notesPublicCheckbox = $derived(publicCheckbox && $page.data.auth_info.profile.track_notes_public);
+	let borderRadiusCheckbox = $state($page.data.auth_info.profile.border_radius ? true : false);
 
 	let imageInput = $state();
 	let image = $state();
@@ -46,10 +47,10 @@
 
 	// form feedback
 	let usernameInputVal = $state($page.data.auth_info.profile.username);
-	let usernameErr = $derived(encodeURIComponent(usernameInputVal).length > LEN_LIMITS.USERNAME);
+	let usernameErr = $derived(usernameInputVal.length > LEN_LIMITS.USERNAME);
 
 	let passwordInputVal = $state("");
-	let passwordErr = $derived(encodeURIComponent(passwordInputVal).length > LEN_LIMITS.PASSWORD);
+	let passwordErr = $derived(passwordInputVal.length > LEN_LIMITS.PASSWORD);
 
 	let inFlight = $state(false);
 </script>
@@ -173,6 +174,19 @@
 								<label for={availLocale}>{$_(`general.${availLocale}`)}</label>
 							</div>
 						{/each}
+					</td>
+				</tr>
+				<tr>
+					<td title={$_("general.border_radius_title")}>{$_("general.border_radius")}:</td>
+					<td>
+						<input
+							type="checkbox"
+							name="border_radius"
+							bind:checked={borderRadiusCheckbox}
+							onclick={(_this) => { document.documentElement.style.setProperty('--border_radius', _this.target.checked ? "8px" : "0px") }}
+							disabled={inFlight}
+							autocomplete="off"
+						/>
 					</td>
 				</tr>
 			</tbody>

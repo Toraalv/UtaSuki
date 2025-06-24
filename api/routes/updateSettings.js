@@ -94,6 +94,17 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		}
 	}
 
+	let borderRadius = req.body.border_radius == "on" ? 8 : 0;
+	if (borderRadius != req.profile.border_radius) {
+		try {
+			await dbQuery("UPDATE users SET border_radius = ? WHERE uid = ?", [borderRadius, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_border_radius");
+			return;
+		}
+	}
+
 	if (change) {
 		sendStatus(req, res, 200, "success.updated_settings");
 		// update last_activity

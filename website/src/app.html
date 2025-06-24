@@ -181,6 +181,11 @@
 				}
 			}
 		</style>
+		<script>
+			const getCookie = (name) => (document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "");
+			const borderRadius = getCookie("border_radius");
+			document.documentElement.style.setProperty("--border_radius", borderRadius ? borderRadius + "px" : "8px");
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

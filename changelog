@@ -1,3 +1,8 @@
+version: v1.1.2 hotfix
+artist name now also uses same -webkit-line-clamp trick, prevents overflow
+removed superfluous encodeURIComponent
+border-radius can now be switched on and off in settings
+
 version: v1.1.1 hotfix
 fixed bad margin on multiple <Alert>s
 increased title, artist, album limit

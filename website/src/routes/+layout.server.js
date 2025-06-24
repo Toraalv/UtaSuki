@@ -8,7 +8,7 @@ const api = new UtaSuki_API();
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, cookies, params, url }) {
-	// unfortunately this does not apply when logging in, which may confuse users
+	// unfortunately this does not get applied when logging in, which may confuse users
 	let res = await api.auth(fetch)
 	if (cookies.get(COOKIE_DICT.LANG) == undefined) {
 		let savedLang = res.auth_info?.profile?.language;
@@ -25,6 +25,16 @@ export async function load({ fetch, cookies, params, url }) {
 			locale.set(window.navigator.language);
 			await waitLocale();
 		}
+	}
+
+	let borderRadius = res.auth_info?.profile?.border_radius;
+	if (borderRadius != undefined) {
+		cookies.set(COOKIE_DICT.BORDER, borderRadius, {
+			path: '/',
+			httpOnly: false,
+			secure: true,
+			sameSite: "None"
+		});
 	}
 
 	return res;

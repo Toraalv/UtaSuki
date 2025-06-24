@@ -50,13 +50,13 @@
 
 	// form feedback
 	let usernameInputVal = $state("");
-	let usernameErr = $derived(encodeURIComponent(usernameInputVal).length > LEN_LIMITS.USERNAME);
+	let usernameErr = $derived(usernameInputVal.length > LEN_LIMITS.USERNAME);
 
 	let emailInputVal = $state("");
-	let emailErr = $derived(encodeURIComponent(emailInputVal).length > LEN_LIMITS.EMAIL);
+	let emailErr = $derived(emailInputVal.length > LEN_LIMITS.EMAIL);
 
 	let passwordInputVal = $state("");
-	let passwordErr = $derived(encodeURIComponent(passwordInputVal).length > LEN_LIMITS.PASSWORD);
+	let passwordErr = $derived(passwordInputVal.length > LEN_LIMITS.PASSWORD);
 
 	let inFlight = $state(false);
 </script>
