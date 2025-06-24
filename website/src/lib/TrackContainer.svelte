@@ -60,16 +60,16 @@
 
 	// form feedback
 	let trackInputVal = $state(title);
-	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.TRACK);
+	let trackNameErr = $derived(trackInputVal.length > LEN_LIMITS.TRACK);
 
 	let albumInputVal = $state(album);
-	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > LEN_LIMITS.ALBUM);
+	let albumNameErr = $derived(albumInputVal.length > LEN_LIMITS.ALBUM);
 
 	let artistInputVal = $state(artist);
-	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.ARTIST);
+	let artistNameErr = $derived(artistInputVal.length > LEN_LIMITS.ARTIST);
 
 	let noteInputVal = $state(notes);
-	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
+	let noteErr = $derived(noteInputVal.length > LEN_LIMITS.NOTE);
 </script>
 
 {#snippet normal()}
@@ -81,7 +81,7 @@
 			lastActiveElement = null;
 			});
 		}}>
-		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}?${imageVer}`} alt="{album} cover" title={album}>
+		<img src={`${CDN_ADDR}/static/images/album_covers/${image}?${imageVer}`} alt="{album} cover" title={album}>
 		<div class="trackInfo">
 			<div style="display: flex; flex-direction: row; justify-content: space-between;">
 				<h1 title={$_("general.track_name")}>{title}</h1>
@@ -145,7 +145,7 @@
 		}}
 	>
 		<label for="imageSelect">
-			<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}?${imageVer}`} alt={album} bind:this={imageInput}>
+			<img src={`${CDN_ADDR}/static/images/album_covers/${image}?${imageVer}`} alt={album} bind:this={imageInput}>
 			<input
 				type="file"
 				name="file"
@@ -353,10 +353,20 @@
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-line-clamp: 1;
-				line-clamp: 1; 
 		-webkit-box-orient: vertical;
 	}
 	.trackInfo h1:hover {
+		overflow-y: auto;
+		display: inherit;
+	}
+	.trackInfo h3 {
+		word-break: break-all;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+	.trackInfo h3:hover {
 		overflow-y: auto;
 		display: inherit;
 	}
@@ -365,7 +375,6 @@
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-line-clamp: 1;
-				line-clamp: 1; 
 		-webkit-box-orient: vertical;
 	}
 	.trackInfo h2:hover {

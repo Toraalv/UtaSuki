@@ -52,16 +52,16 @@
 
 	// form feedback
 	let trackInputVal = $state("");
-	let trackNameErr = $derived(encodeURIComponent(trackInputVal).length > LEN_LIMITS.TRACK);
+	let trackNameErr = $derived(trackInputVal.length > LEN_LIMITS.TRACK);
 
 	let artistInputVal = $state("");
-	let artistNameErr = $derived(encodeURIComponent(artistInputVal).length > LEN_LIMITS.ARTIST);
+	let artistNameErr = $derived(artistInputVal.length > LEN_LIMITS.ARTIST);
 
 	let albumInputVal = $state("");
-	let albumNameErr = $derived(encodeURIComponent(albumInputVal).length > LEN_LIMITS.ALBUM);
+	let albumNameErr = $derived(albumInputVal.length > LEN_LIMITS.ALBUM);
 
 	let noteInputVal = $state("");
-	let noteErr = $derived(encodeURIComponent(noteInputVal).length > LEN_LIMITS.NOTE);
+	let noteErr = $derived(noteInputVal.length > LEN_LIMITS.NOTE);
 
 	let inFlight = $state(false);
 </script>

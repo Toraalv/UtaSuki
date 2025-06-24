@@ -14,5 +14,6 @@ export const LEN_LIMITS = {
 };
 export const COOKIE_DICT = {
 	AUTH_TOKEN: "auth_token",
-	LANG: "language"
+	LANG: "language",
+	BORDER: "border_radius"
 };

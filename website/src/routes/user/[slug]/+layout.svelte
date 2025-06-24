@@ -55,7 +55,9 @@
 			{@render yearList()}
 		</div>
 	{/if}
-	{@render children?.()}
+	{#key $page.data.auth_info?.authed}
+		{@render children?.()}
+	{/key}
 </div>
 
 <style>

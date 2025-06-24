@@ -50,7 +50,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		return;
 	}
 	// FIXME: this hardcoded 1024 is very bad 
-	if ([artist, encodeURIComponent(album) + ".jpeg", title].map((obj) => obj.length > 1024).includes(true) || notes.length > 1024) {
+	if ([artist, album, title].map((obj) => obj.length > 1024).includes(true) || notes.length > 1024) {
 		handleError(400, "error.field_too_long");
 		return;
 	}
