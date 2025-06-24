@@ -21,6 +21,12 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		sendStatus(req, res, 404, "error.no_track_ownership");
 		return;
 	}
+
+	if ([artist, album, title].map((obj) => obj.length > 1024).includes(true) || notes.length > 1024) {
+		sendStatus(req, res, 400, "error.field_too_long");
+		return;
+	}
+
 	const oldCoverPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + (await dbQuery("SELECT image FROM tracks WHERE id = ?", [trackToUpdate.track_id]))[0].image);
 
 	// only check if other people (i.e. not self) uses the track

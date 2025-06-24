@@ -188,7 +188,7 @@
 	{#if form}
 		<a bind:this={popup} use:popupTimer class="overlay" onclick={() => hidePopup()} href={$page.status != 200 ? "/register" : "/"}>
 			<div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -100%); z-index: 2;">
-				<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2; min-width: 25vw;"/>
+				<Alert code={form.code} mainStyle="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2; min-width: 20vw;"/>
 			</div>
 		</a>
 	{/if}
