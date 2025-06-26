@@ -196,12 +196,6 @@
 
 
 <style>
-	textarea {
-		height: 100%;
-		padding-bottom: 0;
-		font-size: 16px;
-	}
-
 	label {
 		width: 300px;
 		border-radius: var(--border_radius);
