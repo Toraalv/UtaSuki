@@ -83,7 +83,7 @@
 </div>
 
 {#if showLogin}
-	<div bind:this={overlay} onclick={(_this) => _this.target === overlay && hideLogin()} class="overlay">
+	<div bind:this={overlay} onclick={(_this) => _this.target === overlay && hideLogin()} onkeydown={(e) => e.key == "Escape" && hideLogin()} class="overlay" role="button" tabindex=-1>
 		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2; cursor: auto;">
 			<SwayWindow
 				title={$_("general.login_verb")}

@@ -91,8 +91,7 @@
 		}}
 	>
 		<div>
-			<!-- tabindex here does not really work, but then again, this whole "image input" thingy already violates a11y guidelines -->
-			<label tabindex="0" for="imageSelect">
+			<label for="imageSelect">
 				<img src="/add_image_placeholder.webp" alt="input album" bind:this={image}>
 				<input
 					type="file"
@@ -245,7 +244,12 @@
 
 <style>
 	input[type="file"] {
-		display: none;
+		z-index: -1;
+		opacity: 0;
+		width: 0;
+		height: 0;
+		bottom: 0;
+		left: 0;
 	}
 	textarea {
 		height: 100%;
@@ -267,7 +271,6 @@
 		border-radius: inherit;
 		transition: outline-color var(--transition);
 	}
-	
 	label > img:hover {
 		outline-color: var(--border);
 	}

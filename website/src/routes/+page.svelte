@@ -80,11 +80,6 @@
 	p {
 		margin: 4px 0;
 	}
-	img {
-		width: 64px;
-		height: 64px;
-		object-fit: cover;
-	}
 	h3, h1 {
 		margin: 24px 0;
 	}
