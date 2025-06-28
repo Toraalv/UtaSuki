@@ -50,6 +50,10 @@ class UtaSuki_API {
 		try			{ return await this.request(fetch, "GET", "status"); } //use status endpoint just to authenticate
 		catch (e)	{ return e; }
 	}
+	async fetchActivities(fetch) {
+		try			{ return await this.request(fetch, "GET", "activity"); }
+		catch (e)	{ return e; }
+	}
 
 	async request(fetch, method, endpoint, args, data) {
 		let req = new Request(`${CDN_ADDR}/${endpoint}?data=${JSON.stringify(args)}`, {

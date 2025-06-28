@@ -71,7 +71,9 @@
 		"WIP": "under arbete",
 		"welcome": "välkomstmeddelande",
 		"changelog": "ändringslogg",
-		"activity": "aktivitet"
+		"activity": "aktivitet",
+		"by": "av",
+		"added_track": "lade till"
 	},
 	"stats": {
 		"tracks": "antal låtar"

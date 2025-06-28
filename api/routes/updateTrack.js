@@ -63,8 +63,5 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		}
 	}
 	sendStatus(req, res, 200, "success.status_ok");
-
-	// update last_activity
-	await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [req.profile.uid]);
 });
 

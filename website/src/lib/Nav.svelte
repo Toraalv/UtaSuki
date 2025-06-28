@@ -179,6 +179,18 @@
 {/if}
 
 <style>
+	li:hover {
+		background-color: var(--unfocused_background) !important;
+	}
+	li:focus-within {
+		background-color: var(--unfocused_border) !important;
+	}
+	li:nth-child(odd) {
+		background-color: var(--input_bg);
+	}
+	li:nth-child(even) {
+		background-color: revert;
+	}
 	a:focus, input[type="submit"] { outline-color: #00000000; }
 	.swayWindow {
 		position: relative;

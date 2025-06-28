@@ -71,7 +71,9 @@
 		"WIP": "work in progress",
 		"welcome": "welcome message",
 		"changelog": "changelog",
-		"activity": "activity"
+		"activity": "activity",
+		"by": "by",
+		"added_track": "added"
 	},
 	"stats": {
 		"tracks": "total tracks"

@@ -1,3 +1,9 @@
+version: v1.2.3 activity
+"last activity" is no longer updated when changing settings/tracks
+added meta description tag for SEO
+added activity panel that shows users last activity (if public setting is enabled)
+made front page scrollable if needed
+
 version: v1.1.3 hotfix
 removed one encodeURIComponent too many
 login popup can now be closed by pressing the escape key
