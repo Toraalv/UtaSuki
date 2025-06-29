@@ -64,6 +64,8 @@
 		"track_notes_public_title": "your track notes will be publicly available for everyone to read",
 		"border_radius": "rounded corners",
 		"border_radius_title": "enable/disable the rounded corners on windows, buttons, images e.t.c.",
+		"body_margin": "body margin",
+		"body_margin_title": "enable/disable the body margin",
 		"language": "language",
 		"en": "english",
 		"sv": "swedish",

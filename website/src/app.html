@@ -67,6 +67,7 @@
 				--border_radius: 8px;
 				--border_radius_small: calc(var(--border_radius) / 2);
 				--transition: 100ms;
+				--body_margin: 0 10vw;
 			}
 
 			html {
@@ -80,7 +81,7 @@
 				display: flex;
 				flex-direction: column;
 				height: 100vh;
-				margin: 0 10vw; /* very split on this, should there be empty sides? kind of goes against sway's methodology, but then again, this is the web, not your desktop */
+				margin: var(--body_margin);
 				padding: 0;
 			}
 
@@ -179,7 +180,9 @@
 		<script>
 			const getCookie = (name) => (document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "");
 			const borderRadius = getCookie("border_radius");
+			const bodyMargin = getCookie("body_margin");
 			document.documentElement.style.setProperty("--border_radius", borderRadius ? borderRadius + "px" : "8px");
+			document.documentElement.style.setProperty("--body_margin", bodyMargin == true ? "0 10vw" : "0");
 		</script>
 		%sveltekit.head%
 	</head>

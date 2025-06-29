@@ -3,6 +3,7 @@ version: v1.2.3 activity
 added meta description tag for SEO
 added activity panel that shows users last activity (if public setting is enabled)
 made front page scrollable if needed
+body margin can now be switched on and off in settings
 
 version: v1.1.3 hotfix
 removed one encodeURIComponent too many

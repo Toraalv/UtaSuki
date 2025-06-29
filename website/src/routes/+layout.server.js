@@ -37,5 +37,15 @@ export async function load({ fetch, cookies, params, url }) {
 		});
 	}
 
+	let bodyMargin = res.auth_info?.profile?.body_margin;
+	if (bodyMargin != undefined) {
+		cookies.set(COOKIE_DICT.BODY_MARGIN, bodyMargin, {
+			path: '/',
+			httpOnly: false,
+			secure: true,
+			sameSite: "None"
+		});
+	}
+
 	return res;
 }

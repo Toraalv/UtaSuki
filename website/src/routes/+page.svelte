@@ -32,7 +32,7 @@
 		</footer>
 	</SwayWindow>
 
-	<div style="display:flex; flex-direction: column; min-width: 300px; max-width: 300px;">
+	<div style="display:flex; flex-direction: column; min-width: 250px; max-width: 350px;">
 		<!---- ACTIVITY PANEL ---->
 		<SwayWindow title={$_("general.activity")} mainStyle="flex: 3 0 0;" contentStyle="padding: 0;">
 			{#if $page.data.code.split('.')[0] == "error"}

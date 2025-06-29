@@ -94,6 +94,7 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		}
 	}
 
+	// border_radius
 	let borderRadius = req.body.border_radius == "on" ? 8 : 0;
 	if (borderRadius != req.profile.border_radius) {
 		try {
@@ -101,6 +102,18 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_border_radius");
+			return;
+		}
+	}
+
+	// body_margin
+	let bodyMargin = req.body.body_margin == "on" ? 1 : 0;
+	if (bodyMargin != req.profile.body_margin) {
+		try {
+			await dbQuery("UPDATE users SET body_margin = ? WHERE uid = ?", [bodyMargin, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_body_margin");
 			return;
 		}
 	}

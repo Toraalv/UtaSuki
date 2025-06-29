@@ -17,6 +17,7 @@
 	let publicCheckbox = $state($page.data.auth_info.profile.public);
 	let notesPublicCheckbox = $derived(publicCheckbox && $page.data.auth_info.profile.track_notes_public);
 	let borderRadiusCheckbox = $state($page.data.auth_info.profile.border_radius ? true : false);
+	let bodyMarginCheckbox = $state($page.data.auth_info.profile.body_margin);
 
 	let imageInput = $state();
 	let image = $state();
@@ -184,6 +185,19 @@
 							name="border_radius"
 							bind:checked={borderRadiusCheckbox}
 							onclick={(_this) => { document.documentElement.style.setProperty('--border_radius', _this.target.checked ? "8px" : "0px") }}
+							disabled={inFlight}
+							autocomplete="off"
+						/>
+					</td>
+				</tr>
+				<tr>
+					<td title={$_("general.body_margin_title")}>{$_("general.body_margin")}:</td>
+					<td>
+						<input
+							type="checkbox"
+							name="body_margin"
+							bind:checked={bodyMarginCheckbox}
+							onclick={(_this) => { document.documentElement.style.setProperty('--body_margin', _this.target.checked ? "0 10vw" : "0") }}
 							disabled={inFlight}
 							autocomplete="off"
 						/>
