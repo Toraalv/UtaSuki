@@ -101,5 +101,6 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 
 	// update last_activity
 	await dbQuery("UPDATE users SET last_activity = current_timestamp() WHERE uid = ?", [uid]);
+	await dbQuery("INSERT INTO activity (uid, action, target) VALUES (?, ?, ?)", [uid, "added_track", userTrackInsert.insertId]);
 });
 

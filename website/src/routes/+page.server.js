@@ -10,7 +10,9 @@ export async function load({ params }) {
 	const changelogFile = await fs.readFile(path.resolve("../changelog"), "utf-8");
 	const changelog = changelogFile.split('\n').map(line => line.trim());
 
-	return { changelog };
+	const activities = await api.fetchActivities(fetch);
+
+	return { changelog, activities };
 }
 
 export const actions = {

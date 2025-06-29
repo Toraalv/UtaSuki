@@ -36,8 +36,7 @@ app.use((req, res, next) => {
 			// check if token matches the stored token
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
-				// chuck the whole profile with auth_info, why not
-				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public, language, border_radius FROM users WHERE auth_token = ?;", [token]);
+				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public, language, border_radius, body_margin FROM users WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
 			}
 		}
@@ -57,6 +56,7 @@ const logout = require("./routes/logout.js");
 const addTrack = require("./routes/addTrack.js");
 const updateTrack = require("./routes/updateTrack.js");
 const deleteTrack = require("./routes/deleteTrack.js");
+const activity = require("./routes/activity.js");
 
 app.use("/status", status);
 app.use("/users", users);
@@ -69,6 +69,7 @@ app.use("/logout", logout);
 app.use("/addTrack", addTrack);
 app.use("/updateTrack", updateTrack);
 app.use("/deleteTrack", deleteTrack);
+app.use("/activity", activity);
 
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(PORT, () => console.log("Running on port " + PORT));
