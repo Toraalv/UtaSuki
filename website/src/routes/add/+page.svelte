@@ -1,7 +1,5 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import ControlPanel from "$lib/ControlPanel.svelte";
-	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
@@ -272,7 +270,7 @@
 		transition: outline-color var(--transition);
 	}
 	label > img:hover {
-		outline-color: var(--border);
+		outline-color: var(--accent);
 	}
 	div {
 		display: flex;

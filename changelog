@@ -1,3 +1,7 @@
+version: v1.3.3 customisation
+accent colour can now freely be changed
+text colour can be switched between dark or light text
+
 version: v1.2.3 activity
 "last activity" is no longer updated when changing settings/tracks
 added meta description tag for SEO

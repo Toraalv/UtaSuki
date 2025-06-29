@@ -33,7 +33,7 @@
 	}
 	.swayWindow:hover .swayWindowTitle, .swayWindow:focus .swayWindowTitle {
 		background-color: var(--accent);
-		color: var(--text);
+		color: var(--accent_text);
 	}
 	.swayWindowTitle {
 		font-weight: normal;

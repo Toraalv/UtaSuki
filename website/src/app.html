@@ -38,12 +38,8 @@
 
 			:root {
 				--bg: #000000;
-				--box_bg: #000000;
-				--box_bg_H: #4c4c4c;
-				--border: #6a3cbf;
-				--border_H: #4c4c4c;
 				--text: #dedede;
-				--l_text: #c6c6c6;
+				--accent_text: #dedede;
 				--d_text: #9e9e9e;
 				--d2_text: #4c4c4c;
 				--link: #3366CC;
@@ -54,13 +50,9 @@
 				--info: #3366CC;
 				--dialog: var(--accent);
 				
-				--focused_indicator: #9D66FF;
-				--focused_inactive-indicator: #484e50;
-				
 				--unfocused_border: #333333;
 				--unfocused_background: #222222;
 				--unfocused_text: #9e9e9e;
-				--unfocused_indicator: #292d2e;
 
 				--input_bg: #111111;
 
@@ -179,10 +171,15 @@
 		</style>
 		<script>
 			const getCookie = (name) => (document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "");
+			// hardcoded cookie names, hmmm
 			const borderRadius = getCookie("border_radius");
 			const bodyMargin = getCookie("body_margin");
+			const accent = decodeURIComponent(getCookie("accent"));
+			const accentText = decodeURIComponent(getCookie("accent_text"));
 			document.documentElement.style.setProperty("--border_radius", borderRadius ? borderRadius + "px" : "8px");
 			document.documentElement.style.setProperty("--body_margin", bodyMargin == true ? "0 10vw" : "0");
+			document.documentElement.style.setProperty("--accent", accent ? accent : "#6a3cbf");
+			document.documentElement.style.setProperty("--accent_text", accentText ? accentText : "#dedede");
 		</script>
 		%sveltekit.head%
 	</head>

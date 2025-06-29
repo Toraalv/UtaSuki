@@ -1,7 +1,5 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import ControlPanel from "$lib/ControlPanel.svelte";
-	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
@@ -15,7 +13,7 @@
 	let { form } = $props();
 
 	let publicCheckbox = $state($page.data.auth_info.profile.public);
-	let notesPublicCheckbox = $derived(publicCheckbox && $page.data.auth_info.profile.track_notes_public);
+	let notesPublicCheckbox = $derived(publicCheckbox && $page.data.auth_info.profile.notes_public);
 	let borderRadiusCheckbox = $state($page.data.auth_info.profile.border_radius ? true : false);
 	let bodyMarginCheckbox = $state($page.data.auth_info.profile.body_margin);
 
@@ -52,6 +50,10 @@
 
 	let passwordInputVal = $state("");
 	let passwordErr = $derived(passwordInputVal.length > LEN_LIMITS.PASSWORD);
+
+	let accentInputVal = $state($page.data.auth_info.profile.accent);
+	let accentErr = $derived(accentInputVal.length > LEN_LIMITS.HEX_COLOR);
+	let accentPicker = $state($page.data.auth_info.profile.accent);
 
 	let inFlight = $state(false);
 </script>
@@ -148,11 +150,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td title={$_("general.track_notes_public_title")}>{$_("general.track_notes_public")}:</td>
+					<td title={$_("general.notes_public_title")}>{$_("general.notes_public")}:</td>
 					<td>
 						<input
 							type="checkbox"
-							name="track_notes_public"
+							name="notes_public"
 							bind:checked={notesPublicCheckbox}
 							disabled={!publicCheckbox || inFlight}
 							autocomplete="off"
@@ -170,7 +172,8 @@
 									value={availLocale}
 									id={availLocale}
 									disabled={inFlight}
-									onclick={(_this) => setLang(_this.srcElement.value)} checked={$locale == availLocale && true}
+									onclick={(_this) => setLang(_this.srcElement.value)}
+									checked={$locale == availLocale && true}
 								/>
 								<label for={availLocale}>{$_(`general.${availLocale}`)}</label>
 							</div>
@@ -203,6 +206,59 @@
 						/>
 					</td>
 				</tr>
+				<tr>
+					<td title={$_("general.accent_title")}>{$_("general.accent")}:</td>
+					<td style="display: flex;">
+						<input
+							style="width: 2rem; height: auto; margin-right: 1px;"
+							type="color"
+							bind:value={accentPicker}
+							oninput={(_this) => { document.documentElement.style.setProperty('--accent', _this.target.value); accentInputVal = _this.target.value }}
+							autocomplete="off"
+							disabled={inFlight}
+						/>
+						<input
+							type="text"
+							name="accent"
+							autocomplete="off"
+							maxlength={LEN_LIMITS.HEX_COLOR}
+							bind:value={accentInputVal}
+							oninput={(_this) => { document.documentElement.style.setProperty('--accent', _this.target.value.length == 7 ? _this.target.value : ""); accentPicker = _this.target.value }}
+							disabled={inFlight}
+						/>
+						<TextCounter style="padding-top: 4px;" inputVal={accentInputVal} error={accentErr} maxLength={LEN_LIMITS.HEX_COLOR}/>
+					</td>
+				</tr>
+				{@render inputWarning(accentErr, "warning.too_long")}
+				<tr>
+					<td title={$_("general.accent_text_title")}>{$_("general.accent_text")}:</td>
+					<td style="display: flex; flex-direction: row;">
+						<div style:margin-right="20px">
+							<input
+								type="radio"
+								name="accent_text"
+								id="lightText"
+								value="#dedede"
+								disabled={inFlight}
+								onclick={(_this) => { document.documentElement.style.setProperty('--accent_text', _this.target.value) }}
+								checked={$page.data.auth_info.profile.accent_text == "#dedede"}
+							/>
+							<label for="lightText">{$_("general.light_text")}</label>
+						</div>
+						<div style:margin-right="20px">
+							<input
+								type="radio"
+								name="accent_text"
+								id="darkText"
+								value="#000000"
+								disabled={inFlight}
+								onclick={(_this) => { document.documentElement.style.setProperty('--accent_text', _this.target.value) }}
+								checked={$page.data.auth_info.profile.accent_text == "#000000"}
+							/>
+							<label for="darkText">{$_("general.dark_text")}</label>
+						</div>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<table>
@@ -213,7 +269,12 @@
 							type="submit"
 							style="padding: 2px 10px;"
 							value={$_("general.save")}
-							disabled={usernameErr || !usernameInputVal.length || inFlight}
+							disabled={
+								usernameErr ||
+								!usernameInputVal.length ||
+								accentErr ||
+								inFlight
+							}
 						/>
 					</td>
 				</tr>
@@ -257,6 +318,6 @@
 		transition: outline var(--transition);
 	}
 	img:hover {
-		outline-color: var(--border);
+		outline-color: var(--accent);
 	}
 </style>

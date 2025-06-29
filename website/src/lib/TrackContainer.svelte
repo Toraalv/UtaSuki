@@ -259,7 +259,7 @@
 		display: none;
 	}
 	label > img:hover {
-		outline: 1px solid var(--border);
+		outline: 1px solid var(--accent);
 	}
 	input, textarea {
 		/* why, why do we need an "unset everything" just to fix weird element size?? */

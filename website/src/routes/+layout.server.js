@@ -47,5 +47,25 @@ export async function load({ fetch, cookies, params, url }) {
 		});
 	}
 
+	let accent = res.auth_info?.profile?.accent;
+	if (accent != undefined) {
+		cookies.set(COOKIE_DICT.ACCENT, accent, {
+			path: '/',
+			httpOnly: false,
+			secure: true,
+			sameSite: "None"
+		});
+	}
+
+	let accentText = res.auth_info?.profile?.accent_text;
+	if (accentText != undefined) {
+		cookies.set(COOKIE_DICT.ACCENT_TEXT, accentText, {
+			path: '/',
+			httpOnly: false,
+			secure: true,
+			sameSite: "None"
+		});
+	}
+
 	return res;
 }

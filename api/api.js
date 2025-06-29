@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 			// check if token matches the stored token
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
-				let user = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, track_notes_public, language, border_radius, body_margin FROM users WHERE auth_token = ?;", [token]);
+				let user = await dbQuery("SELECT users.uid, username, created, image, image_ver, last_activity, public, notes_public, language, border_radius, body_margin, accent, accent_text FROM users NATURAL JOIN user_settings WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
 			}
 		}
