@@ -61,10 +61,10 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// update public setting
-	let isPublic = req.body.public == "on" ? 1 : 0;
-	if (isPublic != req.profile.public) {
+	let isPublic = req.body.public;
+	if (isPublic != undefined && isPublic != req.profile.public) {
 		try {
-			await dbQuery("UPDATE users SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_public");
@@ -72,10 +72,10 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		}
 	}
 	// update track notes public setting
-	let isTrackNotesPublic = req.body.track_notes_public == "on" ? 1 : 0;
-	if (isTrackNotesPublic != req.profile.track_notes_public) {
+	let isTrackNotesPublic = req.body.notes_public;
+	if (isTrackNotesPublic != undefined && isTrackNotesPublic != req.profile.notes_public) {
 		try {
-			await dbQuery("UPDATE users SET track_notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_public");
@@ -84,9 +84,9 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// language
-	if (req.body.language && req.body.language != req.profile.language) {
+	if (req.body.language != undefined && req.body.language != req.profile.language) {
 		try {
-			await dbQuery("UPDATE users SET language = ? WHERE uid = ?", [req.body.language, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET language = ? WHERE uid = ?", [req.body.language, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_lang");
@@ -95,10 +95,10 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// border_radius
-	let borderRadius = req.body.border_radius == "on" ? 8 : 0;
-	if (borderRadius != req.profile.border_radius) {
+	let borderRadius = req.body.border_radius;
+	if (borderRadius != undefined && borderRadius != req.profile.border_radius) {
 		try {
-			await dbQuery("UPDATE users SET border_radius = ? WHERE uid = ?", [borderRadius, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET border_radius = ? WHERE uid = ?", [borderRadius, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_border_radius");
@@ -107,13 +107,49 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// body_margin
-	let bodyMargin = req.body.body_margin == "on" ? 1 : 0;
-	if (bodyMargin != req.profile.body_margin) {
+	let bodyMargin = req.body.body_margin;
+	if (bodyMargin != undefined && bodyMargin != req.profile.body_margin) {
 		try {
-			await dbQuery("UPDATE users SET body_margin = ? WHERE uid = ?", [bodyMargin, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET body_margin = ? WHERE uid = ?", [bodyMargin, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_body_margin");
+			return;
+		}
+	}
+
+	// animations
+	let animations = req.body.animations;
+	if (animations != undefined && animations != req.profile.animations) {
+		try {
+			await dbQuery("UPDATE user_settings SET animations = ? WHERE uid = ?", [animations, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_animations");
+			return;
+		}
+	}
+
+	// update accent colour
+	let accent = req.body.accent;
+	if (accent != undefined && accent != req.profile.accent) {
+		try {
+			await dbQuery("UPDATE user_settings SET accent = ? WHERE uid = ?", [accent, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_accent");
+			return;
+		}
+	}
+
+	// update accent text colour
+	let accentText = req.body.accent_text;
+	if (accentText != undefined && accentText != req.profile.accent_text) {
+		try {
+			await dbQuery("UPDATE user_settings SET accent_text = ? WHERE uid = ?", [accentText, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_accent_text");
 			return;
 		}
 	}

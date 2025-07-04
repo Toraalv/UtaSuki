@@ -17,7 +17,7 @@ module.exports = app.get('/', async (req, res) => {
 		return;
 	}
 
-	let userExist = await dbQuery("SELECT public FROM users WHERE uid = ?", [uid]);
+	let userExist = await dbQuery("SELECT public FROM user_settings WHERE uid = ?", [uid]);
 	if (!userExist.length) {
 		sendStatus(req, res, 404, "error.user_not_exist");
 		return;
@@ -40,17 +40,14 @@ module.exports = app.get('/', async (req, res) => {
 								tracks.image_ver,
 								notes,
 								last_edit,
-								track_notes_public
-							FROM
-								user_tracks
-							JOIN
-								tracks
-							ON
-								tracks.id = track_id
-							JOIN
-								users
-							ON
-								users.uid = user_tracks.uid
+								notes_public
+							FROM user_tracks
+							JOIN tracks
+							ON tracks.id = track_id
+							JOIN users
+							ON users.uid = user_tracks.uid
+							JOIN user_settings
+							ON user_settings.uid = users.uid
 							WHERE users.uid = ?
 								AND date >= ?
 									AND date < ?;`,
@@ -79,8 +76,8 @@ module.exports = app.get('/', async (req, res) => {
 			released: data[i].released,
 			image: data[i].image,
 			image_ver: data[i].image_ver,
-			notes: uid == req.profile?.uid ? data[i].notes : data[i].track_notes_public && data[i].notes,
-			last_edit: data[i].track_notes_public && data[i].last_edit,
+			notes: uid == req.profile?.uid ? data[i].notes : data[i].notes_public && data[i].notes,
+			last_edit: data[i].notes_public && data[i].last_edit,
 		});
 	}
 

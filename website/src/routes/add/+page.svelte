@@ -1,7 +1,5 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import ControlPanel from "$lib/ControlPanel.svelte";
-	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
@@ -14,7 +12,7 @@
 	let { form } = $props();
 
 	const year = new Date().getFullYear();
-	let years = Array.from({ length: year - 2017 + 1 }, (_, i) => year - i);
+	let years = Array.from({ length: year - 1900 + 1 }, (_, i) => year - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
 
 	let image = $state();
@@ -133,7 +131,7 @@
 								required
 							>
 								{#each months as month}
-									{#if month + 1 == new Date().getMonth()} <!-- based on my use I only add tracks at the start of the next month -->
+									{#if month == new Date().getMonth()}
 										<option value="{month + 1}" selected>{$_(`months.${month}`)}</option>
 									{:else}
 										<option value="{month + 1}">{$_(`months.${month}`)}</option>
@@ -272,7 +270,7 @@
 		transition: outline-color var(--transition);
 	}
 	label > img:hover {
-		outline-color: var(--border);
+		outline-color: var(--accent);
 	}
 	div {
 		display: flex;

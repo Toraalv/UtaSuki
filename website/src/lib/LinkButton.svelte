@@ -8,7 +8,7 @@
 	} = $props();
 </script>
 
-<a onclick={() => onclick()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent);" : ""} {style}">
+<a onclick={() => onclick()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""} {style}">
 	<h4>
 		{@render children?.()}
 	</h4>

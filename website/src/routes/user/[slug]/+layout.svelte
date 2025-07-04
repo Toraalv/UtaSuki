@@ -1,7 +1,5 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import ControlPanel from "$lib/ControlPanel.svelte";
-	import Footer from "$lib/Footer.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import LinkButton from "$lib/LinkButton.svelte";
 	import { possessiveForm } from "$lib/i18n/names.js";

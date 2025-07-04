@@ -37,37 +37,36 @@
 			}
 
 			:root {
+				--default_accent: #6a3cbf;
+				--default_accent_text: #dedede;
+				--default_dark_text: #000000;
+				--default_border_radius: 8px;
+				--default_transition: 100ms;
+				--default_body_margin: 0 10vw;
+
 				--bg: #000000;
-				--box_bg: #000000;
-				--box_bg_H: #4c4c4c;
-				--border: #6a3cbf;
-				--border_H: #4c4c4c;
 				--text: #dedede;
-				--l_text: #c6c6c6;
+				--accent_text: var(--default_accent_text);
 				--d_text: #9e9e9e;
 				--d2_text: #4c4c4c;
-				--link: #3366CC;
-				--accent: #6a3cbf;
+				--accent: var(--default_accent);
+				--link: var(--accent);
 				--error: #860000;
 				--warning: #865800;
 				--success: #128000;
 				--info: #3366CC;
 				--dialog: var(--accent);
 				
-				--focused_indicator: #9D66FF;
-				--focused_inactive-indicator: #484e50;
-				
 				--unfocused_border: #333333;
 				--unfocused_background: #222222;
 				--unfocused_text: #9e9e9e;
-				--unfocused_indicator: #292d2e;
 
 				--input_bg: #111111;
 
-				--border_radius: 8px;
+				--border_radius: var(--default_border_radius);
 				--border_radius_small: calc(var(--border_radius) / 2);
-				--transition: 100ms;
-				--body_margin: 0 10vw;
+				--transition: var(--default_transition);
+				--body_margin: var(--default_body_margin);
 			}
 
 			html {
@@ -179,10 +178,17 @@
 		</style>
 		<script>
 			const getCookie = (name) => (document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "");
+			// hardcoded cookie names, hmmm
 			const borderRadius = getCookie("border_radius");
 			const bodyMargin = getCookie("body_margin");
-			document.documentElement.style.setProperty("--border_radius", borderRadius ? borderRadius + "px" : "8px");
-			document.documentElement.style.setProperty("--body_margin", bodyMargin == true ? "0 10vw" : "0");
+			const accent = decodeURIComponent(getCookie("accent"));
+			const accentText = decodeURIComponent(getCookie("accent_text"));
+			const animations = getCookie("animations");
+			document.documentElement.style.setProperty("--border_radius", borderRadius == "" ? "var(--default_border_radius)" : borderRadius == "1" ? "var(--default_border_radius)" : 0);
+			document.documentElement.style.setProperty("--body_margin", bodyMargin == "" ? "var(--default_body_margin)" : bodyMargin == "1" ? "var(--default_body_margin)" : 0);
+			document.documentElement.style.setProperty("--accent", accent == "" ? "var(--default_accent)" : accent);
+			document.documentElement.style.setProperty("--accent_text", accentText == "" ? "var(--default_accent_text)" : accentText);
+			document.documentElement.style.setProperty("--transition", animations == "" ? "var(--default_transition)" : animations == "1" ? "var(--default_transition)" : 0);
 		</script>
 		%sveltekit.head%
 	</head>

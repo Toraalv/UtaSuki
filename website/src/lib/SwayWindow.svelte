@@ -33,7 +33,7 @@
 	}
 	.swayWindow:hover .swayWindowTitle, .swayWindow:focus .swayWindowTitle {
 		background-color: var(--accent);
-		color: var(--text);
+		color: var(--accent_text);
 	}
 	.swayWindowTitle {
 		font-weight: normal;
@@ -41,18 +41,19 @@
 		background-color: var(--unfocused_background);
 		color: var(--unfocused_text);
 		height: 20px;
-		line-height: 20px;
 		border-radius: var(--border_radius) var(--border_radius) 0 0;
 		border-top: 2px solid var(--unfocused_background);
 		border-right: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
 		transition: var(--transition);
-		text-align: center;
 	}
 	.swayWindowTitle > * {
 		overflow-x: hidden;
 		text-overflow: ellipsis;
 		text-wrap: nowrap;
+		text-align: center;
+		height: 100%;
+		align-content: center;
 	}
 	.swayWindowContent {
 		padding: 10px;

@@ -10,11 +10,15 @@ export const LEN_LIMITS = {
 	EMAIL: 255,
 	USERNAME: 32,
 	PASSWORD: 1024,
+	HEX_COLOR: 7,
 	NOTE: 1024
 };
 export const COOKIE_DICT = {
 	AUTH_TOKEN: "auth_token",
 	LANG: "language",
 	BORDER: "border_radius",
+	ACCENT: "accent",
+	ACCENT_TEXT: "accent_text",
+	ANIMATIONS: "animations",
 	BODY_MARGIN: "body_margin"
 };
