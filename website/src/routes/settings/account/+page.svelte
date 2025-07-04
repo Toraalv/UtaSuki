@@ -75,9 +75,10 @@
 			</tr>
 			{@render inputWarning(passwordErr, $_("warning.too_long"))}
 			<tr>
-				<td title={$_("settings.public_title")}>{$_("settings.public")}:</td>
+				<td title={$_("settings.public_title")}><label for="public">{$_("settings.public")}:</label></td>
 				<td>
 					<input
+						id="public"
 						type="checkbox"
 						bind:checked={publicCheckbox}
 						autocomplete="off"
@@ -87,9 +88,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td title={$_("settings.notes_public_title")}>{$_("settings.notes_public")}:</td>
+				<td title={$_("settings.notes_public_title")}><label for="notesPublic">{$_("settings.notes_public")}:</label></td>
 				<td>
 					<input
+						id="notesPublic"
 						type="checkbox"
 						bind:checked={notesPublicCheckbox}
 						disabled={!publicCheckbox || inFlight}

@@ -76,9 +76,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td title={$_("settings.border_radius_title")}>{$_("settings.border_radius")}:</td>
+				<td title={$_("settings.border_radius_title")}><label for="borderRadius">{$_("settings.border_radius")}:</label></td>
 				<td>
 					<input
+						id="borderRadius"
 						type="checkbox"
 						bind:checked={borderRadiusCheckbox}
 						onclick={(_this) => { document.documentElement.style.setProperty('--border_radius', _this.target.checked ? "var(--default_border_radius)" : 0) }}
@@ -89,9 +90,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td title={$_("settings.body_margin_title")}>{$_("settings.body_margin")}:</td>
+				<td title={$_("settings.body_margin_title")}><label for="bodyMargin">{$_("settings.body_margin")}:</label></td>
 				<td>
 					<input
+						id="bodyMargin"
 						type="checkbox"
 						bind:checked={bodyMarginCheckbox}
 						onclick={(_this) => { document.documentElement.style.setProperty('--body_margin', _this.target.checked ? "var(--default_body_margin)" : 0) }}
@@ -156,9 +158,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td title={$_("settings.animations_title")}>{$_("settings.animations")}:</td>
+				<td title={$_("settings.animations_title")}><label for="animations">{$_("settings.animations")}:</label></td>
 				<td>
 					<input
+						id="animations"
 						type="checkbox"
 						bind:checked={animationsCheckbox}
 						onclick={(_this) => { document.documentElement.style.setProperty('--transition', _this.target.checked ? "var(--default_transition)" : 0) }}

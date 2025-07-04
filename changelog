@@ -5,7 +5,7 @@ fixed small size change on window's title when empty
 split up settings page into multiple, smaller pages
 multiple settings now applies directly on login, as well as resets on logout
 animations/transition can now be disabled in settings
-
+added labels for all enable/disable checkboxes
 
 version: v1.2.3 activity
 "last activity" is no longer updated when changing settings/tracks

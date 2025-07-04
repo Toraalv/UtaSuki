@@ -12,7 +12,7 @@
 	let { form } = $props();
 
 	const year = new Date().getFullYear();
-	let years = Array.from({ length: year - 2017 + 1 }, (_, i) => year - i);
+	let years = Array.from({ length: year - 1900 + 1 }, (_, i) => year - i);
 	let months = Array.from({ length: 12 - 0 }, (_, i) => 0 + i);
 
 	let image = $state();
