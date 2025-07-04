@@ -100,7 +100,7 @@
 				<table>
 					<tbody>
 						<tr>
-							<td>{$_("general.username")}:</td>
+							<td>{$_("settings.username")}:</td>
 						</tr>
 						<tr>
 							<td>
@@ -136,7 +136,7 @@
 						</tr>
 						{@render inputWarning(emailErr, "warning.too_long")}
 						<tr>
-							<td>{$_("general.password")}:</td>
+							<td>{$_("settings.password")}:</td>
 						</tr>
 						<tr>
 							<td style="position: relative;">
