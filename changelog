@@ -1,3 +1,6 @@
+version: v1.3.4:
+fixed missing translation
+
 version: v1.3.3 customisation
 accent colour can now freely be changed
 text colour can be switched between dark or light text
