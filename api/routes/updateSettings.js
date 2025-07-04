@@ -61,8 +61,8 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// update public setting
-	let isPublic = req.body.public == "on" ? 1 : 0;
-	if (isPublic != req.profile.public) {
+	let isPublic = req.body.public;
+	if (isPublic != undefined && isPublic != req.profile.public) {
 		try {
 			await dbQuery("UPDATE user_settings SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
 			change = true;
@@ -72,8 +72,8 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		}
 	}
 	// update track notes public setting
-	let isTrackNotesPublic = req.body.notes_public == "on" ? 1 : 0;
-	if (isTrackNotesPublic != req.profile.notes_public) {
+	let isTrackNotesPublic = req.body.notes_public;
+	if (isTrackNotesPublic != undefined && isTrackNotesPublic != req.profile.notes_public) {
 		try {
 			await dbQuery("UPDATE user_settings SET notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
 			change = true;
@@ -84,7 +84,7 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// language
-	if (req.body.language && req.body.language != req.profile.language) {
+	if (req.body.language != undefined && req.body.language != req.profile.language) {
 		try {
 			await dbQuery("UPDATE user_settings SET language = ? WHERE uid = ?", [req.body.language, req.profile.uid]);
 			change = true;
@@ -95,8 +95,8 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// border_radius
-	let borderRadius = req.body.border_radius == "on" ? 8 : 0;
-	if (borderRadius != req.profile.border_radius) {
+	let borderRadius = req.body.border_radius;
+	if (borderRadius != undefined && borderRadius != req.profile.border_radius) {
 		try {
 			await dbQuery("UPDATE user_settings SET border_radius = ? WHERE uid = ?", [borderRadius, req.profile.uid]);
 			change = true;
@@ -107,13 +107,25 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 	}
 
 	// body_margin
-	let bodyMargin = req.body.body_margin == "on" ? 1 : 0;
-	if (bodyMargin != req.profile.body_margin) {
+	let bodyMargin = req.body.body_margin;
+	if (bodyMargin != undefined && bodyMargin != req.profile.body_margin) {
 		try {
 			await dbQuery("UPDATE user_settings SET body_margin = ? WHERE uid = ?", [bodyMargin, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_body_margin");
+			return;
+		}
+	}
+
+	// animations
+	let animations = req.body.animations;
+	if (animations != undefined && animations != req.profile.animations) {
+		try {
+			await dbQuery("UPDATE user_settings SET animations = ? WHERE uid = ?", [animations, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_animations");
 			return;
 		}
 	}

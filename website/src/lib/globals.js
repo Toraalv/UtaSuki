@@ -19,5 +19,6 @@ export const COOKIE_DICT = {
 	BORDER: "border_radius",
 	ACCENT: "accent",
 	ACCENT_TEXT: "accent_text",
+	ANIMATIONS: "animations",
 	BODY_MARGIN: "body_margin"
 };

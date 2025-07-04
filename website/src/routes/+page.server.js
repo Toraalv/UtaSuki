@@ -1,4 +1,5 @@
 import { UtaSuki_API } from "$lib/api.js";
+import { COOKIE_DICT } from "$lib/globals.js";
 import { fail, redirect } from "@sveltejs/kit";
 import fs from 'fs/promises';
 import path from 'path';
@@ -35,6 +36,9 @@ export const actions = {
 	},
 	logout: ({ fetch, cookies }) => {
 		api.logout(fetch);
-		cookies.set("auth_token", "", { path: '/' });
+		cookies.set(COOKIE_DICT.AUTH_TOKEN, "", { path: '/' });
+		Object.values(COOKIE_DICT).forEach(key => {
+			cookies.delete(key, { path: '/' });
+		});
 	}
 };

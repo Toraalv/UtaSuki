@@ -36,7 +36,6 @@ export async function load({ fetch, cookies, params, url }) {
 			sameSite: "None"
 		});
 	}
-
 	let bodyMargin = res.auth_info?.profile?.body_margin;
 	if (bodyMargin != undefined) {
 		cookies.set(COOKIE_DICT.BODY_MARGIN, bodyMargin, {
@@ -46,7 +45,6 @@ export async function load({ fetch, cookies, params, url }) {
 			sameSite: "None"
 		});
 	}
-
 	let accent = res.auth_info?.profile?.accent;
 	if (accent != undefined) {
 		cookies.set(COOKIE_DICT.ACCENT, accent, {
@@ -56,10 +54,18 @@ export async function load({ fetch, cookies, params, url }) {
 			sameSite: "None"
 		});
 	}
-
 	let accentText = res.auth_info?.profile?.accent_text;
 	if (accentText != undefined) {
 		cookies.set(COOKIE_DICT.ACCENT_TEXT, accentText, {
+			path: '/',
+			httpOnly: false,
+			secure: true,
+			sameSite: "None"
+		});
+	}
+	let animations = res.auth_info?.profile?.animations;
+	if (animations != undefined) {
+		cookies.set(COOKIE_DICT.ANIMATIONS, animations, {
 			path: '/',
 			httpOnly: false,
 			secure: true,

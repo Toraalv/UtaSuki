@@ -5,6 +5,7 @@
 	import SwayWindow from "$lib/SwayWindow.svelte"; // https://tenor.com/view/k-on-yui-hirasawa-laughing-anime-gif-16038492
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
+	import { setLang } from "$lib/helpers.js";
 
 	import { page } from "$app/stores";
 	import { _ } from "svelte-i18n";
@@ -58,10 +59,24 @@
 					<div id="profileDropdownContent">
 						<ul>
 							<li>
-								<a style="display: block; width: 100%;" href="/settings">{$_("general.settings")}</a>
+								<a style="display: block; width: 100%;" href="/settings/account">{$_("general.settings")}</a>
 							</li>
 							<li>
-								<form action="/?/logout" method="POST" use:enhance>
+								<form
+									action="/?/logout"
+									method="POST"
+									use:enhance={() => {
+										return async ({ update }) => {
+											await update({ reset: true });
+											document.documentElement.style.setProperty("--border_radius", "var(--default_border_radius)");
+											document.documentElement.style.setProperty("--body_margin", "var(--default_body_margin)");
+											document.documentElement.style.setProperty("--accent", "var(--default_accent)");
+											document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
+											document.documentElement.style.setProperty("--transition", "var(--default_transition)");
+											setLang("en");
+										};
+									}}
+								>
 									<input
 										type="submit"
 										value="{$_("general.logout")}"
@@ -102,9 +117,15 @@
 						return async ({ update, result }) => {
 							await update({ reset: false });
 							loginFlight = false;
-							if (result.status == 200)
+							if (result.status == 200) {
 								showLogin = false;
-							else {
+								document.documentElement.style.setProperty("--border_radius", result.data.data.settings.border_radius == "1" ? "var(--default_border_radius)" : 0);
+								document.documentElement.style.setProperty("--body_margin", result.data.data.settings.body_margin == "1" ? "var(--default_body_margin)" : 0);
+								document.documentElement.style.setProperty("--accent", result.data.data.settings.accent == "" ? "var(--default_accent)" : result.data.data.settings.accent);
+								document.documentElement.style.setProperty("--accent_text", result.data.data.settings.accent_text == "" ? "var(--default_accent_text)" : result.data.data.settings.accent_text);
+								document.documentElement.style.setProperty("--transition", result.data.data.settings.animations == "1" ? "var(--default_transition)" : 0);
+								setLang(result.data.data.settings.language);
+							} else {
 								lastError = result.data.code;
 								showLoginError = true;
 							}
@@ -303,7 +324,7 @@
 	}
 	#profileDropdown:hover #profileDropdownContent, #profileDropdown:focus #profileDropdownContent, #profileDropdownContent:focus-within {
 		opacity: 100;
-		z-index: 1;
+		z-index: 3;
 	}
 
 	@media only screen and (max-width: 892px) {

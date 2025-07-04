@@ -131,7 +131,7 @@
 								required
 							>
 								{#each months as month}
-									{#if month + 1 == new Date().getMonth()} <!-- based on my use I only add tracks at the start of the next month -->
+									{#if month == new Date().getMonth()}
 										<option value="{month + 1}" selected>{$_(`months.${month}`)}</option>
 									{:else}
 										<option value="{month + 1}">{$_(`months.${month}`)}</option>

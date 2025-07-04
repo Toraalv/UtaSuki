@@ -45,7 +45,7 @@
 							<!--<img alt="profile" src={CDN_ADDR + activity.pfp}>-->
 							<div class="activityContent">
 								<h4 title={activity.username}>
-									<a href="/user/{activity.uid}" style="text-decoration: none; font-weight: bold;">{activity.username}</a> {$_(`general.${activity.action}`)}:
+									<a href="/user/{activity.uid}" style="font-weight: bold;">{activity.username}</a> {$_(`general.${activity.action}`)}:
 								</h4>
 								<h4 title={activity.title}>
 									<span style="color: white;">{activity.title}</span>

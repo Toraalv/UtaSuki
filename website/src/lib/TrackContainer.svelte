@@ -175,7 +175,7 @@
 					<input
 						style:background-color="#10360D"
 						type="submit"
-						value={$_("general.save")}
+						value={$_("settings.save")}
 						tabindex={Number(tabindex) + 5}
 					/>
 					<input
