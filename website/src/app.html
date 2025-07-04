@@ -184,6 +184,7 @@
 			const accent = decodeURIComponent(getCookie("accent"));
 			const accentText = decodeURIComponent(getCookie("accent_text"));
 			const animations = getCookie("animations");
+			// without this, styles will flash
 			document.documentElement.style.setProperty("--border_radius", borderRadius == "" ? "var(--default_border_radius)" : borderRadius == "1" ? "var(--default_border_radius)" : 0);
 			document.documentElement.style.setProperty("--body_margin", bodyMargin == "" ? "var(--default_body_margin)" : bodyMargin == "1" ? "var(--default_body_margin)" : 0);
 			document.documentElement.style.setProperty("--accent", accent == "" ? "var(--default_accent)" : accent);
