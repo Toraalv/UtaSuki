@@ -2,7 +2,7 @@
 	import { CDN_ADDR } from "$lib/globals.js";
 	import { LEN_LIMITS } from "$lib/globals.js";
 	import NavButton from "$lib/NavButton.svelte";
-	import SwayWindow from "$lib/SwayWindow.svelte"; // https://tenor.com/view/k-on-yui-hirasawa-laughing-anime-gif-16038492
+	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import { setLang } from "$lib/helpers.js";
