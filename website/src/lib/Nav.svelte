@@ -152,7 +152,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>{$_("general.password")}:</td>
+								<td>{$_("settings.password")}:</td>
 							</tr>
 							<tr>
 								<td>
