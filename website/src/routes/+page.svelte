@@ -11,7 +11,7 @@
 	let { data } = $props();
 </script>
 
-<div style="display: flex; flex-grow: 1; height: 0%;"> <!-- height: 0% makes perfect sense -->
+<div id="pageContent">
 	<!---- WELCOME MESSAGE ---->
 	<SwayWindow title={$_("general.welcome")} contentStyle="display: flex; flex-direction: column; justify-content: space-between;">
 		<span>
@@ -32,7 +32,7 @@
 		</footer>
 	</SwayWindow>
 
-	<div style="display:flex; flex-direction: column; min-width: 250px; max-width: 350px;">
+	<div id="rightPane" style="display:flex; flex-direction: column; min-width: 250px; max-width: 350px;">
 		<!---- ACTIVITY PANEL ---->
 		<SwayWindow title={$_("general.activity")} mainStyle="flex: 3 0 0;" contentStyle="padding: 0;">
 			{#if $page.data.code.split('.')[0] == "error"}
@@ -88,6 +88,12 @@
 </div>
 
 <style>
+	#pageContent {
+		display: flex;
+		flex-grow: 1;
+		/* height: 0% makes perfect sense */
+		height: 0%;
+	}
 	.activityContainer {
 		display: flex;
 		padding: 6px;
@@ -133,5 +139,13 @@
 	}
 	h3, h1 {
 		margin: 24px 0;
+	}
+	@media only screen and (max-width: 760px) {
+		#pageContent {
+			flex-direction: column;
+		}
+		#rightPane {
+			display: none !important;
+		}
 	}
 </style>

@@ -37,4 +37,13 @@
 		cursor: pointer;
 	}
 	a:focus { background-color: var(--unfocused_border); }
+
+	@media only screen and (max-width: 760px) {
+		h4 {
+			padding: 4px;
+		}
+		a {
+			height: revert;
+		}
+	}
 </style>

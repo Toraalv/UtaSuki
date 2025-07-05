@@ -37,7 +37,7 @@
 		<!--<h5>nav</h5>-->
 	</div>
 	<div class="swayWindowContent">
-		<div style:align-items="center">
+		<div id="logoContainer" style:align-items="center">
 			<img id="logo" alt="logo" src="/favicon.png"/>
 			<h3 id="logoText">UtaSuki</h3>
 		</div>
@@ -327,6 +327,26 @@
 		z-index: 3;
 	}
 
+	@media only screen and (max-width: 760px) {
+		.swayWindow {
+			position: fixed;
+			bottom: 0%;
+			margin: 0 10px;
+			z-index: 1;
+			width: -moz-available;
+		}
+		.swayWindowContent {
+			border-radius: 0 !important;
+			border-bottom: none;
+		}
+		#logoContainer { display: none; }
+		.swayWindowContent > *:nth-child(2) {
+			justify-content: space-around !important;
+		}
+		.swayWindowContent > *:last-child {
+			justify-content: space-around;
+		}
+	}
 	@media only screen and (max-width: 892px) {
 		#username, #logoText {
 			display: none;
