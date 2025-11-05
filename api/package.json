@@ -4,6 +4,7 @@
   "description": "REST API for UtaSuki",
   "main": "api.js",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "APP_ENV=dev nodemon api.js",
     "test:dev": "APP_ENV=dev npx jest",
     "deploy:prod": "APP_ENV=prod node api.js"
@@ -11,13 +12,13 @@
   "author": "Toralv",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "dotenv": "^16.5.0",
-    "express": "^4.19.2",
-    "express-validator": "^7.1.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-validator": "^7.3.0",
     "jsonwebtoken": "^9.0.2",
-    "mariadb": "^3.3.0",
-    "multer": "^=2.0.2",
-    "nodemon": "^3.1.9"
+    "mariadb": "^3.4.5",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10"
   }
 }
