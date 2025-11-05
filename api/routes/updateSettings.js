@@ -10,7 +10,7 @@ const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 
-module.exports = app.post('/', upload.single("profile_picture"), async (req, res) => {
+module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { name: "background_img" }]), async (req, res) => {
 	// only time this happens is when an user's auth token expires, as they try to change their settings
 	if (!req.authed) {
 		sendStatus(req, res, 401, "error.forbidden");
@@ -44,17 +44,45 @@ module.exports = app.post('/', upload.single("profile_picture"), async (req, res
 		}
 	}
 
-	// update profile picture
-	if (req.file != undefined) {
+	// update background image
+	if (req.body.remove_bkg == "false") {
+		if (req.files.background_img != undefined) {
+			try {
+				const filename = req.profile.uid + path.extname(req.files.background_img[0].originalname).toLowerCase();
+				const targetPath = path.join(__dirname, "../public/images/backgrounds/" + filename);
+				fs.rename(req.files.background_img[0].path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
+
+				await dbQuery("UPDATE user_settings SET bkg = ?, bkg_ver = ? WHERE uid = ?", [filename, req.profile.bkg_ver + 1, req.profile.uid]);
+				change = true;
+			} catch (e) {
+				console.log(e);
+				fs.rm(req.files.background_img[0].path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
+				sendStatus(req, res, 500, "error.update_background_img");
+				return;
+			}
+		}
+	} else {
 		try {
-			const filename = req.profile.uid + path.extname(req.file.originalname).toLowerCase();
+			await dbQuery("UPDATE user_settings SET bkg = NULL WHERE uid = ?", [req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.remove_background_img");
+			return;
+		}
+	}
+
+
+	// update profile picture
+	if (req.files.profile_picture != undefined) {
+		try {
+			const filename = req.profile.uid + path.extname(req.files.profile_picture[0].originalname).toLowerCase();
 			const targetPath = path.join(__dirname, "../public/images/profile_pictures/" + filename);
-			fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
+			fs.rename(req.files.profile_picture[0].path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
 			await dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.image_ver + 1, req.profile.uid]);
 			change = true;
 		} catch (e) {
-			fs.rm(req.file.path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
+			fs.rm(req.files.profile_picture[0].path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 			sendStatus(req, res, 500, "error.update_profile_picture");
 			return;
 		}

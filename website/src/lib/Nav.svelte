@@ -215,7 +215,6 @@
 	a:focus, input[type="submit"] { outline-color: #00000000; }
 	.swayWindow {
 		position: relative;
-		background-color: var(--bg);
 		margin: 10px 10px 0px 10px;
 		display: flex;
 		flex-grow: 0;
@@ -248,6 +247,7 @@
 	.swayWindowContent {
 		overflow-x: visible;
 		overflow-y: visible;
+		background-color: var(--bg);
 		padding: 2px;
 		display: flex;
 		flex-grow: 1;

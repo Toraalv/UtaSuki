@@ -15,7 +15,7 @@
 	<SwayWindow title={$_("general.settings")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex: 1 0 0; flex-direction: column;">
 		<LinkButton href="/settings/account" active={currentSetting == "account"}>{$_("settings.account")}</LinkButton>
 		<LinkButton href="/settings/profile" active={currentSetting == "profile"}>{$_("settings.profile")}</LinkButton>
-		<LinkButton href="/settings/preferences" active={currentSetting == "preferences"}>{$_("settings.preferences")}</LinkButton>
+		<LinkButton href="/settings/appearance" active={currentSetting == "appearance"}>{$_("settings.appearance")}</LinkButton>
 	</SwayWindow>
 
 	<SwayWindow title={currentSetting && $_(`settings.${currentSetting}`)}>

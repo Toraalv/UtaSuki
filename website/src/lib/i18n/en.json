@@ -146,7 +146,9 @@
 		"profile_picture": "profile picture",
 		"save": "save",
 		"profile": "profile",
-		"preferences": "preferences",
-		"account": "account"
+		"appearance": "appearance",
+		"account": "account",
+		"remove_background": "remove background",
+		"background_img": "background image"
 	}
 }
