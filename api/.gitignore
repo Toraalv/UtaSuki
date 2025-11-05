@@ -12,5 +12,6 @@ backup_db.sh
 
 public/images/profile_pictures/*
 public/images/album_covers/*
+public/images/backgrounds/*
 !public/images/profile_pictures/default.webp
 !public/images/album_covers/default.webp

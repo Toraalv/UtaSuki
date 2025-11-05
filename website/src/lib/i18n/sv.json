@@ -146,7 +146,9 @@
 		"profile_picture": "profilbild",
 		"save": "spara",
 		"profile": "profil",
-		"preferences": "preferenser",
-		"account": "konto"
+		"appearance": "utseende",
+		"account": "konto",
+		"remove_background": "ta bort bakgrundsbild",
+		"background_img": "bakgrundsbild"
 	}
 }

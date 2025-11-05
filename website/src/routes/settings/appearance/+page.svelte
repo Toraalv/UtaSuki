@@ -25,6 +25,24 @@
 	let { form, data } = $props();
 	let formRes = $state(undefined);
 
+	let bkgInput = $state();
+	let bkg = $state();
+	let removeBkg = $state(false);
+	function bkgChange() {
+		removeBkg = false;
+		const file = bkgInput.files[0];
+
+		if (file) {
+			const reader = new FileReader();
+			reader.addEventListener("load", (event) => {
+				// warn user too big file
+				bkg.setAttribute("src", reader.result);
+			});
+			reader.readAsDataURL(file);
+			return;
+		}
+	}
+
 	let borderRadiusCheckbox = $state($page.data.auth_info.profile.border_radius);
 	let bodyMarginCheckbox = $state($page.data.auth_info.profile.body_margin);
 	let animationsCheckbox = $state($page.data.auth_info.profile.animations);
@@ -51,11 +69,51 @@
 			await update({ reset: false });
 			inFlight = false;
 			formRes = result.data;
+			bkgInput.value = null;
+			removeBkg = false;
 		};
 	}}
 >
 	<table>
 		<tbody>
+			<tr>
+				<td></td>
+				<td>
+					<label for="bkgSelect">
+						<img src={$page.data.auth_info.profile.bkg == null ? "/background_placeholder.png" : `${CDN_ADDR}/static/images/backgrounds/${$page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver}`} alt="input background" bind:this={bkg}>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>{$_("settings.background_img")}:</td>
+				<td>
+					<input
+						type="file"
+						name="background_img"
+						accept="image/*"
+						id="bkgSelect"
+						bind:this={bkgInput}
+						onchange={bkgChange}
+						autocomplete="off"
+						disabled={inFlight}
+					/>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input
+						type="button"
+						name="remove_bkg"
+						value={$_("settings.remove_background")}
+						id="removeBkg"
+						onclick={() => { bkg.setAttribute("src", "/background_placeholder.png"); removeBkg = true }}
+						disabled={inFlight}
+					/>
+				</td>
+			</tr>
+			<tr style:height="10px">
+			</tr>
 			<tr>
 				<td>{$_("settings.language")}:</td>
 				<td style="display: flex; flex-direction: row;">
@@ -191,6 +249,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<input type="hidden" name="remove_bkg" value={removeBkg}>
 </form>
 
 {@render flightPopup(inFlight, "info.saving", $_("info.saving"))} <!-- madness -->
@@ -206,5 +265,18 @@
 	}
 	input[type="checkbox"] {
 		width: auto;
+	}
+	img {
+		outline: 2px solid var(--unfocused_border);
+		width: 100%;
+		max-width: 350px;
+		border-radius: var(--border_radius);
+		transition: outline var(--transition);
+	}
+	img:hover {
+		outline-color: var(--accent);
+	}
+	#removeBkg:hover {
+		background-color: #561111;
 	}
 </style>

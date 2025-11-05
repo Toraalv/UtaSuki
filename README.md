@@ -1,5 +1,5 @@
 [![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
-![version: 1.3.5](https://img.shields.io/badge/version-1.3.5-blue)
+![version: 1.3.6](https://img.shields.io/badge/version-1.3.5-blue)
 
 # 歌好き (UtaSuki)
 The site is available at [utasuki.com](https://utasuki.com).

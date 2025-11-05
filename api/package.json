@@ -1,6 +1,6 @@
 {
   "name": "utasuki-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "REST API for UtaSuki",
   "main": "api.js",
   "scripts": {
