@@ -66,6 +66,7 @@
 		border-bottom: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
 		transition: var(--transition);
+		backdrop-filter: blur(var(--blur));
 	}
 </style>
 

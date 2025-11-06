@@ -21,6 +21,6 @@ export const COOKIE_DICT = {
 	ACCENT_TEXT: "accent_text",
 	ANIMATIONS: "animations",
 	OPACITY: "opacity",
-	NAV_OPACITY: "nav_opacity",
+	BLUR: "blur",
 	BODY_MARGIN: "body_margin"
 };

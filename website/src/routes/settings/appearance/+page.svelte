@@ -100,15 +100,28 @@
 				</td>
 			</tr>
 			<tr>
-				<td>{$_("settings.opacity")}:</td>
+				<td>{$_("settings.blur")}:</td>
 				<td>
 					<input
 						type="range"
 						min="0"
+						max="30"
+						value={$page.data.auth_info.profile.blur.slice(0, -2)}
+						name="blur"
+						oninput={(_this) =>  document.documentElement.style.setProperty("--blur", _this.srcElement.value + "px")  }
+					/>
+				</td>
+			</tr>
+			<tr>
+				<td>{$_("settings.opacity")}:</td>
+				<td>
+					<input
+						type="range"
+						min="40"
 						max="100"
 						value={$page.data.auth_info.profile.opacity}
 						name="opacity"
-						oninput={(_this) => { document.documentElement.style.setProperty("--opacity", _this.srcElement.value / 100); document.documentElement.style.setProperty("--nav_opacity", _this.srcElement.value <= 85 ? 0.85 : _this.srcElement.value / 100); }}
+						oninput={(_this) =>  document.documentElement.style.setProperty("--opacity", _this.srcElement.value / 100)  }
 					/>
 				</td>
 			</tr>

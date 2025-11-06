@@ -12,12 +12,18 @@
 				if ($page.route.id.match("/user/\\[slug]")?.length) {
 					document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
 					document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
+					document.documentElement.style.setProperty("--opacity", $page.data.data.profile.opacity / 100);
+					document.documentElement.style.setProperty("--blur", $page.data.data.profile.blur);
 				} else if ($page.data.auth_info.authed) {
 					document.documentElement.style.setProperty("--accent", $page.data.auth_info.profile.accent);
 					document.documentElement.style.setProperty("--accent_text", $page.data.auth_info.profile.accent_text);
+					document.documentElement.style.setProperty("--opacity", $page.data.auth_info.profile.opacity / 100);
+					document.documentElement.style.setProperty("--blur", $page.data.auth_info.profile.blur);
 				} else {
 					document.documentElement.style.setProperty("--accent", "var(--default_accent)");
 					document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
+					document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
+					document.documentElement.style.setProperty("--blur", "var(--default_blur)");
 				}
 			}
 		});
@@ -44,15 +50,14 @@
 <style>
 	#bkg {
 		position: absolute;
-		width: calc(100% + 16px);
-		height: calc(100% + 16px);
-		top: -8px;
-		left: -8px;
+		width: calc(100% + var(--blur) * 4);
+		height: calc(100% + var(--blur) * 4);
+		top: calc(var(--blur) * -2);
+		left: calc(var(--blur) * -2);
 		background-color: #000000;
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
-		filter: blur(8px);
-		-webkit-filter: blur(8px);
+		filter: blur(var(--blur));
 	}
 </style>

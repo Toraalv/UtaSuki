@@ -33,7 +33,7 @@ export async function load({ fetch, cookies, params, url }) {
 		cookies.set(COOKIE_DICT.ACCENT_TEXT,	res.auth_info?.profile?.accent_text,	{ path: '/', httpOnly: false, secure: true, sameSite: "None" });
 		cookies.set(COOKIE_DICT.ANIMATIONS,		res.auth_info?.profile?.animations,		{ path: '/', httpOnly: false, secure: true, sameSite: "None" });
 		cookies.set(COOKIE_DICT.OPACITY,		res.auth_info?.profile?.opacity,		{ path: '/', httpOnly: false, secure: true, sameSite: "None" });
-		cookies.set(COOKIE_DICT.NAV_OPACITY,	res.auth_info?.profile?.nav_opacity,	{ path: '/', httpOnly: false, secure: true, sameSite: "None" });
+		cookies.set(COOKIE_DICT.BLUR,			res.auth_info?.profile?.blur,			{ path: '/', httpOnly: false, secure: true, sameSite: "None" });
 	}
 
 	return res;

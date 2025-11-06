@@ -43,7 +43,7 @@ module.exports = app.post('/', upload.none(), async (req, res) => {
 	if (await bcrypt.compare(password, userInfo[0].password)) {
 		let userToken = Token(userInfo[0].uid, email);
 		await dbQuery("UPDATE users SET auth_token = ? WHERE uid = ?", [userToken, userInfo[0].uid]);
-		let userSettings = await dbQuery("SELECT language, border_radius, body_margin, accent, accent_text, animations, opacity, nav_opacity FROM user_settings WHERE uid = ?;", [userInfo[0].uid]);
+		let userSettings = await dbQuery("SELECT language, border_radius, body_margin, accent, accent_text, animations, opacity, blur FROM user_settings WHERE uid = ?;", [userInfo[0].uid]);
 		sendStatus(req, res, 200, "success.login_success", { token: userToken, settings: userSettings[0] });
 		return;
 	} else {

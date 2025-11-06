@@ -75,10 +75,6 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	if (req.body.opacity != undefined && req.body.opacity != req.profile.opacity) {
 		try {
 			await dbQuery("UPDATE user_settings SET opacity = ? WHERE uid = ?", [req.body.opacity, req.profile.uid]);
-			if (req.body.opacity >= 85)
-				await dbQuery("UPDATE user_settings SET nav_opacity = ? WHERE uid = ?", [req.body.opacity, req.profile.uid]);
-			else
-				await dbQuery("UPDATE user_settings SET nav_opacity = ? WHERE uid = ?", [85, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_opacity");
@@ -86,6 +82,16 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 		}
 	}
 
+	// update blur
+	if (req.body.blur != undefined && (req.body.blur + "px") != req.profile.blur) {
+		try {
+			await dbQuery("UPDATE user_settings SET blur = ? WHERE uid = ?", [req.body.blur + "px", req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_blur");
+			return;
+		}
+	}
 
 	// update profile picture
 	if (req.files.profile_picture != undefined) {
