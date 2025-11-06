@@ -149,6 +149,7 @@
 		"appearance": "appearance",
 		"account": "account",
 		"remove_background": "remove background",
+		"opacity": "opacity",
 		"background_img": "background image"
 	}
 }

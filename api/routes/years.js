@@ -15,7 +15,7 @@ module.exports = app.get('/', async (req, res) => {
 		return;
 	}
 	
-	let profile = await dbQuery("SELECT uid, username, image, image_ver, public, accent, accent_text FROM users NATURAL JOIN user_settings WHERE uid = ?", [uid]);
+	let profile = await dbQuery("SELECT uid, username, image, image_ver, public, accent, accent_text, bkg, bkg_ver FROM users NATURAL JOIN user_settings WHERE uid = ?", [uid]);
 	if (!profile.length) {
 		sendStatus(req, res, 404, "error.user_not_exist")
 		return;

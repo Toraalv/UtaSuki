@@ -43,8 +43,12 @@
 				--default_border_radius: 8px;
 				--default_transition: 100ms;
 				--default_body_margin: 0 10vw;
+				--default_opacity: 0.85;
+				--default_bg: 0, 0, 0;
+				--default_bkg: "none";
 
-				--bg: #000000E0;
+				--opacity: var(--default_opacity);
+				--bg: rgba(var(--default_bg), var(--opacity));
 				--text: #dedede;
 				--accent_text: var(--default_accent_text);
 				--d_text: #9e9e9e;
@@ -185,12 +189,14 @@
 			const accent = decodeURIComponent(getCookie("accent"));
 			const accentText = decodeURIComponent(getCookie("accent_text"));
 			const animations = getCookie("animations");
+			const opacity = getCookie("opacity");
 			// without this, styles will flash
 			document.documentElement.style.setProperty("--border_radius", borderRadius == "" ? "var(--default_border_radius)" : borderRadius == "1" ? "var(--default_border_radius)" : 0);
 			document.documentElement.style.setProperty("--body_margin", bodyMargin == "" ? "var(--default_body_margin)" : bodyMargin == "1" ? "var(--default_body_margin)" : 0);
 			document.documentElement.style.setProperty("--accent", accent == "" ? "var(--default_accent)" : accent);
 			document.documentElement.style.setProperty("--accent_text", accentText == "" ? "var(--default_accent_text)" : accentText);
 			document.documentElement.style.setProperty("--transition", animations == "" ? "var(--default_transition)" : animations == "1" ? "var(--default_transition)" : 0);
+			document.documentElement.style.setProperty("--opacity", opacity == "" ? "var(--default_opacity)" : opacity / 100);
 		</script>
 		%sveltekit.head%
 	</head>

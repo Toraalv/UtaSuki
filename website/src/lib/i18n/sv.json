@@ -149,6 +149,7 @@
 		"appearance": "utseende",
 		"account": "konto",
 		"remove_background": "ta bort bakgrundsbild",
+		"opacity": "opacitet",
 		"background_img": "bakgrundsbild"
 	}
 }

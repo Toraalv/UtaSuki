@@ -52,7 +52,7 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 				const targetPath = path.join(__dirname, "../public/images/backgrounds/" + filename);
 				fs.rename(req.files.background_img[0].path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
-				await dbQuery("UPDATE user_settings SET bkg = ?, bkg_ver = ? WHERE uid = ?", [filename, req.profile.bkg_ver + 1, req.profile.uid]);
+				await dbQuery("UPDATE user_settings SET bkg = ?, bkg_ver = ? WHERE uid = ?", ["/static/images/backgrounds/" + filename, req.profile.bkg_ver + 1, req.profile.uid]);
 				change = true;
 			} catch (e) {
 				console.log(e);
@@ -61,12 +61,23 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 				return;
 			}
 		}
-	} else {
+	} else if (req.body.remove_bkg != undefined) {
 		try {
 			await dbQuery("UPDATE user_settings SET bkg = NULL WHERE uid = ?", [req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.remove_background_img");
+			return;
+		}
+	}
+
+	// update opacity
+	if (req.body.opacity != undefined && req.body.opacity != req.profile.opacity) {
+		try {
+			await dbQuery("UPDATE user_settings SET opacity = ? WHERE uid = ?", [req.body.opacity, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_opacity");
 			return;
 		}
 	}
@@ -89,8 +100,7 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// update public setting
-	let isPublic = req.body.public;
-	if (isPublic != undefined && isPublic != req.profile.public) {
+	if (req.body.public != undefined && req.body.public != req.profile.public) {
 		try {
 			await dbQuery("UPDATE user_settings SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
 			change = true;
