@@ -68,12 +68,18 @@
 									use:enhance={() => {
 										return async ({ update }) => {
 											await update({ reset: true });
+											setLang("en");
 											document.documentElement.style.setProperty("--border_radius", "var(--default_border_radius)");
 											document.documentElement.style.setProperty("--body_margin", "var(--default_body_margin)");
-											document.documentElement.style.setProperty("--accent", "var(--default_accent)");
-											document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
 											document.documentElement.style.setProperty("--transition", "var(--default_transition)");
-											setLang("en");
+											document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
+											if ($page.route.id.match("/user/\\[slug]")?.length) {
+												document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
+												document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
+											} else {
+												document.documentElement.style.setProperty("--accent", "var(--default_accent)");
+												document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
+											}
 										};
 									}}
 								>
@@ -119,12 +125,18 @@
 							loginFlight = false;
 							if (result.status == 200) {
 								showLogin = false;
+								setLang(result.data.data.settings.language);
 								document.documentElement.style.setProperty("--border_radius", result.data.data.settings.border_radius == "1" ? "var(--default_border_radius)" : 0);
 								document.documentElement.style.setProperty("--body_margin", result.data.data.settings.body_margin == "1" ? "var(--default_body_margin)" : 0);
-								document.documentElement.style.setProperty("--accent", result.data.data.settings.accent == "" ? "var(--default_accent)" : result.data.data.settings.accent);
-								document.documentElement.style.setProperty("--accent_text", result.data.data.settings.accent_text == "" ? "var(--default_accent_text)" : result.data.data.settings.accent_text);
 								document.documentElement.style.setProperty("--transition", result.data.data.settings.animations == "1" ? "var(--default_transition)" : 0);
-								setLang(result.data.data.settings.language);
+								document.documentElement.style.setProperty("--opacity", result.data.data.settings.opacity);
+								if ($page.route.id.match("/user/\\[slug]")?.length) {
+									document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
+									document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
+								} else {
+									document.documentElement.style.setProperty("--accent", result.data.data.settings.accent == "" ? "var(--default_accent)" : result.data.data.settings.accent);
+									document.documentElement.style.setProperty("--accent_text", result.data.data.settings.accent_text == "" ? "var(--default_accent_text)" : result.data.data.settings.accent_text);
+								}
 							} else {
 								lastError = result.data.code;
 								showLoginError = true;

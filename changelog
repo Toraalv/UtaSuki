@@ -1,3 +1,9 @@
+version: v1.3.7
+user backgrounds is now visible for everyone
+added opacity slider for window elements
+fixed disappearing background when updating password
+fixed overwriting profile's theme settings when logging out or in
+
 version: v1.3.6
 added customisable background image
 

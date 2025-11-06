@@ -27,13 +27,15 @@
 </script>
 
 {#if $page.data.code.split('.')[0] != "error"}
-	{#if $page.data.auth_info?.authed}
-		<div id="bkg" style:background-image={$page.data.auth_info.profile.bkg == null ? "none" : `url(${CDN_ADDR}/static/images/backgrounds/${$page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver})`}></div>
+	{#if $page.route.id.match("/user/\\[slug]")?.length}
+		<div id="bkg" style:background-image={$page.data.data.profile.bkg == null ? "none" : `url(${CDN_ADDR + $page.data.data.profile.bkg}?${$page.data.data.profile.bkg_ver})`}></div>
+	{:else if $page.data.auth_info?.authed}
+		<div id="bkg" style:background-image={$page.data.auth_info.profile.bkg == null ? "none" : `url(${CDN_ADDR + $page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver})`}></div>
 	{:else}
-		<div id="bkg"></div>
+		<div id="bkg" style:background-image="var(--default_bkg)"></div>
 	{/if}
 {:else}
-	<div id="bkg"></div>
+	<div id="bkg" style:background-image="var(--default_bkg)"></div>
 {/if}
 
 <Nav></Nav>

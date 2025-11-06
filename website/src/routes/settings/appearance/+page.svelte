@@ -80,7 +80,7 @@
 				<td></td>
 				<td>
 					<label for="bkgSelect">
-						<img src={$page.data.auth_info.profile.bkg == null ? "/background_placeholder.png" : `${CDN_ADDR}/static/images/backgrounds/${$page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver}`} alt="input background" bind:this={bkg}>
+						<img src={$page.data.auth_info.profile.bkg == null ? "/background_placeholder.png" : `${CDN_ADDR + $page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver}`} alt="input background" bind:this={bkg}>
 					</label>
 				</td>
 			</tr>
@@ -96,6 +96,19 @@
 						onchange={bkgChange}
 						autocomplete="off"
 						disabled={inFlight}
+					/>
+				</td>
+			</tr>
+			<tr>
+				<td>{$_("settings.opacity")}:</td>
+				<td>
+					<input
+						type="range"
+						min="0"
+						max="100"
+						value={$page.data.auth_info.profile.opacity}
+						name="opacity"
+						oninput={(_this) => document.documentElement.style.setProperty("--opacity", _this.srcElement.value / 100)}
 					/>
 				</td>
 			</tr>
