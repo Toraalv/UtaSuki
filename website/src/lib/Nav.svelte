@@ -130,7 +130,7 @@
 								document.documentElement.style.setProperty("--border_radius", result.data.data.settings.border_radius == "1" ? "var(--default_border_radius)" : 0);
 								document.documentElement.style.setProperty("--body_margin", result.data.data.settings.body_margin == "1" ? "var(--default_body_margin)" : 0);
 								document.documentElement.style.setProperty("--transition", result.data.data.settings.animations == "1" ? "var(--default_transition)" : 0);
-								document.documentElement.style.setProperty("--opacity", result.data.data.settings.opacity);
+								document.documentElement.style.setProperty("--opacity", result.data.data.settings.opacity / 100);
 								document.documentElement.style.setProperty("--nav_opacity", result.data.data.settings.nav_opacity / 100);
 								if ($page.route.id.match("/user/\\[slug]")?.length) {
 									document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
