@@ -122,7 +122,7 @@
 		padding: 2px 0 2px 5px;
 	}
 	tr:nth-child(even) {
-		background-color: var(--input_bg);
+		background-color: #11111180;
 	}
 	a {
 		text-decoration: revert;

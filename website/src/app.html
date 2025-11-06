@@ -48,6 +48,7 @@
 				--default_bkg: "none";
 
 				--opacity: var(--default_opacity);
+				--nav_opacity: var(--default_opacity);
 				--bg: rgba(var(--default_bg), var(--opacity));
 				--text: #dedede;
 				--accent_text: var(--default_accent_text);
@@ -65,7 +66,7 @@
 				--unfocused_background: #222222;
 				--unfocused_text: #9e9e9e;
 
-				--input_bg: #11111180;
+				--input_bg: #111111;
 
 				--border_radius: var(--default_border_radius);
 				--border_radius_small: calc(var(--border_radius) / 2);
@@ -111,7 +112,7 @@
 				padding: 4px 10px;
 			}
 			li:nth-child(odd) {
-				background-color: var(--input_bg);
+				background-color: #11111180;
 			}
 			li:last-child {
 				border-end-end-radius: var(--border_radius_small);
@@ -190,6 +191,7 @@
 			const accentText = decodeURIComponent(getCookie("accent_text"));
 			const animations = getCookie("animations");
 			const opacity = getCookie("opacity");
+			const navOpacity = getCookie("nav_opacity");
 			// without this, styles will flash
 			document.documentElement.style.setProperty("--border_radius", borderRadius == "" ? "var(--default_border_radius)" : borderRadius == "1" ? "var(--default_border_radius)" : 0);
 			document.documentElement.style.setProperty("--body_margin", bodyMargin == "" ? "var(--default_body_margin)" : bodyMargin == "1" ? "var(--default_body_margin)" : 0);
@@ -197,6 +199,7 @@
 			document.documentElement.style.setProperty("--accent_text", accentText == "" ? "var(--default_accent_text)" : accentText);
 			document.documentElement.style.setProperty("--transition", animations == "" ? "var(--default_transition)" : animations == "1" ? "var(--default_transition)" : 0);
 			document.documentElement.style.setProperty("--opacity", opacity == "" ? "var(--default_opacity)" : opacity / 100);
+			document.documentElement.style.setProperty("--nav_opacity", navOpacity == "" ? "var(--default_opacity)" : navOpacity / 100);
 		</script>
 		%sveltekit.head%
 	</head>

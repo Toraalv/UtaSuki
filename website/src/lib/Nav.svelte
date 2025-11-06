@@ -73,6 +73,7 @@
 											document.documentElement.style.setProperty("--body_margin", "var(--default_body_margin)");
 											document.documentElement.style.setProperty("--transition", "var(--default_transition)");
 											document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
+											document.documentElement.style.setProperty("--nav_opacity", "var(--default_opacity)");
 											if ($page.route.id.match("/user/\\[slug]")?.length) {
 												document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
 												document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
@@ -130,6 +131,7 @@
 								document.documentElement.style.setProperty("--body_margin", result.data.data.settings.body_margin == "1" ? "var(--default_body_margin)" : 0);
 								document.documentElement.style.setProperty("--transition", result.data.data.settings.animations == "1" ? "var(--default_transition)" : 0);
 								document.documentElement.style.setProperty("--opacity", result.data.data.settings.opacity);
+								document.documentElement.style.setProperty("--nav_opacity", result.data.data.settings.nav_opacity);
 								if ($page.route.id.match("/user/\\[slug]")?.length) {
 									document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
 									document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
@@ -222,7 +224,7 @@
 		background-color: var(--input_bg);
 	}
 	li:nth-child(even) {
-		background-color: revert;
+		background-color: #000;
 	}
 	a:focus, input[type="submit"] { outline-color: #00000000; }
 	.swayWindow {
@@ -259,7 +261,9 @@
 	.swayWindowContent {
 		overflow-x: visible;
 		overflow-y: visible;
-		background-color: var(--bg);
+		/* this is set up pretty badly */
+		/* if you ever wanted to change the bg colour to something completely different from black, --default_bg would prevent that */
+		background-color: rgba(var(--default_bg), var(--nav_opacity));
 		padding: 2px;
 		display: flex;
 		flex-grow: 1;
@@ -310,6 +314,7 @@
 		outline: none;
 	}
 	#profileDropdown:hover {
+		background-color: #000;
 		box-shadow: 0 -1px var(--accent), 1px 0 var(--accent), -1px 0 var(--accent);
 		border-end-end-radius: 0;
 		border-end-start-radius: 0;
