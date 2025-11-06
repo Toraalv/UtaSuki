@@ -1,3 +1,6 @@
+version: v1.3.8
+added blur slider
+
 version: v1.3.7
 user backgrounds is now visible for everyone
 added opacity slider for window elements

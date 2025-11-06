@@ -72,14 +72,14 @@
 											document.documentElement.style.setProperty("--border_radius", "var(--default_border_radius)");
 											document.documentElement.style.setProperty("--body_margin", "var(--default_body_margin)");
 											document.documentElement.style.setProperty("--transition", "var(--default_transition)");
-											document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
-											document.documentElement.style.setProperty("--nav_opacity", "var(--default_opacity)");
 											if ($page.route.id.match("/user/\\[slug]")?.length) {
 												document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
 												document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
 											} else {
 												document.documentElement.style.setProperty("--accent", "var(--default_accent)");
 												document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
+												document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
+												document.documentElement.style.setProperty("--blur", "var(--default_blur)");
 											}
 										};
 									}}
@@ -130,14 +130,16 @@
 								document.documentElement.style.setProperty("--border_radius", result.data.data.settings.border_radius == "1" ? "var(--default_border_radius)" : 0);
 								document.documentElement.style.setProperty("--body_margin", result.data.data.settings.body_margin == "1" ? "var(--default_body_margin)" : 0);
 								document.documentElement.style.setProperty("--transition", result.data.data.settings.animations == "1" ? "var(--default_transition)" : 0);
-								document.documentElement.style.setProperty("--opacity", result.data.data.settings.opacity / 100);
-								document.documentElement.style.setProperty("--nav_opacity", result.data.data.settings.nav_opacity / 100);
 								if ($page.route.id.match("/user/\\[slug]")?.length) {
 									document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
 									document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
+									document.documentElement.style.setProperty("--opacity", $page.data.data.profile.opacity / 100);
+									document.documentElement.style.setProperty("--blur", $page.data.data.profile.blur);
 								} else {
 									document.documentElement.style.setProperty("--accent", result.data.data.settings.accent == "" ? "var(--default_accent)" : result.data.data.settings.accent);
 									document.documentElement.style.setProperty("--accent_text", result.data.data.settings.accent_text == "" ? "var(--default_accent_text)" : result.data.data.settings.accent_text);
+									document.documentElement.style.setProperty("--opacity", result.data.data.settings.opacity / 100);
+									document.documentElement.style.setProperty("--blur", result.data.data.settings.blur);
 								}
 							} else {
 								lastError = result.data.code;
@@ -261,9 +263,7 @@
 	.swayWindowContent {
 		overflow-x: visible;
 		overflow-y: visible;
-		/* this is set up pretty badly */
-		/* if you ever wanted to change the bg colour to something completely different from black, --default_bg would prevent that */
-		background-color: rgba(var(--default_bg), var(--nav_opacity));
+		background-color: var(--bg);
 		padding: 2px;
 		display: flex;
 		flex-grow: 1;
@@ -272,6 +272,7 @@
 		border-bottom: 2px solid var(--unfocused_background);
 		border-left: 2px solid var(--unfocused_background);
 		transition: var(--transition);
+		backdrop-filter: blur(var(--blur));
 	}
 	.swayWindowContent > * {
 		display: flex;
