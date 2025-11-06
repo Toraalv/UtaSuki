@@ -108,7 +108,7 @@
 						max="100"
 						value={$page.data.auth_info.profile.opacity}
 						name="opacity"
-						oninput={(_this) => document.documentElement.style.setProperty("--opacity", _this.srcElement.value / 100)}
+						oninput={(_this) => { document.documentElement.style.setProperty("--opacity", _this.srcElement.value / 100); document.documentElement.style.setProperty("--nav_opacity", _this.srcElement.value <= 85 ? 0.85 : _this.srcElement.value / 100); }}
 					/>
 				</td>
 			</tr>
