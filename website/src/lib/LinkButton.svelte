@@ -8,21 +8,21 @@
 	} = $props();
 </script>
 
-<a onclick={() => onclick()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""} {style}">
-	<h4>
+<a onclick={() => onclick()} href="{href}" style={style}>
+	<h4 style={active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""}>
 		{@render children?.()}
 	</h4>
 </a>
 
 <style>
 	a {
-		margin: 5px 0;
+		padding: 5px 0;
 		outline: none;
-		background-color: #111111;
-		border-radius: var(--border_radius_small);
-		transition: var(--transition);
 	}
 	h4 {
+		border-radius: var(--border_radius_small);
+		transition: var(--transition);
+		background-color: #111111;
 		text-align: center;
 		padding: 6px 24px;
 		font-size: 14pt;
@@ -30,8 +30,8 @@
 		text-align: center;
 		align-content: center;
 	}
-	a:first-child { margin: 0 0 5px; }
-	a:last-child { margin: 5px 0 0; }
-	a:hover { background-color: var(--unfocused_background); }
-	a:focus { background-color: var(--unfocused_border); }
+	a:first-child { padding: 0 0 5px; }
+	a:last-child { padding: 5px 0 0; }
+	a:hover > * { background-color: var(--unfocused_background); }
+	a:focus > * { background-color: var(--unfocused_border); }
 </style>
