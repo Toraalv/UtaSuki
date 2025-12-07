@@ -16,7 +16,7 @@
 	title={code}
 	mainStyle="margin: auto; margin-top: 0rem; max-width: 30rem; {mainStyle}"
 	titleStyle="background-color: var(--{severity}); color: var(--text); border-color: var(--{severity})"
-	contentStyle="display: flex; flex-direction: row; justify-content: center; text-align: center; {contentStyle}; border-color: var(--{severity}); background-color: #000">
+	contentStyle="display: flex; flex-direction: row; justify-content: center; text-align: center; backdrop-filter: none; {contentStyle}; border-color: var(--{severity}); background-color: #000">
 	{#if children}
 		{@render children()}
 	{:else}
