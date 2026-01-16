@@ -1,3 +1,8 @@
+version: v1.3.9
+added delete account button in settings
+fixed a bug where users couldn't change their public setting
+reworked url/uri building
+
 version: v1.3.8
 added blur slider
 

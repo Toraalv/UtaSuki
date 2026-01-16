@@ -3,7 +3,7 @@
 	import Alert from "$lib/Alert.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
-	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
+	import { LEN_LIMITS } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
 	import { enhance } from "$app/forms";

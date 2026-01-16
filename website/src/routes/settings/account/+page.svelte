@@ -1,9 +1,10 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Alert from "$lib/Alert.svelte";
+	import Dialog from "$lib/Dialog.svelte";
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
-	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
+	import { LEN_LIMITS } from "$lib/globals.js";
 	import { inputWarning, flightPopup, resultPopup } from "../snippets.svelte";
 
 	import { page } from "$app/stores";
@@ -24,6 +25,13 @@
 	let passwordErr = $derived(passwordInputVal.length > LEN_LIMITS.PASSWORD);
 
 	let inFlight = $state(false);
+
+	let dialogForm = $state();
+	let showDialog = $derived(false);
+	function handleDialog(res) {
+		if (!res)
+			showDialog = false;
+	}
 </script>
 
 <form
@@ -100,6 +108,18 @@
 					<input type="hidden" name="notes_public" value={notesPublicCheckbox ? 1 : 0}>
 				</td>
 			</tr>
+			<tr>
+				<td title={$_("settings.delete_account_title")}><label for="deleteAccount">{$_("settings.delete_account")}:</label></td>
+				<td>
+					<input
+						style="background-color: #561111; width: auto; padding: 2px 10px;"
+						id="deleteAccount"
+						type="button"
+						onclick={() => showDialog = true}
+						value={$_("settings.delete")}
+					/>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<table>
@@ -125,6 +145,24 @@
 {@render flightPopup(inFlight, "info.saving", $_("info.saving"))} <!-- madness -->
 {@render resultPopup(formRes, $page.route.id)}
 
+{#if showDialog}
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (makes form escapable)-->
+	<form
+		bind:this={dialogForm}
+		class="overlay"
+		style:cursor="unset"
+		tabindex="0"
+		onkeydown={(e) => e.key == "Escape" && handleDialog(false)}
+		onclick={(e) => e.target == dialogForm && handleDialog(false)}
+		method="POST"
+		enctype="multipart/form-data"
+		action="/settings/?/deleteAccount"
+		use:enhance
+	>
+		<Dialog title="dialog.delete_account" victim={$page.data.auth_info.profile.username} onclick={(_this) => handleDialog(_this)}/>
+		<input type="hidden" name="id" value={$page.data.auth_info.id}>
+	</form>
+{/if}
 <style>
 	td {
 		padding-top: 4px;

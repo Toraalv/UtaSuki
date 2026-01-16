@@ -1,5 +1,5 @@
 <script>
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { PFP_PATH } from "$lib/globals.js";
 	import { LEN_LIMITS } from "$lib/globals.js";
 	import NavButton from "$lib/NavButton.svelte";
 	import SwayWindow from "$lib/SwayWindow.svelte";
@@ -54,7 +54,7 @@
 				<div id="profileDropdown">
 					<div id="profile">
 						<h3 title={$page.data.auth_info.profile.username} id="username">{$page.data.auth_info.profile.username}</h3>
-						<img id="pfp" alt="profile" src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`}/>
+						<img id="pfp" alt="profile" src={`${PFP_PATH}/${$page.data.auth_info.profile.image}?${$page.data.auth_info.profile.image_ver}`}/>
 					</div>
 					<div id="profileDropdownContent">
 						<ul>

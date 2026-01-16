@@ -32,12 +32,17 @@ class UtaSuki_API {
 		try			{ return await this.request(fetch, "POST", "deleteTrack", undefined, formData); }
 		catch (e)	{ return e; }
 	}
+	async deleteAccount(fetch, formData) {
+		try			{ return await this.request(fetch, "POST", "deleteAccount", undefined, formData); }
+		catch (e)	{ return e; }
+	}
 
 	// GET endpoints
 	async fetchUsers(fetch) {
 		try			{ return await this.request(fetch, "GET", "users"); }
 		catch (e)	{ return e; }
 	}
+	// api.utasuki.com/user/<uid>
 	async fetchYears(fetch, uid) {
 		try			{ return (await this.request(fetch, "GET", "years", { uid: uid })); }
 		catch (e)	{ return e; }

@@ -108,6 +108,7 @@
 	},
 	"dialog": {
 		"delete": "är du säker på att du vill radera:<br><span style=\"color: white\">{thing}</span>?",
+		"delete_account": "är du säker på att du vill ta bort ditt konto?",
 		"yes": "ja",
 		"no": "nej"
 	},
@@ -144,6 +145,9 @@
 		"password": "lösenord",
 		"username": "användarnamn",
 		"profile_picture": "profilbild",
+		"delete_account_title": "tar bort ditt konto samt all din information",
+		"delete_account": "kontoborttagning",
+		"delete": "radera",
 		"save": "spara",
 		"profile": "profil",
 		"appearance": "utseende",

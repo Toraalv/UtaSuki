@@ -13,5 +13,15 @@ export const actions = {
 			return res;
 		else
 			return fail(500, res);
+	},
+	deleteAccount: async ({ fetch, cookies, request }) => {
+		const form = await request.formData();
+
+		let res = await api.deleteAccount(fetch, form);
+
+		if (res.code.split('.')[0] == "success")
+			return res;
+		else
+			return fail(500, res);
 	}
 };

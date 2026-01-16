@@ -4,7 +4,7 @@ const sendStatus = require("../helpers.js").sendStatus;
 const cyrb53 = require("../helpers.js").cyrb53;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
-const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
+const ALBUM_PATH = require("../globals.js").ALBUM_PATH;
 
 const express = require("express");
 const app = express();
@@ -12,6 +12,11 @@ const path = require("path");
 const fs = require("fs");
 
 module.exports = app.post('/', upload.single("file"), async (req, res) => {
+	if (!req.authed) {
+		sendStatus(401, "error.forbidden");
+		return;
+	}
+
 	const title = req.body.title;
 	const album = req.body.album;
 	const artist = req.body.artist;
@@ -27,7 +32,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		return;
 	}
 
-	const oldCoverPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + (await dbQuery("SELECT image FROM tracks WHERE id = ?", [trackToUpdate.track_id]))[0].image);
+	const oldCoverPath = path.join(__dirname, `${ALBUM_PATH}/${(await dbQuery("SELECT image FROM tracks WHERE id = ?", [trackToUpdate.track_id]))[0].image}`);
 
 	// only check if other people (i.e. not self) uses the track
 	// IF true, copy track, otherwise edit
@@ -37,12 +42,12 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		await dbQuery("UPDATE user_tracks SET track_id = ? WHERE track_id = ? AND uid = ?", [copyTrack.insertId, trackToUpdate.track_id, req.profile.uid]);
 		if (req.file != undefined) {
 			const filename = cyrb53(title + album + artist + copyTrack.insertId) + path.extname(req.file.originalname).toLowerCase();
-			const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
+			const targetPath = path.join(__dirname, `${ALBUM_PATH}/${filename}`);
 			fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 			await dbQuery("UPDATE tracks SET image = ?, image_ver = 1 WHERE id = ?", [filename, copyTrack.insertId]);
 		} else {
 			const filename = cyrb53(title + album + artist + copyTrack.insertId) + path.extname(oldCoverPath).toLowerCase();
-			const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
+			const targetPath = path.join(__dirname, `${ALBUM_PATH}/${filename}`);
 			fs.copyFile(oldCoverPath, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_copy"); return; } });
 			await dbQuery("UPDATE tracks SET image = ? WHERE id = ?", [filename, copyTrack.insertId]);
 		}
@@ -52,7 +57,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 
 		if (req.file != undefined) {
 			const filename = cyrb53(title + album + artist + trackToUpdate.track_id) + path.extname(req.file.originalname).toLowerCase();
-			const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
+			const targetPath = path.join(__dirname, `${ALBUM_PATH}/${filename}`);
 			fs.rename(req.file.path, targetPath, e => { if (e) { console.log(e); return; } });
 			await dbQuery("UPDATE tracks SET image = ?, image_ver = ? WHERE id = ?", [filename, ++trackToUpdate.image_ver, trackToUpdate.track_id]);
 

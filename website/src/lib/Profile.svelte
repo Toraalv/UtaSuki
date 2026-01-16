@@ -1,6 +1,6 @@
 <script>
 	import { possessiveForm } from "$lib/i18n/names.js";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { PFP_PATH } from "$lib/globals.js";
 
 	import { _ } from "svelte-i18n";
 
@@ -18,7 +18,7 @@
 </script>
 
 <div class="profile">
-	<img src={CDN_ADDR + image + `?${imageVer}`} alt="profile">
+	<img src={`${PFP_PATH}/${image}?${imageVer}`} alt="profile">
 	<div class="profileInfo">
 		<h1 title={$_("general.profile", { values: { username: possessiveForm(username) }})}>{username}</h1>
 		<!-- {#if bio}

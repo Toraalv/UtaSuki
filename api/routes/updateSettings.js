@@ -3,6 +3,7 @@
 const sendStatus = require("../helpers.js").sendStatus;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
+const { BG_PATH, PFP_PATH } = require("../globals.js");
 
 const express = require("express");
 const app = express();
@@ -49,10 +50,10 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 		if (req.files.background_img != undefined) {
 			try {
 				const filename = req.profile.uid + path.extname(req.files.background_img[0].originalname).toLowerCase();
-				const targetPath = path.join(__dirname, "../public/images/backgrounds/" + filename);
+				const targetPath = path.join(__dirname, `${BG_PATH}/${filename}`);
 				fs.rename(req.files.background_img[0].path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
-				await dbQuery("UPDATE user_settings SET bkg = ?, bkg_ver = ? WHERE uid = ?", ["/static/images/backgrounds/" + filename, req.profile.bkg_ver + 1, req.profile.uid]);
+				await dbQuery("UPDATE user_settings SET bkg = ?, bkg_ver = ? WHERE uid = ?", [filename, req.profile.bkg_ver + 1, req.profile.uid]);
 				change = true;
 			} catch (e) {
 				console.log(e);
@@ -97,10 +98,10 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	if (req.files.profile_picture != undefined) {
 		try {
 			const filename = req.profile.uid + path.extname(req.files.profile_picture[0].originalname).toLowerCase();
-			const targetPath = path.join(__dirname, "../public/images/profile_pictures/" + filename);
+			const targetPath = path.join(__dirname, `${PFP_PATH}/${filename}`);
 			fs.rename(req.files.profile_picture[0].path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
-			await dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, req.profile.image_ver + 1, req.profile.uid]);
+			await dbQuery("UPDATE users SET image = ?, image_ver = ? WHERE uid = ?", [filename, req.profile.image_ver + 1, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			fs.rm(req.files.profile_picture[0].path, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
@@ -112,7 +113,7 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	// update public setting
 	if (req.body.public != undefined && req.body.public != req.profile.public) {
 		try {
-			await dbQuery("UPDATE user_settings SET public = ? WHERE uid = ?", [isPublic, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET public = ? WHERE uid = ?", [req.body.public, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_public");
@@ -120,10 +121,9 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 		}
 	}
 	// update track notes public setting
-	let isTrackNotesPublic = req.body.notes_public;
-	if (isTrackNotesPublic != undefined && isTrackNotesPublic != req.profile.notes_public) {
+	if (req.body.notes_public != undefined && req.body.notes_public != req.profile.notes_public) {
 		try {
-			await dbQuery("UPDATE user_settings SET notes_public = ? WHERE uid = ?", [isTrackNotesPublic, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET notes_public = ? WHERE uid = ?", [req.body.notes_public, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_public");

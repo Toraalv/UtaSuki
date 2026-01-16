@@ -1,5 +1,5 @@
 import { UtaSuki_API } from "$lib/api.js";
-import { COOKIE_DICT, CDN_ADDR } from "$lib/globals.js";
+import { COOKIE_DICT } from "$lib/globals.js";
 import { browser } from "$app/environment";
 import "$lib/i18n";
 import { locale, waitLocale } from "svelte-i18n";

@@ -108,6 +108,7 @@
 	},
 	"dialog": {
 		"delete": "are you sure you want to delete:<br><span style=\"color: white\">{thing}</span>?",
+		"delete_account": "are you sure that you want to delete your account?",
 		"yes": "yes",
 		"no": "no"
 	},
@@ -144,6 +145,9 @@
 		"password": "password",
 		"username": "username",
 		"profile_picture": "profile picture",
+		"delete_account_title": "deletes your account and all your information",
+		"delete_account": "account deletion",
+		"delete": "delete",
 		"save": "save",
 		"profile": "profile",
 		"appearance": "appearance",

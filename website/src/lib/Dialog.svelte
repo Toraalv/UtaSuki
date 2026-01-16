@@ -8,6 +8,7 @@
 	}
 
 	let {
+		root = $bindable(),
 		mainStyle = null,
 		title = null,
 		textBody = null,
@@ -19,6 +20,7 @@
 </script>
 
 <SwayWindow
+	bind:root={root}
 	title={title}
 	mainStyle="margin: auto; margin-top: 0rem; max-width: 30rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 2 {mainStyle}"
 	titleStyle="background-color: var(--{severity}); color: var(--accent_text); border-color: var(--{severity});"

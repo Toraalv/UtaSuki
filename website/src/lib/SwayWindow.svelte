@@ -1,5 +1,6 @@
 <script>
 	let {
+		root = $bindable(),
 		title = null,
 		altTitle = title,
 		mainStyle = null,
@@ -10,7 +11,7 @@
 	} = $props();
 </script>
 
-<div class="swayWindow" style={mainStyle}>
+<div bind:this={root} class="swayWindow" style={mainStyle}>
 	<div class="swayWindowTitle" style={titleStyle}>
 		<h5 title={altTitle}>{title}</h5>
 	</div>
