@@ -3,7 +3,7 @@
 const sendStatus = require("../helpers.js").sendStatus;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
-const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
+const PFP_PATH = require("../globals.js").PFP_PATH;
 
 const express = require("express");
 const app = express();
@@ -55,11 +55,11 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 
 	// add image after user creation so we can link uid instead
 	const filename = createUser.insertId + path.extname(req.file.originalname).toLowerCase();
-	const targetPath = path.join(__dirname, IMAGE_PATH + "profile_pictures/" + filename);
+	const targetPath = path.join(__dirname, `${PFP_PATH}/${filename}`);
 	// bug or appropriate behaviour? even though picture may fail, user still gets created
 	fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 
-	let userPicture = await dbQuery("UPDATE users SET image = ? WHERE uid = ?", ["/static/images/profile_pictures/" + filename, createUser.insertId]);
+	let userPicture = await dbQuery("UPDATE users SET image = ? WHERE uid = ?", [filename, createUser.insertId]);
 
 	sendStatus(req, res, 200, "success.user_created");
 });

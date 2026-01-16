@@ -4,7 +4,7 @@
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
 	import { setLang } from "$lib/helpers.js";
-	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
+	import { PFP_PATH, LEN_LIMITS } from "$lib/globals.js";
 	import { flightPopup, resultPopup } from "../snippets.svelte";
 
 	import { page } from "$app/stores";
@@ -56,7 +56,7 @@
 				<td></td>
 				<td>
 					<label for="imageSelect">
-						<img src={CDN_ADDR + $page.data.auth_info.profile.image + `?${$page.data.auth_info.profile.image_ver}`} alt="input profile" bind:this={image}>
+						<img src={`${PFP_PATH}/${$page.data.auth_info.profile.image}?${$page.data.auth_info.profile.image_ver}`} alt="input profile" bind:this={image}>
 					</label>
 				</td>
 			</tr>

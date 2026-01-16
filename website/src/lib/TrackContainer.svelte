@@ -2,7 +2,7 @@
 	import { UtaSuki_API } from "$lib/api.js";
 	import Dialog from "$lib/Dialog.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
-	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
+	import { ALBUM_PATH, LEN_LIMITS } from "$lib/globals.js";
 
 	import { _ } from "svelte-i18n";
 	import { enhance } from "$app/forms";
@@ -49,25 +49,27 @@
 		}
 	}
 
+	let dialogForm = $state();
 	let showDialog = $derived(false);
-	function deleteDialog() {
-		showDialog = true;
-	}
 	function handleDialog(res) {
 		if (!res)
 			showDialog = false;
 	}
 
 	// form feedback
+	// svelte-ignore state_referenced_locally (yes I did mean to capture only the initial value)
 	let trackInputVal = $state(title);
 	let trackNameErr = $derived(trackInputVal.length > LEN_LIMITS.TRACK);
 
+	// svelte-ignore state_referenced_locally (yes I did mean to capture only the initial value)
 	let albumInputVal = $state(album);
 	let albumNameErr = $derived(albumInputVal.length > LEN_LIMITS.ALBUM);
 
+	// svelte-ignore state_referenced_locally (yes I did mean to capture only the initial value)
 	let artistInputVal = $state(artist);
 	let artistNameErr = $derived(artistInputVal.length > LEN_LIMITS.ARTIST);
 
+	// svelte-ignore state_referenced_locally (yes I did mean to capture only the initial value)
 	let noteInputVal = $state(notes);
 	let noteErr = $derived(noteInputVal.length > LEN_LIMITS.NOTE);
 </script>
@@ -81,7 +83,7 @@
 			lastActiveElement = null;
 			});
 		}}>
-		<img src={`${CDN_ADDR}/static/images/album_covers/${encodeURIComponent(image)}?${imageVer}`} alt="{album} cover" title={album}>
+		<img src={`${ALBUM_PATH}/${encodeURIComponent(image)}?${imageVer}`} alt="{album} cover" title={album}>
 		<div class="trackInfo">
 			<div style="display: flex; flex-direction: row; justify-content: space-between;">
 				<h1 title={$_("general.track_name")}>{title}</h1>
@@ -96,9 +98,9 @@
 						/>
 						<input
 							tabindex={tabindex}
-							style:background-color="#561111"
+							style:background-color="var(--delete)"
 							type="button"
-							onclick={() => deleteDialog()}
+							onclick={() => showDialog = true}
 							value={$_("general.remove")}
 							title={$_("general.remove_title")}
 						/>
@@ -123,7 +125,9 @@
 				/>
 			{/if}
 			{#if showNotes}
-				<p title={$_("general.notes")}>{notes}</p>
+				<pre title={$_("general.notes")} style="display: flex;">
+					<div>{notes}</div>
+				</pre>
 			{/if}
 		</div>
 	</div>
@@ -145,7 +149,7 @@
 		}}
 	>
 		<label for="imageSelect">
-			<img src={`${CDN_ADDR}/static/images/album_covers/${image}?${imageVer}`} alt={album} bind:this={imageInput}>
+			<img src={`${ALBUM_PATH}/${image}?${imageVer}`} alt={album} bind:this={imageInput}>
 			<input
 				type="file"
 				name="file"
@@ -230,14 +234,15 @@
 	</form>
 {/snippet}
 
-<!-- todo: add cancel when clicking outside the dialog -->
 {#if showDialog}
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (makes form escapable)-->
 	<form
+		bind:this={dialogForm}
 		class="overlay"
 		style:cursor="unset"
 		tabindex="0"
 		onkeydown={(e) => e.key == "Escape" && handleDialog(false)}
+		onclick={(e) => e.target == dialogForm && handleDialog(false)}
 		method="POST"
 		enctype="multipart/form-data"
 		action="?/deleteTrack"

@@ -57,6 +57,7 @@
 				--d2_text: #4c4c4c;
 				--accent: var(--default_accent);
 				--link: var(--accent);
+				--delete: #561111;
 				--error: #860000;
 				--warning: #865800;
 				--success: #128000;
@@ -194,7 +195,7 @@
 			const opacity = getCookie("opacity");
 			const blur = getCookie("blur");
 			// without this, styles will flash
-			document.documentElement.style.setProperty("--border_radius", borderRadius == "" ? "var(--default_border_radius)" : borderRadius == "1" ? "var(--default_border_radius)" : 0);
+			document.documentElement.style.setProperty("--border_radius", borderRadius == "0" ? 0 : "var(--default_border_radius)");
 			document.documentElement.style.setProperty("--body_margin", bodyMargin == "" ? "var(--default_body_margin)" : bodyMargin == "1" ? "var(--default_body_margin)" : 0);
 			document.documentElement.style.setProperty("--accent", accent == "" ? "var(--default_accent)" : accent);
 			document.documentElement.style.setProperty("--accent_text", accentText == "" ? "var(--default_accent_text)" : accentText);

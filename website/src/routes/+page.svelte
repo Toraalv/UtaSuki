@@ -2,7 +2,7 @@
 	import SwayWindow from "$lib/SwayWindow.svelte";
 	import Alert from "$lib/Alert.svelte";
 	import Nav from "$lib/Nav.svelte";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { ALBUM_PATH } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
 	import { _ } from "svelte-i18n";
@@ -41,7 +41,7 @@
 				<ul style="display:flex; flex-direction: column-reverse;">
 					{#each data.activities.data as activity}
 						<li class="activityContainer">
-							<img alt="cover" src={`${CDN_ADDR}/static/images/album_covers/${activity.cover}`}>
+							<img alt="cover" src={`${ALBUM_PATH}/${activity.cover}`}>
 							<!--<img alt="profile" src={CDN_ADDR + activity.pfp}>-->
 							<div class="activityContent">
 								<h4 title={activity.username}>

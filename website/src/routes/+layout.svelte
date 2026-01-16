@@ -1,6 +1,6 @@
 <script>
 	import Nav from "$lib/Nav.svelte";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { BG_PATH } from "$lib/globals.js";
 	import "$lib/i18n/index.js";
 	import { onMount, tick } from "svelte";
 	import { page } from "$app/stores";
@@ -34,9 +34,9 @@
 
 {#if $page.data.code.split('.')[0] != "error"}
 	{#if $page.route.id.match("/user/\\[slug]")?.length}
-		<div id="bkg" style:background-image={$page.data.data.profile.bkg == null ? "none" : `url(${CDN_ADDR + $page.data.data.profile.bkg}?${$page.data.data.profile.bkg_ver})`}></div>
+		<div id="bkg" style:background-image={$page.data.data.profile.bkg == null ? "none" : `url(${BG_PATH}/${$page.data.data.profile.bkg}?${$page.data.data.profile.bkg_ver})`}></div>
 	{:else if $page.data.auth_info?.authed}
-		<div id="bkg" style:background-image={$page.data.auth_info.profile.bkg == null ? "none" : `url(${CDN_ADDR + $page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver})`}></div>
+		<div id="bkg" style:background-image={$page.data.auth_info.profile.bkg == null ? "none" : `url(${BG_PATH}/${$page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver})`}></div>
 	{:else}
 		<div id="bkg" style:background-image="var(--default_bkg)"></div>
 	{/if}

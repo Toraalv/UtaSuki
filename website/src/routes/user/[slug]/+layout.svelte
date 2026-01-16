@@ -3,7 +3,7 @@
 	import Alert from "$lib/Alert.svelte";
 	import LinkButton from "$lib/LinkButton.svelte";
 	import { possessiveForm } from "$lib/i18n/names.js";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { PFP_PATH } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
 	import { locale, _ } from "svelte-i18n";
@@ -47,7 +47,7 @@
 	{:else}
 		<div style="display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 0;">
 				<SwayWindow title={windowTitle()} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
-					<img alt="profile" src={CDN_ADDR + $page.data.data.profile.image + `?${$page.data.data.profile.image_ver}`}/>
+					<img alt="profile" src={`${PFP_PATH}/${$page.data.data.profile.image}?${$page.data.data.profile.image_ver}`}/>
 					<p>{$_("stats.tracks")}: {$page.data.data.totalTracks}</p>
 				</SwayWindow>
 			{@render yearList()}

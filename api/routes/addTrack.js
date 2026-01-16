@@ -4,7 +4,7 @@ const sendStatus = require("../helpers.js").sendStatus;
 const cyrb53 = require("../helpers.js").cyrb53;
 const dbQuery = require("../db.js").dbQuery;
 const upload = require("../forms.js").upload;
-const IMAGE_PATH = require("../globals.js").IMAGE_PATH;
+const ALBUM_PATH = require("../globals.js").ALBUM_PATH;
 
 const express = require("express");
 const app = express();
@@ -85,7 +85,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 				]
 			);
 			const filename = cyrb53(title + album + artist + trackInsert.insertId) + path.extname(req.file.originalname).toLowerCase();
-			const targetPath = path.join(__dirname, IMAGE_PATH + "album_covers/" + filename);
+			const targetPath = path.join(__dirname, `${ALBUM_PATH}/${filename}`);
 			fs.rename(req.file.path, targetPath, e => { if (e) { sendStatus(req, res, 500, "error.file_upload"); return; } });
 			await dbQuery("UPDATE tracks SET image = ? WHERE id = ?", [filename, trackInsert.insertId]);
 

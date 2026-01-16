@@ -4,7 +4,7 @@
 	import AnimatedDots from "$lib/AnimatedDots.svelte";
 	import TextCounter from "$lib/TextCounter.svelte";
 	import { setLang } from "$lib/helpers.js";
-	import { CDN_ADDR, LEN_LIMITS } from "$lib/globals.js";
+	import { BG_PATH, LEN_LIMITS } from "$lib/globals.js";
 	import { inputWarning, flightPopup, resultPopup } from "../snippets.svelte";
 
 	import { page } from "$app/stores";
@@ -80,7 +80,7 @@
 				<td></td>
 				<td>
 					<label for="bkgSelect">
-						<img src={$page.data.auth_info.profile.bkg == null ? "/background_placeholder.png" : `${CDN_ADDR + $page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver}`} alt="input background" bind:this={bkg}>
+						<img src={$page.data.auth_info.profile.bkg == null ? "/background_placeholder.png" : `${BG_PATH}/${$page.data.auth_info.profile.bkg}?${$page.data.auth_info.profile.bkg_ver}`} alt="input background" bind:this={bkg}>
 					</label>
 				</td>
 			</tr>

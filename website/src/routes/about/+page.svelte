@@ -1,6 +1,6 @@
 <script>
 	import SwayWindow from "$lib/SwayWindow.svelte";
-	import { CDN_ADDR } from "$lib/globals.js";
+	import { PFP_PATH } from "$lib/globals.js";
 
 	import { page } from "$app/stores";
 	import { _ } from "svelte-i18n";
@@ -10,7 +10,7 @@
 	<div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">
 		<div style="display: flex;">
 			<a href="https://github.com/Toraalv">
-				<img src={CDN_ADDR + "/static/images/profile_pictures/1.png"} alt="author">
+				<img src={`${PFP_PATH}/1.png`} alt="author">
 			</a>
 			<div id="bioInfo" style="margin-left: 20px">
 				<p>{$_("general.name")}: Toralv</p>
