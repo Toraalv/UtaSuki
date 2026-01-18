@@ -32,77 +32,76 @@
 	let loginFlight = $state(false);
 </script>
 
-<div class="swayWindow">
-	<div class="swayWindowTitle">
-		<!--<h5>nav</h5>-->
+<SwayWindow
+	mainStyle="margin: 10px 10px 0px; flex-grow: 0; overflow: visible;"
+	titleStyle="height: 14px; line-height: 20px; text-align: center;"
+	contentStyle="overflow-x: visible; overflow-y: visible; padding: 2px; display: flex; flex-grow: 1; z-index: 1;"
+>
+	<div class="navItem" style:align-items="center">
+		<img id="logo" alt="logo" src="/favicon.png"/>
+		<h3 id="logoText">UtaSuki</h3>
 	</div>
-	<div class="swayWindowContent">
-		<div style:align-items="center">
-			<img id="logo" alt="logo" src="/favicon.png"/>
-			<h3 id="logoText">UtaSuki</h3>
-		</div>
-		<div style:justify-content="center">
-			<NavButton tabindex=1 active={$page.url.pathname == "/"} href="/">{$_("general.home")}</NavButton>
-			<NavButton tabindex=2 active={$page.url.pathname == "/users"} href="/users">{$_("general.users")}</NavButton>
-			{#if $page.data.auth_info?.authed}
-				<NavButton tabindex=3 active={$page.url.pathname.match("/user/" + $page.data.auth_info.profile.uid)} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</NavButton>
-				<NavButton tabindex=4 active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</NavButton>
-			{/if}
-		</div>
+	<div class="navItem" style:justify-content="center">
+		<NavButton tabindex=1 active={$page.url.pathname == "/"} href="/">{$_("general.home")}</NavButton>
+		<NavButton tabindex=2 active={$page.url.pathname == "/users"} href="/users">{$_("general.users")}</NavButton>
 		{#if $page.data.auth_info?.authed}
-			<div>
-				<div id="profileDropdown">
-					<div id="profile">
-						<h3 title={$page.data.auth_info.profile.username} id="username">{$page.data.auth_info.profile.username}</h3>
-						<img id="pfp" alt="profile" src={`${PFP_PATH}/${$page.data.auth_info.profile.image}?${$page.data.auth_info.profile.image_ver}`}/>
-					</div>
-					<div id="profileDropdownContent">
-						<ul>
-							<li>
-								<a style="display: block; width: 100%;" href="/settings/account">{$_("general.settings")}</a>
-							</li>
-							<li>
-								<form
-									action="/?/logout"
-									method="POST"
-									use:enhance={() => {
-										return async ({ update }) => {
-											await update({ reset: true });
-											setLang("en");
-											document.documentElement.style.setProperty("--border_radius", "var(--default_border_radius)");
-											document.documentElement.style.setProperty("--body_margin", "var(--default_body_margin)");
-											document.documentElement.style.setProperty("--transition", "var(--default_transition)");
-											if ($page.route.id.match("/user/\\[slug]")?.length) {
-												document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
-												document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
-											} else {
-												document.documentElement.style.setProperty("--accent", "var(--default_accent)");
-												document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
-												document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
-												document.documentElement.style.setProperty("--blur", "var(--default_blur)");
-											}
-										};
-									}}
-								>
-									<input
-										type="submit"
-										value="{$_("general.logout")}"
-										style="border: none; text-align: inherit; background-color: inherit;"
-									>
-								</form>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		{:else}
-			<div>
-				<NavButton tabindex=7 onclick={ () => showLogin = !showLogin } active={showLogin}>{$_("general.login_verb")}</NavButton>
-				<NavButton tabindex=8 active={$page.url.pathname == "/register"} href="/register">{$_("general.register_noun")}</NavButton>
-			</div>
+			<NavButton tabindex=3 active={$page.url.pathname.match("/user/" + $page.data.auth_info.profile.uid)} href={"/user/" + $page.data.auth_info.profile.uid}>{$_("general.user_tracks")}</NavButton>
+			<NavButton tabindex=4 active={$page.url.pathname == "/add"} href="/add">{$_("general.add_track")}</NavButton>
 		{/if}
 	</div>
-</div>
+	{#if $page.data.auth_info?.authed}
+		<div class="navItem">
+			<div id="profileDropdown">
+				<div id="profile">
+					<h3 title={$page.data.auth_info.profile.username} id="username">{$page.data.auth_info.profile.username}</h3>
+					<img id="pfp" alt="profile" src={`${PFP_PATH}/${$page.data.auth_info.profile.image}?${$page.data.auth_info.profile.image_ver}`}/>
+				</div>
+				<div id="profileDropdownContent">
+					<ul>
+						<li>
+							<a style="display: block; width: 100%;" href="/settings/account">{$_("general.settings")}</a>
+						</li>
+						<li>
+							<form
+								action="/?/logout"
+								method="POST"
+								use:enhance={() => {
+									return async ({ update }) => {
+										await update({ reset: true });
+										setLang("en");
+										document.documentElement.style.setProperty("--border_radius", "var(--default_border_radius)");
+										document.documentElement.style.setProperty("--body_margin", "var(--default_body_margin)");
+										document.documentElement.style.setProperty("--transition", "var(--default_transition)");
+										if ($page.route.id.match("/user/\\[slug]")?.length) {
+											document.documentElement.style.setProperty("--accent", $page.data.data.profile.accent);
+											document.documentElement.style.setProperty("--accent_text", $page.data.data.profile.accent_text);
+										} else {
+											document.documentElement.style.setProperty("--accent", "var(--default_accent)");
+											document.documentElement.style.setProperty("--accent_text", "var(--default_accent_text)");
+											document.documentElement.style.setProperty("--opacity", "var(--default_opacity)");
+											document.documentElement.style.setProperty("--blur", "var(--default_blur)");
+										}
+									};
+								}}
+							>
+								<input
+									type="submit"
+									value="{$_("general.logout")}"
+									style="border: none; text-align: inherit; background-color: inherit;"
+								>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	{:else}
+		<div class="navItem">
+			<NavButton tabindex=7 onclick={ () => showLogin = !showLogin } onkeypress={ () => showLogin = !showLogin } active={showLogin}>{$_("general.login_verb")}</NavButton>
+			<NavButton tabindex=8 active={$page.url.pathname == "/register"} href="/register">{$_("general.register_noun")}</NavButton>
+		</div>
+	{/if}
+</SwayWindow>
 
 {#if showLogin}
 	<div bind:this={overlay} onclick={(_this) => _this.target === overlay && hideLogin()} onkeydown={(e) => e.key == "Escape" && hideLogin()} class="overlay" role="button" tabindex=-1>
@@ -229,58 +228,13 @@
 		background-color: #000;
 	}
 	a:focus, input[type="submit"] { outline-color: #00000000; }
-	.swayWindow {
-		position: relative;
-		margin: 10px 10px 0px 10px;
-		display: flex;
-		flex-grow: 0;
-		flex-direction: column;
-		overflow: visible;
-	}
 
-	.swayWindow:hover .swayWindowTitle, .swayWindow:hover .swayWindowContent {
-		border-color: var(--accent);
-	}
-	.swayWindow:hover .swayWindowTitle {
-		background-color: var(--accent);
-		color: var(--text);
-	}
-	
-	.swayWindowTitle {
-		font-weight: normal;
-		padding: 0 4px;
-		background-color: var(--unfocused_background);
-		color: var(--unfocused_text);
-		height: 10px;
-		line-height: 20px;
-		border-radius: var(--border_radius) var(--border_radius) 0 0;
-		border-top: 2px solid var(--unfocused_background);
-		border-right: 2px solid var(--unfocused_background);
-		border-left: 2px solid var(--unfocused_background);
-		transition: var(--transition);
-		text-align: center;
-	}
-	.swayWindowContent {
-		overflow-x: visible;
-		overflow-y: visible;
-		background-color: var(--bg);
-		padding: 2px;
-		display: flex;
-		flex-grow: 1;
-		border-radius: 0 0 var(--border_radius) var(--border_radius);
-		border-right: 2px solid var(--unfocused_background);
-		border-bottom: 2px solid var(--unfocused_background);
-		border-left: 2px solid var(--unfocused_background);
-		transition: var(--transition);
-		backdrop-filter: blur(var(--blur));
-		z-index: 1;
-	}
-	.swayWindowContent > * {
+	.navItem {
 		display: flex;
 		flex: 1 0 0;
 		padding: 4px;
 	}
-	.swayWindowContent > *:last-child {
+	.navItem:last-child {
 		justify-content: flex-end;
 	}
 	img {

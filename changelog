@@ -1,3 +1,7 @@
+version: v1.3.10
+nav is now not a copy of SwayWindow
+login button in now is now tabbable and pressable
+
 version: v1.3.9
 added delete account button in settings
 fixed a bug where users couldn't change their public setting
