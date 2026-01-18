@@ -12,7 +12,7 @@
 	},
 	"dependencies": {
 		"@sveltejs/adapter-auto": "^6.1.1",
-		"@sveltejs/kit": "^2.49.5",
+		"@sveltejs/kit": "^2.50.0",
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
 		"svelte": "^5.46.4",
 		"svelte-i18n": "^4.0.1",
