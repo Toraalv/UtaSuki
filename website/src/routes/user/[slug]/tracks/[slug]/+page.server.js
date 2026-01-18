@@ -3,7 +3,6 @@ import { page } from "$app/stores";
 
 const api = new UtaSuki_API();
 
-/** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, params, url }) {
 	return { tracks: await api.fetchTracks(fetch, url.pathname.split("/")[2], params.slug) };
 }

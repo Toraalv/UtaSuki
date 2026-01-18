@@ -36,8 +36,9 @@ app.use((req, res, next) => {
 			// check if token matches the stored token
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
-				let user = await dbQuery("SELECT users.uid, username, created, image, image_ver, last_activity, public, notes_public, language, border_radius, body_margin, accent, accent_text, animations, bkg, bkg_ver, opacity, blur FROM users NATURAL JOIN user_settings WHERE auth_token = ?;", [token]);
+				let user = await dbQuery("SELECT users.uid, username, created, image, image_ver, last_activity, public, notes_public, language, border_radius, body_margin, accent, accent_text, animations, bkg, bkg_ver, opacity, blur, admin FROM users NATURAL JOIN user_settings WHERE auth_token = ?;", [token]);
 				req.profile = user[0];
+				req.admin = user[0].admin
 			}
 		}
 		next();
@@ -49,8 +50,7 @@ const status = require("./routes/status.js");
 const users = require("./routes/users.js");
 const user = require("./routes/user.js");
 const userTracks = require("./routes/userTracks.js");
-const years = require("./routes/years.js");
-const tracks = require("./routes/tracks.js");
+const userTracksYear = require("./routes/userTracksYear.js");
 const login = require("./routes/login.js");
 const register = require("./routes/register.js");
 const updateSettings = require("./routes/updateSettings.js");
@@ -61,11 +61,10 @@ const updateTrack = require("./routes/updateTrack.js");
 const deleteTrack = require("./routes/deleteTrack.js");
 const activity = require("./routes/activity.js");
 
+app.use("/", status);
 app.use("/status", status);
 app.use("/users", users);
-app.use("/user", user, userTracks);
-app.use("/years", years);
-app.use("/tracks", tracks);
+app.use("/user", user, userTracks, userTracksYear);
 app.use("/login", login);
 app.use("/register", register);
 app.use("/updateSettings", updateSettings);

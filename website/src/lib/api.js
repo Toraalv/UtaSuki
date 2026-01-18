@@ -5,11 +5,11 @@ class UtaSuki_API {
 
 	// POST endpoints
 	async login(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "login", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "login", formData); }
 		catch (e)	{ return e; }
 	}
 	async register(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "register", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "register", formData); }
 		catch (e)	{ return e; }
 	}
 	async logout(fetch, authToken) {
@@ -17,23 +17,23 @@ class UtaSuki_API {
 		catch (e)	{ return e; }
 	}
 	async postTrack(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "addTrack", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "addTrack", formData); }
 		catch (e)	{ return e; }
 	}
 	async updateSettings(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "updateSettings", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "updateSettings", formData); }
 		catch (e)	{ return e; }
 	}
 	async updateTrack(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "updateTrack", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "updateTrack", formData); }
 		catch (e)	{ return e; }
 	}
 	async deleteTrack(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "deleteTrack", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "deleteTrack", formData); }
 		catch (e)	{ return e; }
 	}
 	async deleteAccount(fetch, formData) {
-		try			{ return await this.request(fetch, "POST", "deleteAccount", undefined, formData); }
+		try			{ return await this.request(fetch, "POST", "deleteAccount", formData); }
 		catch (e)	{ return e; }
 	}
 
@@ -43,25 +43,25 @@ class UtaSuki_API {
 		catch (e)	{ return e; }
 	}
 	// api.utasuki.com/user/<uid>
-	async fetchYears(fetch, uid) {
-		try			{ return (await this.request(fetch, "GET", "years", { uid: uid })); }
+	async fetchUser(fetch, uid) {
+		try			{ return (await this.request(fetch, "GET", `user/${uid}`)); }
 		catch (e)	{ return e; }
 	}
 	async fetchTracks(fetch, uid, year) {
-		try			{ return (await this.request(fetch, "GET", "tracks", { uid: uid, year: year })); }
+		try			{ return (await this.request(fetch, "GET", `user/${uid}/tracks/${year}`)); }
 		catch (e)	{ return e; }
 	}
 	async auth(fetch) {
 		try			{ return await this.request(fetch, "GET", "status"); } //use status endpoint just to authenticate
 		catch (e)	{ return e; }
 	}
-	async fetchActivities(fetch) {
+	async fetchActivity(fetch) {
 		try			{ return await this.request(fetch, "GET", "activity"); }
 		catch (e)	{ return e; }
 	}
 
-	async request(fetch, method, endpoint, args, data) {
-		let req = new Request(`${CDN_ADDR}/${endpoint}?data=${JSON.stringify(args)}`, {
+	async request(fetch, method, endpoint, data) {
+		let req = new Request(`${CDN_ADDR}/${endpoint}`, {
 			method: method,
 			body: data,
 			credentials: "include"

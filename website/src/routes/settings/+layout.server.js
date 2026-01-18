@@ -7,11 +7,8 @@ const api = new UtaSuki_API();
 export async function load({ fetch, params, cookies }) {
 	let res = await api.auth(fetch);
 
-	if (res.code.split('.')[0] == "error")
-		redirect(303, '/');
-	//redirect user if not logged in
-	if (!res.auth_info.authed)
-		redirect(303, '/');
+	if (res.code.split('.')[0] == "error" || !res.auth_info.authed)
+		redirect(307, '/');
 
 	return res;
 }
