@@ -3,12 +3,13 @@
 		href = null,
 		active = false,
 		onclick = () => {},
+		onkeypress = () => {},
 		tabindex = 0,
 		children
 	} = $props();
 </script>
 
-<a tabindex={tabindex} onclick={() => onclick()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""}">
+<a tabindex={tabindex} onclick={() => onclick()} onkeypress={() => onkeypress()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""}">
 	<h4>
 		{@render children?.()}
 	</h4>
