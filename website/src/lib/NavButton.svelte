@@ -9,7 +9,7 @@
 	} = $props();
 </script>
 
-<a tabindex={tabindex} onclick={() => onclick()} onkeypress={() => onkeypress()} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""}">
+<a tabindex={tabindex} onclick={onclick} onkeypress={onkeypress} href="{href}" style="{active ? "background-color: var(--accent); border-color: var(--accent); color: var(--accent_text)" : ""}">
 	<h4>
 		{@render children?.()}
 	</h4>
