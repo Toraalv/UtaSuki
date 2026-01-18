@@ -47,6 +47,8 @@ app.use((req, res, next) => {
 // endpoints
 const status = require("./routes/status.js");
 const users = require("./routes/users.js");
+const user = require("./routes/user.js");
+const userTracks = require("./routes/userTracks.js");
 const years = require("./routes/years.js");
 const tracks = require("./routes/tracks.js");
 const login = require("./routes/login.js");
@@ -61,6 +63,7 @@ const activity = require("./routes/activity.js");
 
 app.use("/status", status);
 app.use("/users", users);
+app.use("/user", user, userTracks);
 app.use("/years", years);
 app.use("/tracks", tracks);
 app.use("/login", login);
