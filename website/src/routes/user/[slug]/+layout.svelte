@@ -46,10 +46,12 @@
 		</SwayWindow>
 	{:else}
 		<div style="display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 0;">
+			<a href="/user/{$page.url.pathname.split("/")[2]}">
 				<SwayWindow title={windowTitle()} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 0;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 					<img alt="profile" src={`${PFP_PATH}/${$page.data.data.profile.image}?${$page.data.data.profile.image_ver}`}/>
 					<p>{$_("stats.tracks")}: {$page.data.data.totalTracks}</p>
 				</SwayWindow>
+			</a>
 			{@render yearList()}
 		</div>
 	{/if}

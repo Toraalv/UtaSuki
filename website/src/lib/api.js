@@ -13,7 +13,7 @@ class UtaSuki_API {
 		catch (e)	{ return e; }
 	}
 	async logout(fetch, authToken) {
-		try			{ return await this.request(fetch, "POST", "logout", undefined); }
+		try			{ return await this.request(fetch, "POST", "logout"); }
 		catch (e)	{ return e; }
 	}
 	async postTrack(fetch, formData) {
@@ -38,17 +38,20 @@ class UtaSuki_API {
 	}
 
 	// GET endpoints
+	async fetchUser(fetch, uid) {
+		try			{ return await this.request(fetch, "GET", `user/${uid}`); }
+		catch (e)	{ return e; }
+	}
 	async fetchUsers(fetch) {
 		try			{ return await this.request(fetch, "GET", "users"); }
 		catch (e)	{ return e; }
 	}
-	// api.utasuki.com/user/<uid>
-	async fetchUser(fetch, uid) {
-		try			{ return (await this.request(fetch, "GET", `user/${uid}`)); }
+	async fetchTracks(fetch, uid) {
+		try			{ return await this.request(fetch, "GET", `user/${uid}/tracks`); }
 		catch (e)	{ return e; }
 	}
-	async fetchTracks(fetch, uid, year) {
-		try			{ return (await this.request(fetch, "GET", `user/${uid}/tracks/${year}`)); }
+	async fetchTracksYear(fetch, uid, year) {
+		try			{ return await this.request(fetch, "GET", `user/${uid}/tracks/${year}`); }
 		catch (e)	{ return e; }
 	}
 	async auth(fetch) {

@@ -15,7 +15,7 @@ module.exports = app.get("/:uid", async (req, res) => {
 		return;
 	}
 
-	if (!profile[0].public && uid != req.profile?.uid) {
+	if (!profile[0].public && uid != req.profile?.uid && !req.admin) {
 		sendStatus(req, res, 403, "error.user_private");
 		return;
 	}
