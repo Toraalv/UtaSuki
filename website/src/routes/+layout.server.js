@@ -6,7 +6,6 @@ import { locale, waitLocale } from "svelte-i18n";
 
 const api = new UtaSuki_API();
 
-/** @type {import('./$types').PageServerLoad} */
 export async function load({ fetch, cookies, params, url }) {
 	let res = await api.auth(fetch);
 	if (cookies.get(COOKIE_DICT.LANG) == undefined) {

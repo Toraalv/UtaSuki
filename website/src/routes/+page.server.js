@@ -6,12 +6,11 @@ import path from 'path';
 
 const api = new UtaSuki_API();
 
-/** @type {import('./$types').PageLoad} */
-export async function load({ params }) {
+export async function load({ fetch, params }) {
 	const changelogFile = await fs.readFile(path.resolve("../changelog"), "utf-8");
 	const changelog = changelogFile.split('\n').map(line => line.trim());
 
-	const activities = await api.fetchActivities(fetch);
+	const activities = await api.fetchActivity(fetch);
 
 	return { changelog, activities };
 }

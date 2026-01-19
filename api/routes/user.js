@@ -6,14 +6,8 @@ const dbQuery = require("../db.js").dbQuery;
 const express = require("express");
 const app = express();
 
-module.exports = app.get('/', async (req, res) => {
-	let uid = 0;
-	try {
-		uid = JSON.parse(req.query.data).uid;
-	} catch (e) {
-		sendStatus(req, res, 400, "error.user_not_specified");
-		return;
-	}
+module.exports = app.get("/:uid", async (req, res) => {
+	let uid = req.params.uid;
 	
 	let profile = await dbQuery("SELECT uid, username, image, image_ver, public, accent, accent_text, bkg, bkg_ver, opacity, blur FROM users NATURAL JOIN user_settings WHERE uid = ?", [uid]);
 	if (!profile.length) {
@@ -21,7 +15,7 @@ module.exports = app.get('/', async (req, res) => {
 		return;
 	}
 
-	if (!profile[0].public && uid != req.profile?.uid) {
+	if (!profile[0].public && uid != req.profile?.uid && !req.admin) {
 		sendStatus(req, res, 403, "error.user_private");
 		return;
 	}
