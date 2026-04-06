@@ -7,7 +7,7 @@ const express = require("express");
 const app = express();
 
 module.exports = app.get('/', async (req, res) => {
-	const activities = await dbQuery("SELECT users.uid, username, users.image as pfp, tracks.image as cover, tracks.artist, action, date, title, public FROM activity JOIN user_tracks ON target = user_tracks.id JOIN tracks ON tracks.id = user_tracks.track_id JOIN users ON activity.uid = users.uid JOIN user_settings ON users.uid = user_settings.uid");
+	const activities = await dbQuery("SELECT users.uid, username, users.image as pfp, tracks.image as cover, tracks.artist, action, date, title, public FROM activity JOIN user_tracks ON target = user_tracks.id JOIN tracks ON tracks.id = user_tracks.track_id JOIN users ON activity.uid = users.uid JOIN user_settings ON users.uid = user_settings.uid ORDER BY activity.id");
 
 	if (!req.admin)
 		for (let i = 0; i < activities.length; i++)

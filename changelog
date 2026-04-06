@@ -1,3 +1,6 @@
+version: v1.3.11
+fixed activity not being in the correct order
+
 version: v1.3.10
 nav is now not a copy of SwayWindow
 login button in nav is now tabbable and pressable
