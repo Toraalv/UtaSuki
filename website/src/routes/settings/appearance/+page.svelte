@@ -208,7 +208,7 @@
 						oninput={(_this) => { document.documentElement.style.setProperty('--accent', hexRegex.test(_this.target.value) ? _this.target.value : "var(--default_accent)"); accentPicker = hexRegex.test(_this.target.value) ? _this.target.value : defaultAccent }}
 						disabled={inFlight}
 					/>
-					<TextCounter style="padding-top: 4px;" inputVal={accentInputVal} error={accentErr} maxLength={LEN_LIMITS.HEX_COLOR}/>
+					<TextCounter style="padding-top: 4px;" length={accentInputVal.length} error={accentErr} maxLength={LEN_LIMITS.HEX_COLOR}/>
 				</td>
 			</tr>
 			{@render inputWarning(accentErr, $_("warning.too_long"))}

@@ -46,6 +46,7 @@
 		"control_panel": "control panel",
 		"edit_profile": "edit profile",
 		"profile": "{username} profile",
+		"description": "description",
 		"self_profile": "your profile",
 		"unknown": "unknown",
 		"settings": "settings",
@@ -145,8 +146,15 @@
 		"password": "password",
 		"username": "username",
 		"profile_picture": "profile picture",
-		"delete_account_title": "deletes your account and all your information",
+		"description": "description",
+		"description_title": "your profile description",
+		"description_center": "center content",
+		"description_center_title": "center all content on your profile description",
+		"description_padding": "padding",
+		"description_padding_title": "the padding around your profile description",
+		"markdown": "supports markdown! (and some html)",
 		"delete_account": "account deletion",
+		"delete_account_title": "deletes your account and all your information",
 		"delete": "delete",
 		"save": "save",
 		"profile": "profile",
@@ -154,6 +162,7 @@
 		"account": "account",
 		"remove_background": "remove background",
 		"opacity": "opacity",
+		"blur": "blur",
 		"background_img": "background image"
 	}
 }

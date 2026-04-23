@@ -49,7 +49,7 @@ module.exports = app.post('/', upload.single("file"), async (req, res) => {
 		handleError(400, "error.add_track_fields_not_specified");
 		return;
 	}
-	// FIXME: this hardcoded 1024 is very bad 
+	// FIXME: this hardcoded 1024 is very bad // 2026-04-19: no
 	if ([artist, album, title].map((obj) => obj.length > 1024).includes(true) || notes.length > 1024) {
 		handleError(400, "error.field_too_long");
 		return;

@@ -1,3 +1,6 @@
+version: v1.4.0
+added profile descriptions, supporting markdown and some html tags
+
 version: v1.3.11
 fixed activity not being in the correct order
 

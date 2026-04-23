@@ -113,7 +113,7 @@
 									disabled={inFlight}
 									required
 								/>
-								<TextCounter style="padding-top: 4px;" inputVal={usernameInputVal} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
+								<TextCounter style="padding-top: 4px;" length={usernameInputVal.length} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
 							</td>
 						</tr>
 						{@render inputWarning(usernameErr, "warning.too_long")}
@@ -131,7 +131,7 @@
 									disabled={inFlight}
 									required
 								/>
-								<TextCounter style="padding-top: 4px;" inputVal={emailInputVal} error={emailErr} maxLength={LEN_LIMITS.EMAIL}/>
+								<TextCounter style="padding-top: 4px;" length={emailInputVal.length} error={emailErr} maxLength={LEN_LIMITS.EMAIL}/>
 							</td>
 						</tr>
 						{@render inputWarning(emailErr, "warning.too_long")}
@@ -149,7 +149,7 @@
 									disabled={inFlight}
 									required
 								/>
-								<TextCounter style="padding-top: 4px;" inputVal={passwordInputVal} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
+								<TextCounter style="padding-top: 4px;" length={passwordInputVal.length} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
 							</td>
 						</tr>
 						{@render inputWarning(passwordErr, "warning.too_long")}

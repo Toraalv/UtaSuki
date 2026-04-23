@@ -18,7 +18,22 @@ export default defineConfig(() => {
 					cert: fs.readFileSync("cert/localhost.pem")
 				}
 			},
-			preview: { port: PORT }
+			preview: { port: PORT },
+			optimizeDeps: {
+				exclude: [
+					'svelte-codemirror-editor',
+					'codemirror',
+					'@codemirror/lang-markdown',
+					'@codemirror/theme-one-dark',
+					'@codemirror/view',
+					'@codemirror/state',
+					'@codemirror/language',
+					'@codemirror/commands',
+					'@codemirror/search',
+					'@codemirror/autocomplete',
+					'@codemirror/lint',
+				]
+			}
 		}
 	} else {
 		return {
@@ -34,7 +49,22 @@ export default defineConfig(() => {
 				},
 
 			},
-			preview: { port: PORT }
+			preview: { port: PORT },
+			optimizeDeps: {
+				exclude: [
+					'svelte-codemirror-editor',
+					'codemirror',
+					'@codemirror/lang-markdown',
+					'@codemirror/theme-one-dark',
+					'@codemirror/view',
+					'@codemirror/state',
+					'@codemirror/language',
+					'@codemirror/commands',
+					'@codemirror/search',
+					'@codemirror/autocomplete',
+					'@codemirror/lint',
+				]
+			}
 		}
 	}
 });

@@ -7,6 +7,7 @@
 		titleStyle = null,
 		contentStyle = null,
 		content = $bindable(),
+		id = null,
 		children
 	} = $props();
 </script>
@@ -15,7 +16,7 @@
 	<div class="swayWindowTitle" style={titleStyle}>
 		<h5 title={altTitle}>{title}</h5>
 	</div>
-	<div bind:this={content} class="swayWindowContent" style={contentStyle}>
+	<div bind:this={content} class="swayWindowContent" style={contentStyle} id={id}>
 		{@render children?.()}
 	</div>
 </div>

@@ -143,10 +143,9 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// border_radius
-	let borderRadius = req.body.border_radius;
-	if (borderRadius != undefined && borderRadius != req.profile.border_radius) {
+	if (req.body.border_radius != undefined && req.body.border_radius != req.profile.border_radius) {
 		try {
-			await dbQuery("UPDATE user_settings SET border_radius = ? WHERE uid = ?", [borderRadius, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET border_radius = ? WHERE uid = ?", [req.body.border_radius, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_border_radius");
@@ -155,10 +154,9 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// body_margin
-	let bodyMargin = req.body.body_margin;
-	if (bodyMargin != undefined && bodyMargin != req.profile.body_margin) {
+	if (req.body.body_margin != undefined && req.body.body_margin != req.profile.body_margin) {
 		try {
-			await dbQuery("UPDATE user_settings SET body_margin = ? WHERE uid = ?", [bodyMargin, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET body_margin = ? WHERE uid = ?", [req.body.body_margin, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_body_margin");
@@ -167,10 +165,9 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// animations
-	let animations = req.body.animations;
-	if (animations != undefined && animations != req.profile.animations) {
+	if (req.body.animations != undefined && req.body.animations != req.profile.animations) {
 		try {
-			await dbQuery("UPDATE user_settings SET animations = ? WHERE uid = ?", [animations, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET animations = ? WHERE uid = ?", [req.body.animations, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_animations");
@@ -179,10 +176,9 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// update accent colour
-	let accent = req.body.accent;
-	if (accent != undefined && accent != req.profile.accent) {
+	if (req.body.accent != undefined && req.body.accent != req.profile.accent) {
 		try {
-			await dbQuery("UPDATE user_settings SET accent = ? WHERE uid = ?", [accent, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET accent = ? WHERE uid = ?", [req.body.accent, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_accent");
@@ -191,13 +187,43 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// update accent text colour
-	let accentText = req.body.accent_text;
-	if (accentText != undefined && accentText != req.profile.accent_text) {
+	if (req.body.accent_text != undefined && req.body.accent_text != req.profile.accent_text) {
 		try {
-			await dbQuery("UPDATE user_settings SET accent_text = ? WHERE uid = ?", [accentText, req.profile.uid]);
+			await dbQuery("UPDATE user_settings SET accent_text = ? WHERE uid = ?", [req.body.accent_text, req.profile.uid]);
 			change = true;
 		} catch (e) {
 			sendStatus(req, res, 500, "error.update_accent_text");
+			return;
+		}
+	}
+
+	// update description
+	if (req.body.description != undefined && req.body.description != '' && req.body.description != req.profile.description) {
+		try {
+			await dbQuery("UPDATE users SET description = ? WHERE uid = ?", [req.body.description, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_description");
+			return;
+		}
+	}
+	// update description padding
+	if (req.body.description_padding != undefined && req.body.description_padding != req.profile.description_padding) {
+		try {
+			await dbQuery("UPDATE users SET description_padding = ? WHERE uid = ?", [req.body.description_padding, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_description_padding");
+			return;
+		}
+	}
+	// update description centering
+	if (req.body.description_center != undefined && req.body.description_center != req.profile.description_center) {
+		try {
+			await dbQuery("UPDATE users SET description_center = ? WHERE uid = ?", [req.body.description_center, req.profile.uid]);
+			change = true;
+		} catch (e) {
+			sendStatus(req, res, 500, "error.update_description_center");
 			return;
 		}
 	}

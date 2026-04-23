@@ -37,7 +37,7 @@
 	</SwayWindow>
 {/snippet}
 
-<div style="display: flex; justify-content: space-between; margin: 0; padding: 0; flex-grow: 1;">
+<div style="display: flex; justify-content: space-between; margin: 0; padding: 0; flex-grow: 1; overflow: auto;">
 	{#if $page.data.code.split('.')[0] == "error"}
 		<SwayWindow title={windowTitle()} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex-direction: column; justify-content: space-between">
 			<div>

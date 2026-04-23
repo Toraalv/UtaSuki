@@ -5,11 +5,14 @@
 	import TextCounter from "$lib/TextCounter.svelte";
 	import { setLang } from "$lib/helpers.js";
 	import { PFP_PATH, LEN_LIMITS } from "$lib/globals.js";
-	import { flightPopup, resultPopup } from "../snippets.svelte";
+	import { inputWarning, flightPopup, resultPopup } from "../snippets.svelte";
 
 	import { page } from "$app/stores";
 	import { enhance } from "$app/forms";
 	import { _, locale, locales } from "svelte-i18n";
+	import CodeMirror from "svelte-codemirror-editor";
+	import { markdown } from "@codemirror/lang-markdown";
+	import { oneDark } from "@codemirror/theme-one-dark";
 
 	let { form } = $props();
 	let formRes = $state(undefined);
@@ -23,7 +26,7 @@
 		if (file) {
 			const reader = new FileReader();
 			reader.addEventListener("load", (event) => {
-				// warn user too big file
+				// TODO: warn user too big file
 				image.setAttribute("src", reader.result);
 				imageHasChanged = true;
 			});
@@ -31,6 +34,15 @@
 			return;
 		}
 	}
+
+	// form feedback
+	let codemirror = $state($page.data.auth_info.profile.description);
+	let descriptionLen = $state($page.data.auth_info.profile.description.length);
+	console.log("desc len: " + descriptionLen);
+	let descriptionErr = $derived(descriptionLen > LEN_LIMITS.USER_DESC);
+
+	let descriptionPaddingCheckbox = $state($page.data.auth_info.profile.description_padding);
+	let descriptionCenterCheckbox = $state($page.data.auth_info.profile.description_center);
 
 	let inFlight = $state(false);
 </script>
@@ -75,8 +87,64 @@
 					/>
 				</td>
 			</tr>
+			<tr>
+				<td title={$_("settings.description_padding_title")}><label for="description_padding">{$_("settings.description_padding")}:</label></td>
+				<td>
+					<input
+						id="description_padding"
+						type="checkbox"
+						bind:checked={descriptionPaddingCheckbox}
+						disabled={inFlight}
+						autocomplete="off"
+					/>
+					<input type="hidden" name="description_padding" value={descriptionPaddingCheckbox ? 1 : 0}>
+				</td>
+			</tr>
+			<tr>
+				<td title={$_("settings.description_center_title")}><label for="description_center">{$_("settings.description_center")}:</label></td>
+				<td>
+					<input
+						id="description_center"
+						type="checkbox"
+						bind:checked={descriptionCenterCheckbox}
+						disabled={inFlight}
+						autocomplete="off"
+					/>
+					<input type="hidden" name="description_center" value={descriptionCenterCheckbox ? 1 : 0}>
+				</td>
+			</tr>
+			<tr>
+				<td>{$_("settings.description")}:</td>
+			</tr>
 		</tbody>
 	</table>
+	<div style="position: relative;">
+		<CodeMirror
+			bind:value={codemirror}
+			lang={markdown()}
+			theme={oneDark}
+			foldGutter=false
+			tabSize=4
+			closeBrackets=false
+			lineWrapping=true
+			autocompletion=false
+			onchange={(cm) => descriptionLen = cm.length + cm.split('\n').length - 1}
+			styles={{
+				"&": {
+					backgroundColor: "#111111",
+					width: "100%",
+					maxWidth: "100%",
+					height: "30vh",
+					fontSize: "14px"
+				},
+			}}
+
+		/>
+		<TextCounter style="padding-top: 4px; height: initial;" length={descriptionLen} error={descriptionErr} maxLength={LEN_LIMITS.USER_DESC}/>
+		{@render inputWarning(descriptionErr, $_("warning.too_long"))}
+	</div>
+	<span onclick={() => console.log(codemirror.length + codemirror.split('\n').length)} style="color: var(--d2_text); font-size: 10pt;"><i>{$_("settings.markdown")}</i></span>
+	<input type="hidden" name="description" value={codemirror}>
 	<table>
 		<tbody>
 			<tr>
@@ -86,8 +154,12 @@
 						style="padding: 2px 10px;"
 						value={$_("settings.save")}
 						disabled={
-							!imageHasChanged ||
-							inFlight
+							!imageHasChanged &&
+							descriptionPaddingCheckbox == $page.data.auth_info.profile.description_padding &&
+							descriptionCenterCheckbox == $page.data.auth_info.profile.description_center &&
+							codemirror == $page.data.auth_info.profile.description ||
+							inFlight ||
+							descriptionErr
 						}
 					/>
 				</td>
@@ -113,5 +185,13 @@
 	}
 	img:hover {
 		outline-color: var(--accent);
+	}
+	/* TODO: show line numbers */
+	textarea {
+		font-size: 10pt;
+		resize: vertical;
+	}
+	input[type="checkbox"] {
+		width: auto;
 	}
 </style>

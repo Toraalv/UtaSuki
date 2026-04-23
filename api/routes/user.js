@@ -9,7 +9,7 @@ const app = express();
 module.exports = app.get("/:uid", async (req, res) => {
 	let uid = req.params.uid;
 	
-	let profile = await dbQuery("SELECT uid, username, image, image_ver, public, accent, accent_text, bkg, bkg_ver, opacity, blur FROM users NATURAL JOIN user_settings WHERE uid = ?", [uid]);
+	let profile = await dbQuery("SELECT uid, username, image, image_ver, public, accent, accent_text, bkg, bkg_ver, opacity, blur, description, description_padding, description_center FROM users NATURAL JOIN user_settings WHERE uid = ?", [uid]);
 	if (!profile.length) {
 		sendStatus(req, res, 404, "error.user_not_exist")
 		return;
