@@ -11,14 +11,14 @@
 	let currentSetting = $derived($page.route.id.split('/')[2]);
 </script>
 
-<div style="display: flex; flex: 1 0 0;">
+<div style="display: flex; flex: 1 0 0; overflow: auto;">
 	<SwayWindow title={$_("general.settings")} mainStyle="min-width: 300px; max-width: 300px; flex-grow: 1;" contentStyle="display: flex; flex: 1 0 0; flex-direction: column;">
 		<LinkButton href="/settings/account" active={currentSetting == "account"}>{$_("settings.account")}</LinkButton>
 		<LinkButton href="/settings/profile" active={currentSetting == "profile"}>{$_("settings.profile")}</LinkButton>
 		<LinkButton href="/settings/appearance" active={currentSetting == "appearance"}>{$_("settings.appearance")}</LinkButton>
 	</SwayWindow>
 
-	<SwayWindow title={currentSetting && $_(`settings.${currentSetting}`)}>
+	<SwayWindow title={currentSetting && $_(`settings.${currentSetting}`)} contentStyle="overflow-x: auto;">
 		{@render children?.()}
 	</SwayWindow>
 </div>

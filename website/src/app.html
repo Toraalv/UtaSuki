@@ -178,6 +178,15 @@
 				cursor: pointer;
 			}
 
+			/* reset style for markdown */
+			#markdown > * {
+				all: revert;
+
+			}
+			#markdown > ul > li, #markdown > ol > li {
+				background-color: unset;
+			}
+
 			@media only screen and (max-width: 1375px) {
 				body {
 					margin: 0;

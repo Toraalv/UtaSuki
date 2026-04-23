@@ -46,6 +46,7 @@
 		"control_panel": "kontrollpanel",
 		"edit_profile": "redigera profil",
 		"profile": "{username} profil",
+		"description": "beskrivning",
 		"self_profile": "din profil",
 		"unknown": "okänd",
 		"settings": "inställningar",
@@ -145,8 +146,15 @@
 		"password": "lösenord",
 		"username": "användarnamn",
 		"profile_picture": "profilbild",
-		"delete_account_title": "tar bort ditt konto samt all din information",
+		"description": "beskrivning",
+		"description_title": "din profilbeskrivning",
+		"description_center": "centrera innehåll",
+		"description_center_title": "centrerar innehållet på din profilbeskrivning",
+		"description_padding": "vaddering",
+		"description_padding_title": "vadderingen runt din profilbeskrivning",
+		"markdown": "stödjer markdown! (och lite html)",
 		"delete_account": "kontoborttagning",
+		"delete_account_title": "tar bort ditt konto samt all din information",
 		"delete": "radera",
 		"save": "spara",
 		"profile": "profil",
@@ -154,6 +162,7 @@
 		"account": "konto",
 		"remove_background": "ta bort bakgrundsbild",
 		"opacity": "opacitet",
+		"blur": "suddighet",
 		"background_img": "bakgrundsbild"
 	}
 }

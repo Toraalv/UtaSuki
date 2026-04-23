@@ -173,7 +173,7 @@
 						maxlength={LEN_LIMITS.TRACK}
 						required
 					/>
-					<TextCounter inputVal={trackInputVal} error={trackNameErr} maxLength={LEN_LIMITS.TRACK}/>
+					<TextCounter length={trackInputVal.length} error={trackNameErr} maxLength={LEN_LIMITS.TRACK}/>
 				</div>
 				<div id="trackActions" style:display="flex">
 					<input
@@ -201,7 +201,7 @@
 					autocomplete="off"
 					maxlength={LEN_LIMITS.ALBUM}
 				/>
-				<TextCounter inputVal={albumInputVal} error={albumNameErr} maxLength={LEN_LIMITS.ALBUM}/>
+				<TextCounter length={albumInputVal.length} error={albumNameErr} maxLength={LEN_LIMITS.ALBUM}/>
 			</div>
 			<div style="position: relative; width: fit-content;">
 				<input
@@ -214,7 +214,7 @@
 					maxlength={LEN_LIMITS.ARTIST}
 					required
 				/>
-				<TextCounter inputVal={artistInputVal} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
+				<TextCounter length={artistInputVal.length} error={artistNameErr} maxLength={LEN_LIMITS.ARTIST}/>
 			</div>
 			<div style:height="1em"></div>
 			<div style="position: relative; width: 60%;">
@@ -227,7 +227,7 @@
 					maxlength={LEN_LIMITS.NOTES}
 					rows=3
 				></textarea>
-				<TextCounter inputVal={noteInputVal} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
+				<TextCounter length={noteInputVal.length} error={noteErr} maxLength={LEN_LIMITS.NOTE}/>
 			</div>
 		</div>
 		<input type="hidden" name="id" value={id}>

@@ -63,7 +63,7 @@
 						bind:value={usernameInputVal}
 						disabled={inFlight}
 					/>
-					<TextCounter style="padding-top: 4px;" inputVal={usernameInputVal} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
+					<TextCounter style="padding-top: 4px;" length={usernameInputVal.length} error={usernameErr} maxLength={LEN_LIMITS.USERNAME}/>
 				</td>
 			</tr>
 			{@render inputWarning(usernameErr, $_("warning.too_long"))}
@@ -78,7 +78,7 @@
 						bind:value={passwordInputVal}
 						disabled={inFlight}
 					/>
-					<TextCounter style="padding-top: 4px;" inputVal={passwordInputVal} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
+					<TextCounter style="padding-top: 4px;" length={passwordInputVal.length} error={passwordErr} maxLength={LEN_LIMITS.PASSWORD}/>
 				</td>
 			</tr>
 			{@render inputWarning(passwordErr, $_("warning.too_long"))}

@@ -17,7 +17,8 @@ export const LEN_LIMITS = {
 	USERNAME: 32,
 	PASSWORD: 1024,
 	HEX_COLOR: 7,
-	NOTE: 1024
+	NOTE: 1024,
+	USER_DESC: 4096
 };
 export const COOKIE_DICT = {
 	AUTH_TOKEN: "auth_token",
