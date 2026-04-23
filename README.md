@@ -4,15 +4,6 @@
 # 歌好き (UtaSuki)
 The site is available at [utasuki.com](https://utasuki.com).
 
-Current plans includes:
-- [ ] Per track publicity setting?
-- [ ] CI/CD
-- [ ] Unit testing
-- [ ] Some sort of common music library
-- [ ] User interaction, such as adding each other as friends
-- [ ] User statistics
-- [ ] Mobile phone support
-
 ## Development
 
 ### Prerequisites
