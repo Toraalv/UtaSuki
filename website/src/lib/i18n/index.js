@@ -8,9 +8,11 @@ const defaultLocale = "en";
 
 import en from "./en.json";
 import sv from "./sv.json";
+import jp from "./jp.json";
 
 addMessages("en", en);
 addMessages("sv", sv);
+addMessages("jp", jp);
 
 init({
 	fallbackLocale: defaultLocale,

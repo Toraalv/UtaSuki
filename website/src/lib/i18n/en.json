@@ -44,8 +44,6 @@
 		"add_track": "add track",
 		"user_tracks": "your tracks",
 		"add": "add",
-		"control_panel": "control panel",
-		"edit_profile": "edit profile",
 		"profile": "{username} profile",
 		"description": "description",
 		"self_profile": "your profile",
@@ -54,7 +52,7 @@
 		"edit": "edit",
 		"edit_title": "edit this track's content",
 		"remove": "remove",
-		"remove_title": "remove this track (doesn't remove every instance of this track)",
+		"remove_title": "remove this track",
 		"cancel": "cancel",
 		"english_only": "only in english",
 		"WIP": "work in progress",
@@ -62,6 +60,7 @@
 		"changelog": "changelog",
 		"activity": "activity",
 		"by": "by",
+		"version": "version: ",
 		"added_track": "added"
 	},
 	"stats": {
@@ -144,6 +143,7 @@
 		"language": "language",
 		"en": "english",
 		"sv": "swedish",
+		"jp": "japanese",
 		"password": "password",
 		"username": "username",
 		"profile_picture": "profile picture",

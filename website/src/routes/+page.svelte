@@ -28,7 +28,7 @@
 			<p>{$_("general.homepage")}: <a href="https://toralv.dev">toralv.dev</a></p>
 		</span>
 		<footer style="text-align: center;">
-			<span style="color: var(--d2_text);">version: {version}</span>
+			<span style="color: var(--d2_text);">{$_("general.version") + version}</span>
 		</footer>
 	</SwayWindow>
 

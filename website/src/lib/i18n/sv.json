@@ -44,8 +44,6 @@
 		"add_track": "lägg till låt",
 		"user_tracks": "dina låtar",
 		"add": "lägg till",
-		"control_panel": "kontrollpanel",
-		"edit_profile": "redigera profil",
 		"profile": "{username} profil",
 		"description": "beskrivning",
 		"self_profile": "din profil",
@@ -54,7 +52,7 @@
 		"edit": "ändra",
 		"edit_title": "ändra denna låts innehåll",
 		"remove": "radera",
-		"remove_title": "radera denna låt (raderar inte alla instanser av denna låt)",
+		"remove_title": "radera denna låt",
 		"cancel": "avbryt",
 		"english_only": "endast på engelska",
 		"WIP": "under arbete",
@@ -62,6 +60,7 @@
 		"changelog": "ändringslogg",
 		"activity": "aktivitet",
 		"by": "av",
+		"version": "version: ",
 		"added_track": "lade till"
 	},
 	"stats": {
@@ -144,6 +143,7 @@
 		"language": "språk",
 		"en": "engelska",
 		"sv": "svenska",
+		"jp": "japanska",
 		"password": "lösenord",
 		"username": "användarnamn",
 		"profile_picture": "profilbild",

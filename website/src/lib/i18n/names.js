@@ -8,6 +8,7 @@ const possessiveForm = (name) => {
 	switch (currentLocale.substring(0, 2)) {
 		case "sv": return name.endsWith("s") ? name : name + "s";
 		case "en": return name + (name.endsWith('s') ? "'" : "'s");
+		case "jp": return name.endsWith("の") ? name : name + "の";
 		default: return name;
 	}
 }
