@@ -6,7 +6,7 @@
 	import { locale, _ } from "svelte-i18n";
 	import SvelteMarkdown from "@humanspeak/svelte-markdown";
 	import { allowHtmlOnly } from "@humanspeak/svelte-markdown";
-	const html = allowHtmlOnly(["strong", "em", "div", "span", "details", "summary", "sup", "sub", "cite", "a", "img", "h1", "h2", "h3", "h4", "h5"]);
+	const html = allowHtmlOnly(["strong", "em", "div", "span", "details", "summary", "sup", "sub", "cite", "a", "img", "h1", "h2", "h3", "h4", "h5", "ul", "li", "ol"]);
 
 	let username = $_("general.unknown");
 	const windowTitle = () => {
