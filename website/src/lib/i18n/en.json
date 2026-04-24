@@ -24,6 +24,7 @@
 		"name": "name",
 		"member_since": "member since",
 		"last_activity": "last activity",
+		"last_online": "last online",
 		"login_verb": "login",
 		"login_noun": "login",
 		"register_verb": "register",

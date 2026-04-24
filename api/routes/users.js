@@ -7,7 +7,7 @@ const express = require("express");
 const app = express();
 
 module.exports = app.get('/', async (req, res) => {
-	let users = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public FROM users NATURAL JOIN user_settings");
+	let users = await dbQuery("SELECT uid, username, created, image, image_ver, last_activity, public, last_online FROM users NATURAL JOIN user_settings");
 
 	if (users.length == 0) {
 		sendStatus(req, res, 200, "info.no_users", []);

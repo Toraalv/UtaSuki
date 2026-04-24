@@ -24,6 +24,7 @@
 		"name": "namn",
 		"member_since": "användare sedan",
 		"last_activity": "senast aktiv",
+		"last_online": "senast online",
 		"login_verb": "logga in",
 		"login_noun": "inloggning",
 		"register_verb": "registrera",

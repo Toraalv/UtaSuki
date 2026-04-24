@@ -9,12 +9,14 @@
 		image = "/static/images/profile_pictures/default",
 		imageVer = 0,
 		created = new Date(),
-		activity = new Date()
+		activity = new Date(),
+		online = new Date()
 	} = $props();
 	
 	let memberSince = `${created.getFullYear()}-${(created.getMonth() + 1) < 10 ? "0" + (created.getMonth() + 1) : (created.getMonth() + 1)}-${created.getDate() < 10 ? "0" + created.getDate() : (created.getDate())}`;
 
-	let last_activity = activity.getFullYear() != 1970 ? `${activity.getFullYear()}-${(activity.getMonth() + 1) < 10 ? "0" + (activity.getMonth() + 1) : (activity.getMonth() + 1)}-${activity.getDate() < 10 ? "0" + activity.getDate() : (activity.getDate())}` : false;
+	let lastActivity = activity.getFullYear() != 1970 ? `${activity.getFullYear()}-${(activity.getMonth() + 1) < 10 ? "0" + (activity.getMonth() + 1) : (activity.getMonth() + 1)}-${activity.getDate() < 10 ? "0" + activity.getDate() : (activity.getDate())}` : false;
+	let lastOnline = online.getFullYear() != 1970 ? `${online.getFullYear()}-${(online.getMonth() + 1) < 10 ? "0" + (online.getMonth() + 1) : (online.getMonth() + 1)}-${online.getDate() < 10 ? "0" + online.getDate() : (online.getDate())}` : false;
 </script>
 
 <div class="profile">
@@ -28,11 +30,14 @@
 			{#if created}
 				<h5>{$_("general.member_since")}: {memberSince}</h5>
 			{/if}
-			{#if created && last_activity}
+			{#if created && lastActivity || created && lastOnline}
 				<div style="margin: 0 8px 0 8px; width: 2px; background-color: var(--unfocused_border)"></div>
 			{/if}
-			{#if last_activity}
-				<h5>{$_("general.last_activity")}: {last_activity}</h5>
+			<!-- {#if lastActivity}
+				<h5>{$_("general.last_activity")}: {lastActivity}</h5>
+			{/if} -->
+			{#if lastOnline}
+				<h5>{$_("general.last_online")}: {lastOnline}</h5>
 			{/if}
 		</div>
 	</div>

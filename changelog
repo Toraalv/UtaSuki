@@ -1,5 +1,6 @@
-version: v1.4.0
+version: v1.4.0 profile descriptions
 added profile descriptions, supporting markdown and some html tags
+changed last activity to last online
 
 version: v1.3.11
 fixed activity not being in the correct order

@@ -37,6 +37,8 @@ app.use((req, res, next) => {
 			if ((await dbQuery("SELECT 1 FROM users WHERE uid = ? AND auth_token = ?", [data.uid, token])).length) {
 				req.authed = true;
 				let user = await dbQuery("SELECT users.uid, username, created, image, image_ver, last_activity, public, notes_public, language, border_radius, body_margin, accent, accent_text, animations, bkg, bkg_ver, opacity, blur, admin, description, description_padding, description_center FROM users NATURAL JOIN user_settings WHERE auth_token = ?;", [token]);
+				// update last online status
+				await dbQuery("UPDATE users SET last_online = current_timestamp() WHERE uid = ?", [data.uid]);
 				req.profile = user[0];
 				req.admin = user[0].admin
 			}
