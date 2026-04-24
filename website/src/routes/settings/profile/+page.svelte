@@ -38,7 +38,6 @@
 	// form feedback
 	let codemirror = $state($page.data.auth_info.profile.description);
 	let descriptionLen = $state($page.data.auth_info.profile.description.length);
-	console.log("desc len: " + descriptionLen);
 	let descriptionErr = $derived(descriptionLen > LEN_LIMITS.USER_DESC);
 
 	let descriptionPaddingCheckbox = $state($page.data.auth_info.profile.description_padding);
