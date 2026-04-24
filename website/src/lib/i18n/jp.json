@@ -109,15 +109,15 @@
 	},
 	"dialog": {
 		"delete": "本当に<br><span style=\"color: white\">{thing}</span>を削除したいですか？",
-		"delete_account": "本当に会員を削除したいですか？",
+		"delete_account": "本当に会員を退会したいですか？",
 		"yes": "はい",
 		"no": "いいえ"
 	},
 	"about": {
-		"welcome": "歌好きにようこそ！",
+		"welcome": "歌好きへようこそ！",
 		"p1": "このサイトは、毎月のお気に入りの曲を記録しておくための場所です",
 		"p2": "なぜ？",
-		"p3": "俺みたいに沢山の音楽を聴いて、お気に入り曲はいっぱいあります。その曲は記録したくて、綺麗に表示します",
+		"p3": "俺みたいに沢山の音楽を聴いて、お気に入りの曲はいっぱいあります。その曲は記録したくて、綺麗に表示します",
 		"p4": "まだ建設中ですけど、基礎の機能は実現しましたから、是非使ってください！",
 		"p5": "サイトの進歩はこちらです：<a style=\"text-decoration-line: underline; color: var(--link);\" href=\"https://github.com/Toraalv/UtaSuki\">GitHub</a><br><br>俺はスウェーデン人ですけど、日本語をちょっと勉強したので、このサイトは自分で翻訳しましたから、誤字有り。",
 		"contact": "連絡先",
@@ -154,7 +154,7 @@
 		"description_padding": "埋め草",
 		"description_padding_title": "自己紹介の埋め草",
 		"markdown": "markdownとhtml有り！",
-		"delete_account": "会員削除",
+		"delete_account": "会員退会",
 		"delete_account_title": "あなたの情報を全部削除",
 		"delete": "削除",
 		"save": "保存",

@@ -198,7 +198,7 @@ module.exports = app.post('/', upload.fields([{ name: "profile_picture" }, { nam
 	}
 
 	// update description
-	if (req.body.description != undefined && req.body.description != '' && req.body.description != req.profile.description) {
+	if (req.body.description != undefined && req.body.description != req.profile.description) {
 		try {
 			await dbQuery("UPDATE users SET description = ? WHERE uid = ?", [req.body.description, req.profile.uid]);
 			change = true;
