@@ -30,7 +30,7 @@
 			{#if created}
 				<h5>{$_("general.member_since")}: {memberSince}</h5>
 			{/if}
-			{#if created && lastActivity || created && lastOnline}
+			{#if created && lastOnline}
 				<div style="margin: 0 8px 0 8px; width: 2px; background-color: var(--unfocused_border)"></div>
 			{/if}
 			<!-- {#if lastActivity}
