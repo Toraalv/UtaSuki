@@ -162,8 +162,8 @@
 		"appearance": "見た目",
 		"account": "会員管理",
 		"remove_background": "壁紙を削除",
-		"opacity": "透明量",
-		"blur": "不鮮明量",
+		"opacity": "透明さ",
+		"blur": "不鮮明さ",
 		"background_img": "壁紙"
 	}
 }
